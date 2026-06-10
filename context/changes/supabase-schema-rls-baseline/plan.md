@@ -228,10 +228,10 @@ None for this slice. The `profiles` table is read/written once per session at mo
 
 #### Automated
 
-- [x] 2.1 RLS test script runs without errors
-- [x] 2.2 Build passes (`npm run build` exits 0)
+- [x] 2.1 RLS test script runs without errors — 92ddf78
+- [x] 2.2 Build passes (`npm run build` exits 0) — 92ddf78
 
 #### Manual
 
-- [x] 2.3 RLS test output confirms cross-user access returns zero rows
-- [x] 2.4 Inline migration comments are clear for downstream copy-paste
+- [x] 2.3 RLS test output confirms cross-user access returns zero rows — 92ddf78
+- [x] 2.4 Inline migration comments are clear for downstream copy-paste — 92ddf78
