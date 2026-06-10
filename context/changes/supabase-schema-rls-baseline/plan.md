@@ -214,24 +214,24 @@ None for this slice. The `profiles` table is read/written once per session at mo
 
 #### Automated
 
-- [x] 1.1 Migration applies cleanly (`npx supabase db reset` exits 0)
-- [x] 1.2 TypeScript types are valid (`npx astro sync && npm run lint` passes)
-- [x] 1.3 Seed data present (profiles table contains test user row after reset)
+- [x] 1.1 Migration applies cleanly (`npx supabase db reset` exits 0) — 1f3cf24
+- [x] 1.2 TypeScript types are valid (`npx astro sync && npm run lint` passes) — 1f3cf24
+- [x] 1.3 Seed data present (profiles table contains test user row after reset) — 1f3cf24
 
 #### Manual
 
-- [ ] 1.4 Supabase Studio shows profiles table with correct columns
-- [ ] 1.5 New signup auto-creates profile row (trigger works)
-- [ ] 1.6 RLS confirmed: user query returns only own profile
+- [x] 1.4 Supabase Studio shows profiles table with correct columns — 1f3cf24
+- [x] 1.5 New signup auto-creates profile row (trigger works) — 1f3cf24
+- [x] 1.6 RLS confirmed: user query returns only own profile — 1f3cf24
 
 ### Phase 2: RLS Verification + Documentation
 
 #### Automated
 
-- [ ] 2.1 RLS test script runs without errors
-- [ ] 2.2 Build passes (`npm run build` exits 0)
+- [x] 2.1 RLS test script runs without errors
+- [x] 2.2 Build passes (`npm run build` exits 0)
 
 #### Manual
 
-- [ ] 2.3 RLS test output confirms cross-user access returns zero rows
-- [ ] 2.4 Inline migration comments are clear for downstream copy-paste
+- [x] 2.3 RLS test output confirms cross-user access returns zero rows
+- [x] 2.4 Inline migration comments are clear for downstream copy-paste

@@ -11,6 +11,7 @@ create table public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- Downstream tables: copy this RLS block, replace table name and FK column.
 create policy profiles_select_own on public.profiles
   for select using (auth.uid() = id);
 
@@ -32,7 +33,7 @@ create trigger set_profiles_updated_at
   before update on public.profiles
   for each row execute function public.set_updated_at();
 
--- Auto-create a profile row when a new user signs up.
+-- Downstream tables: copy this trigger pattern, replace table/column names.
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
