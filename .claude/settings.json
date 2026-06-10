@@ -1,4 +1,6 @@
 {
+    "enableAllProjectMcpServers": true,
+    "enabledMcpjsonServers": ["cloudflare"],
     "permissions": {
       "allow": [
         "Bash(npm *)",

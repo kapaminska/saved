@@ -15,7 +15,7 @@ checkpoint:
       decision: "one NL sentence per month is enough to maintain savings discipline; people abandon budgeting because of friction, not lack of intent"
     - topic: "user model"
       decision: "flat — every logged-in user sees their own data, no roles; 'w związku' flag affects UI labels only, not access"
-  frs_drafted: 30
+  frs_drafted: 35
   quality_check_status: accepted
 product_type: web-app
 target_scale:
@@ -97,6 +97,14 @@ Magic link (email-only) — bez Google OAuth, bez hasła. Flat user model — ka
   > Socrates: Counter-argument: confirming zero feels punitive. Resolution: revised — both explicit zero and no check-in are valid paths, both = 0 in projection.
 - FR-016: User can change the check-in month (default: current; past allowed, future blocked). Priority: must-have
   > Socrates: Counter-argument: backdating enables gaming and messy data. Resolution: kept — real life requires backdating; people forget check-ins.
+
+### AI Input & Output Safety
+
+- FR-032: Check-in text is limited to 500 characters. Input exceeding the limit is rejected with a visible message before reaching AI. Priority: must-have
+- FR-033: Empty or whitespace-only check-in input is rejected before reaching AI. Priority: must-have
+- FR-034: AI check-in requests per user are rate-limited. When the limit is exceeded, user sees a message and a link to the manual check-in path. Priority: must-have
+- FR-035: AI-proposed amounts must be positive numbers; proposed goal names must match the user's existing active goals. Payments failing either condition are excluded from the review screen. Priority: must-have
+- FR-036: AI response is structurally validated before being shown to the user. An invalid response is treated as AI unavailability (manual fallback). Priority: must-have
 
 ### Projections & Status
 
@@ -182,6 +190,7 @@ Pięć decyzji domenowych:
 - Dane użytkownika nie są nigdy dostępne dla innych użytkowników ani bez uwierzytelnienia. Ścisła izolacja danych per użytkownik.
 - Produkt działa na najnowszych wersjach Chrome, Firefox, Safari i Edge. Brak wymagań dla starszych przeglądarek ani optymalizacji mobilnych.
 - Niedostępność AI oznacza degradację funkcji (brak parsowania NL), nie awarię produktu. Wszystkie nie-AI funkcje działają bez zmian, bez utraty danych.
+- Odpowiedź AI nigdy nie jest zapisywana do bazy bez przejścia walidacji strukturalnej i domenowej. Malformowana odpowiedź AI nie może spowodować korupcji danych finansowych.
 
 ## Non-Goals
 

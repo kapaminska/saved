@@ -95,6 +95,14 @@ Osoba oszczędzająca na konkretne cele (wakacje, poduszka finansowa, sprzęt), 
 - FR-016: User can change the check-in month (default: current; past allowed, future blocked). Priority: must-have
   > Socrates: Counter-argument: backdating enables gaming and messy data. Resolution: kept — real life requires backdating; people forget check-ins.
 
+### AI Input & Output Safety
+
+- FR-032: Check-in text is limited to 500 characters. Input exceeding the limit is rejected with a visible message before reaching AI. Priority: must-have
+- FR-033: Empty or whitespace-only check-in input is rejected before reaching AI. Priority: must-have
+- FR-034: AI check-in requests per user are rate-limited. When the limit is exceeded, user sees a message and a link to the manual check-in path. Priority: must-have
+- FR-035: AI-proposed amounts must be positive numbers; proposed goal names must match the user's existing active goals. Payments failing either condition are excluded from the review screen. Priority: must-have
+- FR-036: AI response is structurally validated before being shown to the user. An invalid response is treated as AI unavailability (manual fallback). Priority: must-have
+
 ### Projections & Status
 
 - FR-017: App calculates required pace per goal: (target − saved) / months remaining. Priority: must-have
@@ -149,6 +157,7 @@ Osoba oszczędzająca na konkretne cele (wakacje, poduszka finansowa, sprzęt), 
 - Dane użytkownika nie są nigdy dostępne dla innych użytkowników ani bez uwierzytelnienia. Ścisła izolacja danych per użytkownik.
 - Produkt działa na najnowszych wersjach Chrome, Firefox, Safari i Edge. Brak wymagań dla starszych przeglądarek ani optymalizacji mobilnych.
 - Niedostępność AI oznacza degradację funkcji (brak parsowania NL), nie awarię produktu. Wszystkie nie-AI funkcje działają bez zmian, bez utraty danych.
+- Odpowiedź AI nigdy nie jest zapisywana do bazy bez przejścia walidacji strukturalnej i domenowej. Malformowana odpowiedź AI nie może spowodować korupcji danych finansowych.
 
 ## Business Logic
 
