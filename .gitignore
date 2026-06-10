@@ -26,3 +26,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# claude code skills & config
+.claude/skills/
+.claude/.10x-cli-manifest.json
+.mcp.json
