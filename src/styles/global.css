@@ -112,6 +112,7 @@
 
 @utility bg-cosmic {
   background-image: linear-gradient(to bottom, #0a0e1a, #0f1529, #0a0e1a);
+  color-scheme: dark;
 }
 
 @layer base {

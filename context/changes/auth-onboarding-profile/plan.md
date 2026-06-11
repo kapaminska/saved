@@ -337,11 +337,11 @@ Build a dedicated `/profile` page for editing profile data, and update the Topba
 
 #### Automated
 
-- [x] 1.1 Build passes after auth changes
-- [x] 1.2 Lint passes
-- [x] 1.3 No TypeScript errors
-- [x] 1.4 Old auth pages return 404
-- [x] 1.5 Old API endpoints return 404/405
+- [x] 1.1 Build passes after auth changes — 99690c5
+- [x] 1.2 Lint passes — 99690c5
+- [x] 1.3 No TypeScript errors — 99690c5
+- [x] 1.4 Old auth pages return 404 — 99690c5
+- [x] 1.5 Old API endpoints return 404/405 — 99690c5
 
 #### Manual
 
@@ -356,10 +356,10 @@ Build a dedicated `/profile` page for editing profile data, and update the Topba
 
 #### Automated
 
-- [ ] 2.1 Build passes after onboarding changes
-- [ ] 2.2 Lint passes
-- [ ] 2.3 No TypeScript errors
-- [ ] 2.4 /onboarding route is protected
+- [x] 2.1 Build passes after onboarding changes
+- [x] 2.2 Lint passes
+- [x] 2.3 No TypeScript errors
+- [x] 2.4 /onboarding route is protected
 
 #### Manual
 

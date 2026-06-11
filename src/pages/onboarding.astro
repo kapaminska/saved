@@ -1,0 +1,41 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ProfileForm from "@/components/profile/ProfileForm";
+
+const { profile } = Astro.locals;
+---
+
+<Layout title="Welcome">
+  <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
+    <div class="w-full max-w-md rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+      <h1
+        class="mb-2 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent"
+      >
+        Welcome!
+      </h1>
+      <p class="mb-6 text-center text-sm text-blue-100/70">
+        Tell us a bit about yourself to personalize your experience.
+      </p>
+
+      <ProfileForm
+        profile={{
+          display_name: profile?.display_name ?? null,
+          date_of_birth: profile?.date_of_birth ?? null,
+          retirement_age: profile?.retirement_age ?? null,
+          relationship_status: profile?.relationship_status ?? null,
+        }}
+        redirectTo="/dashboard"
+        submitLabel="Continue"
+        client:load
+      />
+
+      <div class="mt-4 text-center">
+        <form method="POST" action="/api/profile/skip">
+          <button type="submit" class="text-sm text-blue-100/50 transition-colors hover:text-blue-100/80">
+            Skip for now
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</Layout>
