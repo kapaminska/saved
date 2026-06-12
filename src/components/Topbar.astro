@@ -1,5 +1,6 @@
 ---
-const { user } = Astro.locals;
+const { user, profile } = Astro.locals;
+const displayName = profile?.display_name;
 ---
 
 <div
@@ -8,10 +9,13 @@ const { user } = Astro.locals;
   {
     user ? (
       <>
-        <span class="text-blue-100/70">{user.email}</span>
+        <span class="text-blue-100/70">{displayName ?? user.email}</span>
         <div class="flex items-center gap-3">
           <a href="/dashboard" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
             Dashboard
+          </a>
+          <a href="/profile" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+            Profile
           </a>
           <form method="POST" action="/api/auth/signout">
             <button type="submit" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">

@@ -356,10 +356,10 @@ Build a dedicated `/profile` page for editing profile data, and update the Topba
 
 #### Automated
 
-- [x] 2.1 Build passes after onboarding changes
-- [x] 2.2 Lint passes
-- [x] 2.3 No TypeScript errors
-- [x] 2.4 /onboarding route is protected
+- [x] 2.1 Build passes after onboarding changes — e19c9ea
+- [x] 2.2 Lint passes — e19c9ea
+- [x] 2.3 No TypeScript errors — e19c9ea
+- [x] 2.4 /onboarding route is protected — e19c9ea
 
 #### Manual
 
@@ -373,10 +373,10 @@ Build a dedicated `/profile` page for editing profile data, and update the Topba
 
 #### Automated
 
-- [ ] 3.1 Build passes after profile changes
-- [ ] 3.2 Lint passes
-- [ ] 3.3 No TypeScript errors
-- [ ] 3.4 /profile route is protected
+- [x] 3.1 Build passes after profile changes
+- [x] 3.2 Lint passes
+- [x] 3.3 No TypeScript errors
+- [x] 3.4 /profile route is protected
 
 #### Manual
 

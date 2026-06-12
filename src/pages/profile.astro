@@ -1,0 +1,34 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Topbar from "@/components/Topbar.astro";
+import ProfileForm from "@/components/profile/ProfileForm";
+
+const { profile } = Astro.locals;
+---
+
+<Layout title="Your profile">
+  <div class="bg-cosmic min-h-screen">
+    <div class="relative z-10 p-4 sm:p-8">
+      <Topbar />
+      <div class="mx-auto mt-8 max-w-md">
+        <div class="rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+          <h1
+            class="mb-6 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent"
+          >
+            Your profile
+          </h1>
+          <ProfileForm
+            profile={{
+              display_name: profile?.display_name ?? null,
+              date_of_birth: profile?.date_of_birth ?? null,
+              retirement_age: profile?.retirement_age ?? null,
+              relationship_status: profile?.relationship_status ?? null,
+            }}
+            submitLabel="Save changes"
+            client:load
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
