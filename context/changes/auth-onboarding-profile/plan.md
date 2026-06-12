@@ -345,12 +345,12 @@ Build a dedicated `/profile` page for editing profile data, and update the Topba
 
 #### Manual
 
-- [ ] 1.6 Signin page shows email input (no password)
-- [ ] 1.7 OTP send + verify flow works end-to-end
-- [ ] 1.8 Wrong OTP shows inline error
-- [ ] 1.9 Resend button with cooldown works
-- [ ] 1.10 New email auto-creates account
-- [ ] 1.11 Sign out returns to landing page
+- [x] 1.6 Signin page shows email input (no password)
+- [x] 1.7 OTP send + verify flow works end-to-end
+- [x] 1.8 Wrong OTP shows inline error
+- [x] 1.9 Resend button with cooldown works
+- [x] 1.10 New email auto-creates account
+- [x] 1.11 Sign out returns to landing page
 
 ### Phase 2: Onboarding flow
 
@@ -363,25 +363,25 @@ Build a dedicated `/profile` page for editing profile data, and update the Topba
 
 #### Manual
 
-- [ ] 2.5 New user redirected to onboarding after OTP
-- [ ] 2.6 Onboarding form saves profile data
-- [ ] 2.7 Returning user skips onboarding
-- [ ] 2.8 Skip button sets display_name and redirects
-- [ ] 2.9 No redirect loops
+- [x] 2.5 New user redirected to onboarding after OTP
+- [x] 2.6 Onboarding form saves profile data
+- [x] 2.7 Returning user skips onboarding
+- [x] 2.8 Skip button sets display_name and redirects
+- [x] 2.9 No redirect loops
 
 ### Phase 3: Profile page & navigation
 
 #### Automated
 
-- [x] 3.1 Build passes after profile changes
-- [x] 3.2 Lint passes
-- [x] 3.3 No TypeScript errors
-- [x] 3.4 /profile route is protected
+- [x] 3.1 Build passes after profile changes — 6beb74a
+- [x] 3.2 Lint passes — 6beb74a
+- [x] 3.3 No TypeScript errors — 6beb74a
+- [x] 3.4 /profile route is protected — 6beb74a
 
 #### Manual
 
-- [ ] 3.5 Profile page shows pre-populated form
-- [ ] 3.6 Profile edits persist on reload
-- [ ] 3.7 Topbar shows display name and profile link
-- [ ] 3.8 Dashboard shows welcome with display name
-- [ ] 3.9 Sign out works from all authenticated pages
+- [x] 3.5 Profile page shows pre-populated form
+- [x] 3.6 Profile edits persist on reload
+- [x] 3.7 Topbar shows display name and profile link
+- [x] 3.8 Dashboard shows welcome with display name
+- [x] 3.9 Sign out works from all authenticated pages
