@@ -136,8 +136,8 @@ export default function MagicLinkForm({ serverError }: Props) {
 
         <ServerError message={error} />
 
-        <SubmitButton pendingText="Sending code..." icon={<ArrowRight className="size-4" />}>
-          {loading ? "Sending code..." : "Continue"}
+        <SubmitButton pendingText="Sending code..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+          Continue
         </SubmitButton>
       </form>
     );
@@ -162,12 +162,13 @@ export default function MagicLinkForm({ serverError }: Props) {
         placeholder="000000"
         error={tokenError}
         icon={<KeyRound className="size-4" />}
+        inputProps={{ maxLength: 6, inputMode: "numeric", pattern: "[0-9]*", autoComplete: "one-time-code" }}
       />
 
       <ServerError message={error} />
 
-      <SubmitButton pendingText="Verifying..." icon={<ArrowRight className="size-4" />}>
-        {loading ? "Verifying..." : "Sign in"}
+      <SubmitButton pendingText="Verifying..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+        Sign in
       </SubmitButton>
 
       <div className="text-center">

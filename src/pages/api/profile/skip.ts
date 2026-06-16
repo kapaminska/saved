@@ -14,7 +14,14 @@ export const POST: APIRoute = async (context) => {
 
   const emailPrefix = user.email?.split("@")[0] ?? "User";
 
-  await supabase.from("profiles").update({ display_name: emailPrefix }).eq("id", user.id);
+  const { error } = await supabase.from("profiles").update({ display_name: emailPrefix }).eq("id", user.id);
+
+  if (error) {
+    return new Response(JSON.stringify({ success: false, error: "Failed to skip onboarding" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   return context.redirect("/dashboard");
 };

@@ -5,8 +5,8 @@ export const POST: APIRoute = async (context) => {
   const form = await context.request.formData();
   const email = (form.get("email") as string | null)?.trim();
 
-  if (!email) {
-    return new Response(JSON.stringify({ success: false, error: "Email is required" }), {
+  if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return new Response(JSON.stringify({ success: false, error: "A valid email is required" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });

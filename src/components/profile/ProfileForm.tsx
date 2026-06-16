@@ -174,8 +174,8 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
         </p>
       )}
 
-      <SubmitButton pendingText="Saving..." icon={<ArrowRight className="size-4" />}>
-        {loading ? "Saving..." : submitLabel}
+      <SubmitButton pendingText="Saving..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+        {submitLabel}
       </SubmitButton>
     </form>
   );

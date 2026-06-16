@@ -37,6 +37,17 @@ export const POST: APIRoute = async (context) => {
     });
   }
 
+  if (dateOfBirth) {
+    const dateMatch = /^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth);
+    const parsed = dateMatch ? new Date(dateOfBirth) : null;
+    if (!dateMatch || !parsed || isNaN(parsed.getTime()) || parsed > new Date() || parsed.getFullYear() < 1900) {
+      return new Response(JSON.stringify({ success: false, error: "Invalid date of birth" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  }
+
   let retirementAge: number | null = null;
   if (retirementAgeRaw) {
     retirementAge = parseInt(retirementAgeRaw, 10);
@@ -66,7 +77,7 @@ export const POST: APIRoute = async (context) => {
     .eq("id", user.id);
 
   if (error) {
-    return new Response(JSON.stringify({ success: false, error: error.message }), {
+    return new Response(JSON.stringify({ success: false, error: "Failed to save profile" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
