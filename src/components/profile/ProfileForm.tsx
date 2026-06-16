@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { User, Calendar, Clock, Heart, ArrowRight, ChevronDown } from "lucide-react";
 import { FormField } from "@/components/auth/FormField";
 import { SubmitButton } from "@/components/auth/SubmitButton";
@@ -34,6 +34,13 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
   const [nameError, setNameError] = useState<string | undefined>();
   const [ageError, setAgeError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
+  const successTimer = useRef<ReturnType<typeof setTimeout>>(null);
+
+  useEffect(() => {
+    return () => {
+      if (successTimer.current) clearTimeout(successTimer.current);
+    };
+  }, []);
 
   function validate(): boolean {
     let valid = true;
@@ -88,7 +95,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
         return;
       }
       setSuccess(true);
-      setTimeout(() => {
+      successTimer.current = setTimeout(() => {
         setSuccess(false);
       }, 3000);
     } catch {

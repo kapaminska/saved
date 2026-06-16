@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase";
 
 const PROTECTED_ROUTES = ["/dashboard", "/onboarding", "/profile"];
 
-const ONBOARDING_EXEMPT = ["/onboarding", "/api/profile", "/api/auth/signout"];
+const ONBOARDING_EXEMPT = new Set(["/onboarding", "/api/profile", "/api/profile/skip", "/api/auth/signout"]);
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const supabase = createClient(context.request.headers, context.cookies);
@@ -31,7 +31,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
       return context.redirect("/auth/signin");
     }
 
-    if (!context.locals.profile?.display_name && !ONBOARDING_EXEMPT.some((p) => pathname.startsWith(p))) {
+    if (!context.locals.profile?.display_name && !ONBOARDING_EXEMPT.has(pathname)) {
       return context.redirect("/onboarding");
     }
   }

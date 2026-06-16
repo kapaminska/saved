@@ -4,8 +4,8 @@
 - **Plan**: context/changes/auth-onboarding-profile/plan.md
 - **Scope**: Full plan (Phase 1–3)
 - **Date**: 2026-06-12
-- **Verdict**: NEEDS ATTENTION
-- **Findings**: 0 critical, 6 warnings, 4 observations
+- **Verdict**: ALL RESOLVED
+- **Findings**: 0 critical, 6 warnings, 4 observations (all fixed)
 
 ## Verdicts
 
@@ -87,7 +87,7 @@
 - **Location**: src/pages/api/profile/skip.ts:4
 - **Detail**: The sibling endpoint profile.ts returns a 401 JSON response for unauthenticated requests. skip.ts returns a redirect to /auth/signin instead. Inconsistent error handling pattern across API endpoints in the same feature.
 - **Fix**: Return a 401 JSON response consistent with profile.ts.
-- **Decision**: PENDING
+- **Decision**: FIXED — Returns 401 JSON response consistent with profile.ts.
 
 ### F7 — No server-side rate limiting on OTP send
 
@@ -97,7 +97,7 @@
 - **Location**: src/pages/api/auth/send-otp.ts
 - **Detail**: The 60-second client-side cooldown is bypassable. A bot can call the endpoint in a loop for any target email. Supabase has its own project-level rate limits (configured in config.toml), but relying solely on that is an implicit dependency worth documenting.
 - **Fix**: Document Supabase rate-limit dependency or add edge rate-limiting (Cloudflare rate-limiting rule or KV-backed counter).
-- **Decision**: PENDING
+- **Decision**: FIXED — Added inline comment documenting Supabase rate-limit dependency.
 
 ### F8 — Middleware onboarding exemption is prefix-based
 
@@ -107,7 +107,7 @@
 - **Location**: src/middleware.ts:6
 - **Detail**: ONBOARDING_EXEMPT uses startsWith("/api/profile") which exempts all future sub-routes under /api/profile/ from the onboarding gate, even if they should require a completed profile.
 - **Fix**: Switch to exact-match list or document the design decision.
-- **Decision**: PENDING
+- **Decision**: FIXED — Switched to Set with exact-match paths, added /api/profile/skip explicitly.
 
 ### F9 — setTimeout in ProfileForm can fire after unmount
 
@@ -117,7 +117,7 @@
 - **Location**: src/components/profile/ProfileForm.tsx:91
 - **Detail**: The 3-second success auto-dismiss uses a bare setTimeout in the submit handler. If the user navigates away before it fires, it calls setSuccess on an unmounted component. Not an error in React 18+ but a minor resource leak.
 - **Fix**: Store the timeout ID and clear it on unmount via useEffect cleanup.
-- **Decision**: PENDING
+- **Decision**: FIXED — Added useRef for timeout ID + useEffect cleanup on unmount.
 
 ### F10 — verify-otp silently swallows profile query error
 
@@ -127,4 +127,4 @@
 - **Location**: src/pages/api/auth/verify-otp.ts:41
 - **Detail**: After successful OTP verification, the profile query for redirect determination discards any error. A DB error (timeout, RLS change) looks identical to "no profile" — user goes to onboarding either way. Correct fallback behavior, but masks operational issues.
 - **Fix**: Log the error via console.error so it surfaces in Cloudflare Workers logs.
-- **Decision**: PENDING
+- **Decision**: FIXED — Added console.error for profile query failure after OTP verification.

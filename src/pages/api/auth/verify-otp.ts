@@ -38,7 +38,15 @@ export const POST: APIRoute = async (context) => {
     });
   }
 
-  const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", user.id).single();
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("display_name")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError) {
+    console.error("Profile query failed after OTP verification:", profileError.message);
+  }
 
   const redirect = profile?.display_name ? "/dashboard" : "/onboarding";
 

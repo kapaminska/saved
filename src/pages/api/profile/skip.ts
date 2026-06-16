@@ -4,12 +4,18 @@ import { createClient } from "@/lib/supabase";
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return context.redirect("/auth/signin");
+    return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const supabase = createClient(context.request.headers, context.cookies);
   if (!supabase) {
-    return context.redirect("/auth/signin");
+    return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const emailPrefix = user.email?.split("@")[0] ?? "User";
