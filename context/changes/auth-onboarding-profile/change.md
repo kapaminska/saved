@@ -1,9 +1,9 @@
 ---
 change_id: auth-onboarding-profile
 title: Auth via magic link, onboarding flow and profile editing
-status: impl_reviewed
+status: review_resolved
 created: 2026-06-11
-updated: 2026-06-12
+updated: 2026-06-16
 archived_at: null
 ---
 
