@@ -1,7 +1,7 @@
 ---
 change_id: ai-checkin-safety
 title: AI check-in + safety
-status: implementing
+status: implemented
 created: 2026-06-23
 updated: 2026-06-23
 archived_at: null
