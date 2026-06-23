@@ -464,15 +464,15 @@ Refactor `CheckInModal` into a tabbed modal (AI default, Manual fallback). Add A
 
 #### Automated
 
-- [x] 2.1 Build passes: `npm run build`
+- [x] 2.1 Build passes: `npm run build` — 6f0db3e
 - [ ] 2.2 Lint passes: `npm run lint`
-- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — 6f0db3e
 
 #### Manual
 
-- [x] 2.4 Fuzzy matcher spot-check with seed goal names
-- [x] 2.5 Zod schema rejects invalid AI response shapes
-- [x] 2.6 NL validation rejects empty and 501-char input
+- [x] 2.4 Fuzzy matcher spot-check with seed goal names — 6f0db3e
+- [x] 2.5 Zod schema rejects invalid AI response shapes — 6f0db3e
+- [x] 2.6 NL validation rejects empty and 501-char input — 6f0db3e
 
 ### Phase 3: Parse API Route
 
