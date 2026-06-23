@@ -5,3 +5,5 @@ declare namespace App {
     supabase: import("@/lib/supabase").SavedSupabaseClient | null;
   }
 }
+
+// Workers AI and other bindings: import { env } from "cloudflare:workers" in API routes (env.AI).
