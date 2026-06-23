@@ -416,14 +416,14 @@ Dashboard check-in modal, projection/status on goal cards, new goal detail page 
 
 #### Automated
 
-- [ ] 2.1 Build passes: `npm run build`
-- [ ] 2.2 Lint passes: `npm run lint`
-- [ ] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 2.1 Build passes: `npm run build`
+- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
 
 #### Manual
 
-- [ ] 2.4 Spot-check metrics with seed data (N label, status classification)
-- [ ] 2.5 Zero average and explicit zero month behave per PRD
+- [x] 2.4 Spot-check metrics with seed data (N label, status classification)
+- [x] 2.5 Zero average and explicit zero month behave per PRD
 
 ### Phase 3: Payment API Routes
 
