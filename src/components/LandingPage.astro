@@ -1,0 +1,105 @@
+---
+import MarketingHeader from "@/components/MarketingHeader.astro";
+---
+
+<div class="bg-warm relative min-h-screen w-full overflow-hidden">
+  <div
+    class="pointer-events-none absolute top-1/4 -left-24 h-[350px] w-[350px] rounded-full bg-amber-200/40 blur-[120px]"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute top-2/3 -right-16 h-[250px] w-[250px] rounded-full bg-orange-200/30 blur-[100px]"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute top-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-yellow-100/50 blur-[140px]"
+  >
+  </div>
+
+  <div class="relative z-10 p-4 sm:p-8">
+    <MarketingHeader />
+
+    <div class="mx-auto flex max-w-4xl flex-col items-center justify-center px-4 py-16 text-center sm:py-24 lg:py-32">
+      <h1 class="mb-6 text-4xl leading-tight font-bold text-amber-950 sm:text-5xl lg:text-6xl">
+        Odkładaj na cele. Świętuj każdy z nich.
+      </h1>
+      <p class="mb-10 max-w-2xl text-lg text-amber-900/70 sm:text-xl">
+        Zdefiniuj cele oszczędnościowe, raz w miesiącu zrób check-in jednym zdaniem i śledź postęp z realistyczną
+        projekcją.
+      </p>
+      <a
+        href="/auth/signin"
+        class="inline-flex items-center justify-center rounded-lg bg-amber-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-amber-500"
+      >
+        Zaloguj się
+      </a>
+    </div>
+
+    <div class="mx-auto grid max-w-4xl grid-cols-1 gap-6 px-4 pb-24 sm:grid-cols-3">
+      <div class="rounded-xl border border-amber-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="mb-4 text-amber-600"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="6"></circle>
+          <circle cx="12" cy="12" r="2"></circle>
+        </svg>
+        <h3 class="mb-2 text-lg font-semibold text-amber-950">Cele oszczędnościowe</h3>
+        <p class="text-sm leading-relaxed text-amber-900/65">
+          Twórz wiele celów z kwotami docelowymi i opcjonalnymi terminami.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-amber-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="mb-4 text-amber-600"
+        >
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <h3 class="mb-2 text-lg font-semibold text-amber-950">Miesięczny check-in</h3>
+        <p class="text-sm leading-relaxed text-amber-900/65">
+          Raz w miesiącu wpisz jedno zdanie po polsku albo uzupełnij wpłaty ręcznie.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-amber-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="mb-4 text-amber-600"
+        >
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+        <h3 class="mb-2 text-lg font-semibold text-amber-950">Projekcja postępu</h3>
+        <p class="text-sm leading-relaxed text-amber-900/65">
+          Zobacz wymagane tempo, prognozowaną datę ukończenia i status: na dobrej drodze, z tyłu lub z wyprzedzeniem.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

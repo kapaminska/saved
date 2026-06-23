@@ -115,6 +115,11 @@
   color-scheme: dark;
 }
 
+@utility bg-warm {
+  background-image: linear-gradient(to bottom, #fef9f0, #fdf4e7, #fcefd9);
+  color-scheme: light;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
