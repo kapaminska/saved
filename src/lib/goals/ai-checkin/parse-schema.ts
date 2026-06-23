@@ -4,7 +4,7 @@ export const AiParseResponseSchema = z.object({
   payments: z.array(
     z.object({
       goal_name: z.string().min(1),
-      amount: z.number().gt(0),
+      amount: z.coerce.number().gt(0),
     }),
   ),
 });

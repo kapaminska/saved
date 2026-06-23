@@ -1,7 +1,7 @@
 import { matchGoalName } from "./goal-name-match";
 import { parseAiResponse } from "./parse-schema";
 
-const PARSE_MODEL = "@cf/meta/llama-3.1-8b-instruct";
+const PARSE_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8";
 
 export interface ParsedProposal {
   goalId: string;
@@ -60,8 +60,19 @@ function extractResponseText(result: unknown): string | null {
 }
 
 function extractJsonPayload(text: string): string {
-  const fencedMatch = /^```(?:json)?\s*([\s\S]*?)\s*```$/i.exec(text);
-  return fencedMatch ? fencedMatch[1].trim() : text;
+  const trimmed = text.trim();
+  const fencedMatch = /^```(?:json)?\s*([\s\S]*?)\s*```$/i.exec(trimmed);
+  if (fencedMatch) {
+    return fencedMatch[1].trim();
+  }
+
+  const start = trimmed.indexOf("{");
+  const end = trimmed.lastIndexOf("}");
+  if (start !== -1 && end > start) {
+    return trimmed.slice(start, end + 1);
+  }
+
+  return trimmed;
 }
 
 export async function parseCheckInSentence(
@@ -75,6 +86,9 @@ export async function parseCheckInSentence(
         { role: "system", content: buildSystemPrompt(activeGoals.map((goal) => goal.name)) },
         { role: "user", content: text },
       ],
+      response_format: { type: "json_object" },
+      temperature: 0.2,
+      max_tokens: 512,
     });
 
     const responseText = extractResponseText(result);

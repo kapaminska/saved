@@ -493,14 +493,14 @@ Refactor `CheckInModal` into a tabbed modal (AI default, Manual fallback). Add A
 
 #### Automated
 
-- [ ] 4.1 Build passes: `npm run build`
-- [ ] 4.2 Lint passes: `npm run lint`
-- [ ] 4.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 4.1 Build passes: `npm run build`
+- [x] 4.2 Lint passes: `npm run lint`
+- [x] 4.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
 
 #### Manual
 
-- [ ] 4.4 End-to-end AI check-in with review and dashboard update
-- [ ] 4.5 Review edit (amount, reassign, remove) works correctly
-- [ ] 4.6 Unrecognized goal flagged; rate limit and AI error fallback to Manual tab
-- [ ] 4.7 Manual tab behavior unchanged from S-03
-- [ ] 4.8 Input validation (empty, 500 char) and loading states verified
+- [x] 4.4 End-to-end AI check-in with review and dashboard update
+- [x] 4.5 Review edit (amount, reassign, remove) works correctly
+- [x] 4.6 Unrecognized goal flagged; rate limit and AI error fallback to Manual tab
+- [x] 4.7 Manual tab behavior unchanged from S-03
+- [x] 4.8 Input validation (empty, 500 char) and loading states verified
