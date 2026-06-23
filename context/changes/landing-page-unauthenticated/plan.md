@@ -245,23 +245,23 @@ No data migration. `Welcome.astro` deletion is a straight component swap. If any
 
 #### Automated
 
-- [x] 1.1 Linting passes: `npm run lint`
-- [x] 1.2 Production build passes: `npm run build`
+- [x] 1.1 Linting passes: `npm run lint` — 1a84295
+- [x] 1.2 Production build passes: `npm run build` — 1a84295
 
 #### Manual
 
-- [x] 1.3 Signed-out user visiting `/` loads without redirect
-- [x] 1.4 Authenticated user with `display_name` visiting `/` redirects to `/dashboard`
-- [x] 1.5 Authenticated user without `display_name` visiting `/` redirects to `/onboarding`
-- [x] 1.6 Existing protected-route and `/auth/signin` redirects unchanged
+- [x] 1.3 Signed-out user visiting `/` loads without redirect — 1a84295
+- [x] 1.4 Authenticated user with `display_name` visiting `/` redirects to `/dashboard` — 1a84295
+- [x] 1.5 Authenticated user without `display_name` visiting `/` redirects to `/onboarding` — 1a84295
+- [x] 1.6 Existing protected-route and `/auth/signin` redirects unchanged — 1a84295
 
 ### Phase 2: Product Landing Page (Content + Warm Theme)
 
 #### Automated
 
-- [x] 2.1 Linting passes: `npm run lint`
-- [x] 2.2 Production build passes: `npm run build`
-- [x] 2.3 No remaining imports of deleted `Welcome.astro`
+- [x] 2.1 Linting passes: `npm run lint` — 2964f52
+- [x] 2.2 Production build passes: `npm run build` — 2964f52
+- [x] 2.3 No remaining imports of deleted `Welcome.astro` — 2964f52
 
 #### Manual
 
