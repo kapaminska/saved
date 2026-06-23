@@ -5,6 +5,8 @@ import CelebrationModal from "@/components/goals/CelebrationModal";
 import CheckInModal from "@/components/goals/CheckInModal";
 import GoalQuickPayment from "@/components/goals/GoalQuickPayment";
 import GoalStatusBadge from "@/components/goals/GoalStatusBadge";
+import NetWorthPanel from "@/components/net-worth/NetWorthPanel";
+import { computeNetWorth, getNetWorthHeadline, getStalestAsset, isAssetStale } from "@/lib/net-worth/compute";
 import { getSupabase } from "@/lib/supabase";
 import { computeGoalMetrics, formatMonthsOfData, type GoalMetrics } from "@/lib/goals/projection";
 
@@ -30,6 +32,27 @@ let activeGoals: ActiveGoal[] = [];
 let paymentsByGoal: Record<string, { amount: number; payment_month: string }[]> = {};
 let metricsByGoal: Record<string, GoalMetrics> = {};
 let celebratedGoalName: string | null = null;
+
+interface NetWorthAsset {
+  id: string;
+  name: string;
+  amount: number;
+  category: string;
+  last_updated_at: string;
+}
+
+interface NetWorthLiability {
+  id: string;
+  name: string;
+  amount: number;
+}
+
+let netWorthAssets: NetWorthAsset[] = [];
+let netWorthLiabilities: NetWorthLiability[] = [];
+let netWorth = 0;
+let netWorthHeadline = getNetWorthHeadline(profile?.relationship_status ?? null);
+let stalestAsset: { id: string; name: string; lastUpdatedAt: string } | null = null;
+let hasNetWorthItems = false;
 
 if (supabase && user) {
   const { data } = await supabase
@@ -72,6 +95,33 @@ if (supabase && user) {
       ).data;
     celebratedGoalName = celebrated?.name ?? null;
   }
+
+  const { data: assetsData } = await supabase
+    .from("assets")
+    .select("id, name, amount, category, last_updated_at")
+    .eq("user_id", user.id)
+    .order("amount", { ascending: false });
+
+  const { data: liabilitiesData } = await supabase
+    .from("liabilities")
+    .select("id, name, amount")
+    .eq("user_id", user.id)
+    .order("amount", { ascending: false });
+
+  netWorthAssets = assetsData ?? [];
+  netWorthLiabilities = liabilitiesData ?? [];
+  netWorth = computeNetWorth(netWorthAssets, netWorthLiabilities);
+  netWorthHeadline = getNetWorthHeadline(profile?.relationship_status ?? null);
+  hasNetWorthItems = netWorthAssets.length + netWorthLiabilities.length > 0;
+
+  const stalest = getStalestAsset(netWorthAssets);
+  if (stalest && isAssetStale(stalest.last_updated_at)) {
+    stalestAsset = {
+      id: stalest.id,
+      name: stalest.name,
+      lastUpdatedAt: stalest.last_updated_at,
+    };
+  }
 }
 
 function formatPln(amount: number): string {
@@ -112,6 +162,22 @@ const checkInGoals = activeGoals.map((g) => ({ id: g.id, name: g.name }));
             Welcome, <span class="font-semibold text-white">{greeting}</span>
           </p>
         </div>
+
+        <NetWorthPanel
+          headline={netWorthHeadline}
+          netWorth={netWorth}
+          assets={netWorthAssets.map((asset) => ({
+            id: asset.id,
+            name: asset.name,
+            amount: asset.amount,
+            category: asset.category,
+            lastUpdatedAt: asset.last_updated_at,
+          }))}
+          liabilities={netWorthLiabilities}
+          stalestAsset={stalestAsset}
+          hasAnyItems={hasNetWorthItems}
+          client:load
+        />
 
         <div class="mb-4 flex items-center justify-between gap-3">
           <h2 class="text-lg font-semibold text-white">Active goals</h2>

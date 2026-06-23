@@ -423,25 +423,25 @@ Insert `<NetWorthPanel ... client:load />` between greeting block and Active goa
 
 #### Automated
 
-- [x] 2.1 Build passes: `npm run build`
-- [x] 2.2 Lint passes: `npm run lint`
-- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 2.1 Build passes: `npm run build` — 30eadd0
+- [x] 2.2 Lint passes: `npm run lint` — 30eadd0
+- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — 30eadd0
 
 #### Manual
 
-- [x] 2.4 Asset and liability CRUD endpoints behave per contract
-- [x] 2.5 Confirm-current updates last_updated_at only; validation and RLS verified
+- [x] 2.4 Asset and liability CRUD endpoints behave per contract — 30eadd0
+- [x] 2.5 Confirm-current updates last_updated_at only; validation and RLS verified — 30eadd0
 
 ### Phase 3: Dashboard Panel UI
 
 #### Automated
 
-- [ ] 3.1 Build passes: `npm run build`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 3.1 Build passes: `npm run build`
+- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
 
 #### Manual
 
-- [ ] 3.4 Teaser, full panel expansion, and relationship headline verified
-- [ ] 3.5 CRUD modals, delete confirm, net worth math, and negative display verified
-- [ ] 3.6 Staleness banner, dismiss persistence, and confirm-current flows verified end-to-end
+- [x] 3.4 Teaser, full panel expansion, and relationship headline verified
+- [x] 3.5 CRUD modals, delete confirm, net worth math, and negative display verified
+- [x] 3.6 Staleness banner, dismiss persistence, and confirm-current flows verified end-to-end
