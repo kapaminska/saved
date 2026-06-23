@@ -416,29 +416,29 @@ Dashboard check-in modal, projection/status on goal cards, new goal detail page 
 
 #### Automated
 
-- [x] 2.1 Build passes: `npm run build`
-- [x] 2.2 Lint passes: `npm run lint`
-- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 2.1 Build passes: `npm run build` — 7090457
+- [x] 2.2 Lint passes: `npm run lint` — 7090457
+- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — 7090457
 
 #### Manual
 
-- [x] 2.4 Spot-check metrics with seed data (N label, status classification)
-- [x] 2.5 Zero average and explicit zero month behave per PRD
+- [x] 2.4 Spot-check metrics with seed data (N label, status classification) — 7090457
+- [x] 2.5 Zero average and explicit zero month behave per PRD — 7090457
 
 ### Phase 3: Payment API Routes
 
 #### Automated
 
-- [ ] 3.1 Build passes: `npm run build`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 3.1 Build passes: `npm run build`
+- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
 
 #### Manual
 
-- [ ] 3.4 Batch check-in upsert, skip, and zero paths work
-- [ ] 3.5 Future month and duplicate-month edit rejected
-- [ ] 3.6 Completion detected and returned in API response
-- [ ] 3.7 RLS isolation verified for payments
+- [x] 3.4 Batch check-in upsert, skip, and zero paths work
+- [x] 3.5 Future month and duplicate-month edit rejected
+- [x] 3.6 Completion detected and returned in API response
+- [x] 3.7 RLS isolation verified for payments
 
 ### Phase 4: Check-in Modal, Dashboard Metrics & Goal Detail
 
