@@ -478,16 +478,16 @@ Refactor `CheckInModal` into a tabbed modal (AI default, Manual fallback). Add A
 
 #### Automated
 
-- [x] 3.1 Build passes: `npm run build`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 3.1 Build passes: `npm run build` — b29b63a
+- [x] 3.2 Lint passes: `npm run lint` — b29b63a
+- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — b29b63a
 
 #### Manual
 
-- [ ] 3.4 Authenticated parse with PL sentence returns proposals
-- [ ] 3.5 Unauthenticated request returns 401
-- [ ] 3.6 11th request within 1 hour returns 429 RATE_LIMITED
-- [ ] 3.7 AI unavailable returns 503 AI_UNAVAILABLE
+- [x] 3.4 Authenticated parse with PL sentence returns proposals — b29b63a
+- [x] 3.5 Unauthenticated request returns 401 — b29b63a
+- [x] 3.6 11th request within 1 hour returns 429 RATE_LIMITED — b29b63a
+- [x] 3.7 AI unavailable returns 503 AI_UNAVAILABLE — b29b63a
 
 ### Phase 4: Tabbed Check-in Modal UI
 
