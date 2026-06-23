@@ -444,14 +444,14 @@ Dashboard check-in modal, projection/status on goal cards, new goal detail page 
 
 #### Automated
 
-- [x] 4.1 Build passes: `npm run build`
-- [x] 4.2 Lint passes: `npm run lint`
-- [x] 4.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 4.1 Build passes: `npm run build` — 188c0f8
+- [x] 4.2 Lint passes: `npm run lint` — 188c0f8
+- [x] 4.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — 188c0f8
 
 #### Manual
 
-- [x] 4.4 Full dashboard check-in flow end-to-end
-- [x] 4.5 Dashboard cards show pace, projection, status badges
-- [x] 4.6 Goal detail history edit/delete works
-- [x] 4.7 Payment-triggered celebration fires
-- [x] 4.8 Active-only goals in check-in modal
+- [x] 4.4 Full dashboard check-in flow end-to-end — 188c0f8
+- [x] 4.5 Dashboard cards show pace, projection, status badges — 188c0f8
+- [x] 4.6 Goal detail history edit/delete works — 188c0f8
+- [x] 4.7 Payment-triggered celebration fires — 188c0f8
+- [x] 4.8 Active-only goals in check-in modal — 188c0f8
