@@ -95,7 +95,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body,
       });
-      const json = (await res.json()) as { success: boolean; error?: string };
+      const json: { success: boolean; error?: string } = await res.json();
       if (!json.success) {
         setError(json.error ?? "Failed to save profile");
         return;

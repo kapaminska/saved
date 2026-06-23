@@ -43,11 +43,11 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body,
       });
-      const json = (await res.json()) as {
+      const json: {
         success: boolean;
         error?: string;
         completedGoals?: { id: string; name: string }[];
-      };
+      } = await res.json();
 
       if (!json.success) {
         setError(json.error ?? "Failed to save payment");

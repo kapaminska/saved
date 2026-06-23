@@ -23,7 +23,7 @@ export default function AbandonGoalButton({ goalId }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
-      const json = (await res.json()) as { success: boolean; error?: string };
+      const json: { success: boolean; error?: string } = await res.json();
       if (!json.success) {
         setError(json.error ?? "Failed to abandon goal");
         return;

@@ -30,6 +30,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect("/dashboard");
   }
 
+  if (pathname === "/" && context.locals.user) {
+    if (context.locals.profile?.display_name) {
+      return context.redirect("/dashboard");
+    }
+    return context.redirect("/onboarding");
+  }
+
   if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
     if (!context.locals.user) {
       return context.redirect("/auth/signin");

@@ -121,12 +121,12 @@ export default function GoalForm({
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body,
       });
-      const json = (await res.json()) as {
+      const json: {
         success: boolean;
         error?: string;
         goal?: { id: string };
         completed?: boolean;
-      };
+      } = await res.json();
 
       if (!json.success) {
         setError(json.error ?? "Failed to save goal");

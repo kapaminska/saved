@@ -61,7 +61,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body,
       });
-      const json = (await res.json()) as { success: boolean; error?: string; completed?: boolean };
+      const json: { success: boolean; error?: string; completed?: boolean } = await res.json();
 
       if (!json.success) {
         setError(json.error ?? "Failed to update payment");
@@ -92,7 +92,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
-      const json = (await res.json()) as { success: boolean; error?: string };
+      const json: { success: boolean; error?: string } = await res.json();
 
       if (!json.success) {
         setError(json.error ?? "Failed to delete payment");
