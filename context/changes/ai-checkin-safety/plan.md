@@ -450,15 +450,15 @@ Refactor `CheckInModal` into a tabbed modal (AI default, Manual fallback). Add A
 
 #### Automated
 
-- [x] 1.1 Migration applies cleanly: `npx supabase db reset`
-- [x] 1.2 Build passes: `npm run build`
+- [x] 1.1 Migration applies cleanly: `npx supabase db reset` — d37a3bc
+- [x] 1.2 Build passes: `npm run build` — d37a3bc
 - [ ] 1.3 Lint passes: `npm run lint`
-- [x] 1.4 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 1.4 Type checking passes: `npx astro sync && npx tsc --noEmit` — d37a3bc
 
 #### Manual
 
-- [x] 1.5 Studio shows `ai_checkin_requests` table with RLS enabled
-- [x] 1.6 `wrangler types` generates AI binding types without error
+- [x] 1.5 Studio shows `ai_checkin_requests` table with RLS enabled — d37a3bc
+- [x] 1.6 `wrangler types` generates AI binding types without error — d37a3bc
 
 ### Phase 2: Parse Library
 
