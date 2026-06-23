@@ -408,29 +408,29 @@ Insert `<NetWorthPanel ... client:load />` between greeting block and Active goa
 
 #### Automated
 
-- [x] 1.1 Migration applies cleanly: `npx supabase db reset`
-- [x] 1.2 RLS scripts pass: `rls-assets.sql` and `rls-liabilities.sql`
-- [x] 1.3 Build passes: `npm run build`
-- [x] 1.4 Lint passes: `npm run lint`
-- [x] 1.5 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 1.1 Migration applies cleanly: `npx supabase db reset` — 95934a4
+- [x] 1.2 RLS scripts pass: `rls-assets.sql` and `rls-liabilities.sql` — 95934a4
+- [x] 1.3 Build passes: `npm run build` — 95934a4
+- [x] 1.4 Lint passes: `npm run lint` — 95934a4
+- [x] 1.5 Type checking passes: `npx astro sync && npx tsc --noEmit` — 95934a4
 
 #### Manual
 
-- [x] 1.6 Studio shows tables, constraints, and seed data including stale asset
-- [x] 1.7 RLS isolation verified for assets and liabilities
+- [x] 1.6 Studio shows tables, constraints, and seed data including stale asset — 95934a4
+- [x] 1.7 RLS isolation verified for assets and liabilities — 95934a4
 
 ### Phase 2: Net Worth API
 
 #### Automated
 
-- [ ] 2.1 Build passes: `npm run build`
-- [ ] 2.2 Lint passes: `npm run lint`
-- [ ] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 2.1 Build passes: `npm run build`
+- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
 
 #### Manual
 
-- [ ] 2.4 Asset and liability CRUD endpoints behave per contract
-- [ ] 2.5 Confirm-current updates last_updated_at only; validation and RLS verified
+- [x] 2.4 Asset and liability CRUD endpoints behave per contract
+- [x] 2.5 Confirm-current updates last_updated_at only; validation and RLS verified
 
 ### Phase 3: Dashboard Panel UI
 
