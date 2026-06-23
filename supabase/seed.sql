@@ -58,4 +58,42 @@ set
   relationship_status = 'single'
 where id = '00000000-0000-0000-0000-000000000001';
 
+-- Sample savings goals for local dev (active, completed, abandoned)
+insert into public.savings_goals (
+  user_id,
+  name,
+  target_amount,
+  saved_amount,
+  deadline,
+  status,
+  completed_at
+) values
+  (
+    '00000000-0000-0000-0000-000000000001',
+    'Fundusz awaryjny',
+    5000.00,
+    2500.00,
+    (current_date + interval '6 months')::date,
+    'active',
+    null
+  ),
+  (
+    '00000000-0000-0000-0000-000000000001',
+    'Wakacje nad morzem',
+    3000.00,
+    3000.00,
+    null,
+    'completed',
+    now() - interval '7 days'
+  ),
+  (
+    '00000000-0000-0000-0000-000000000001',
+    'Nowy laptop',
+    8000.00,
+    1200.00,
+    (current_date + interval '1 year')::date,
+    'abandoned',
+    null
+  );
+
 commit;
