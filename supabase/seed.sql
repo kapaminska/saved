@@ -96,4 +96,22 @@ insert into public.savings_goals (
     null
   );
 
+-- Sample payments for active seed goal (3 months, includes explicit zero month; total = 2500)
+insert into public.goal_payments (goal_id, user_id, amount, payment_month)
+select
+  g.id,
+  g.user_id,
+  v.amount,
+  v.payment_month
+from public.savings_goals g
+cross join (
+  values
+    (1000.00, (date_trunc('month', current_date) - interval '2 months')::date),
+    (0.00, (date_trunc('month', current_date) - interval '1 month')::date),
+    (1500.00, date_trunc('month', current_date)::date)
+) as v(amount, payment_month)
+where g.user_id = '00000000-0000-0000-0000-000000000001'
+  and g.name = 'Fundusz awaryjny'
+  and g.status = 'active';
+
 commit;
