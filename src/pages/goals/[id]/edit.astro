@@ -1,0 +1,49 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Topbar from "@/components/Topbar.astro";
+import GoalForm from "@/components/goals/GoalForm";
+import AbandonGoalButton from "@/components/goals/AbandonGoalButton";
+import ClientRedirect from "@/components/goals/ClientRedirect";
+import { getEditGoalPageData } from "@/lib/goals/edit-page";
+
+const { user } = Astro.locals;
+const pageData = await getEditGoalPageData(Astro.request.headers, Astro.cookies, user?.id, Astro.params.id ?? "");
+---
+
+{
+  pageData.kind === "redirect" ? (
+    <ClientRedirect url={pageData.url} client:load />
+  ) : (
+    <Layout title={`Edit ${pageData.goal.name}`}>
+      <div class="bg-cosmic min-h-screen">
+        <div class="relative z-10 p-4 sm:p-8">
+          <Topbar />
+          <div class="mx-auto mt-8 max-w-md">
+            <a
+              href="/dashboard"
+              class="mb-4 inline-block text-sm text-purple-300 transition-colors hover:text-purple-100"
+            >
+              ← Back to dashboard
+            </a>
+            <div class="rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+              <h1 class="mb-6 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent">
+                Edit goal
+              </h1>
+              <GoalForm
+                mode="edit"
+                initial={{
+                  name: pageData.goal.name,
+                  target_amount: pageData.goal.target_amount,
+                  deadline: pageData.goal.deadline,
+                }}
+                goalId={pageData.goal.id}
+                client:load
+              />
+              <AbandonGoalButton goalId={pageData.goal.id} client:load />
+            </div>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  )
+}

@@ -372,23 +372,23 @@ Build shared `GoalForm`, create/edit pages, dashboard with active goals list, ar
 
 #### Automated
 
-- [x] 2.1 Build passes: `npm run build`
-- [x] 2.2 Lint passes: `npm run lint`
-- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 2.1 Build passes: `npm run build` — 907e224
+- [x] 2.2 Lint passes: `npm run lint` — 907e224
+- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — 907e224
 
 #### Manual
 
-- [x] 2.4 Create, update, abandon endpoints behave per contract
-- [x] 2.5 Validation rejects invalid input; RLS blocks cross-user access
+- [x] 2.4 Create, update, abandon endpoints behave per contract — 907e224
+- [x] 2.5 Validation rejects invalid input; RLS blocks cross-user access — 907e224
 
 ### Phase 3: Goals UI
 
 #### Automated
 
-- [ ] 3.1 Build passes: `npm run build`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
-- [ ] 3.4 Goal routes exist and are protected
+- [x] 3.1 Build passes: `npm run build`
+- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 3.4 Goal routes exist and are protected
 
 #### Manual
 

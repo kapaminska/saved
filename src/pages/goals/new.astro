@@ -1,0 +1,26 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Topbar from "@/components/Topbar.astro";
+import GoalForm from "@/components/goals/GoalForm";
+---
+
+<Layout title="New goal">
+  <div class="bg-cosmic min-h-screen">
+    <div class="relative z-10 p-4 sm:p-8">
+      <Topbar />
+      <div class="mx-auto mt-8 max-w-md">
+        <a href="/dashboard" class="mb-4 inline-block text-sm text-purple-300 transition-colors hover:text-purple-100">
+          ← Back to dashboard
+        </a>
+        <div class="rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+          <h1
+            class="mb-6 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent"
+          >
+            New savings goal
+          </h1>
+          <GoalForm mode="create" initial={null} client:load />
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

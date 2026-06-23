@@ -1,7 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
 import { createClient } from "@/lib/supabase";
 
-const PROTECTED_ROUTES = ["/dashboard", "/onboarding", "/profile"];
+const PROTECTED_ROUTES = ["/dashboard", "/onboarding", "/profile", "/goals"];
 
 const ONBOARDING_EXEMPT = new Set(["/onboarding", "/api/profile", "/api/profile/skip", "/api/auth/signout"]);
 
