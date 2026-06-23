@@ -385,10 +385,10 @@ Build shared `GoalForm`, create/edit pages, dashboard with active goals list, ar
 
 #### Automated
 
-- [x] 3.1 Build passes: `npm run build`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
-- [x] 3.4 Goal routes exist and are protected
+- [x] 3.1 Build passes: `npm run build` — 220ade0
+- [x] 3.2 Lint passes: `npm run lint` — 220ade0
+- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — 220ade0
+- [x] 3.4 Goal routes exist and are protected — 220ade0
 
 #### Manual
 
