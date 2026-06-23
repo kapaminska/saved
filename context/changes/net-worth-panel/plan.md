@@ -436,12 +436,12 @@ Insert `<NetWorthPanel ... client:load />` between greeting block and Active goa
 
 #### Automated
 
-- [x] 3.1 Build passes: `npm run build`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 3.1 Build passes: `npm run build` — 3589c1c
+- [x] 3.2 Lint passes: `npm run lint` — 3589c1c
+- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — 3589c1c
 
 #### Manual
 
-- [x] 3.4 Teaser, full panel expansion, and relationship headline verified
-- [x] 3.5 CRUD modals, delete confirm, net worth math, and negative display verified
-- [x] 3.6 Staleness banner, dismiss persistence, and confirm-current flows verified end-to-end
+- [x] 3.4 Teaser, full panel expansion, and relationship headline verified — 3589c1c
+- [x] 3.5 CRUD modals, delete confirm, net worth math, and negative display verified — 3589c1c
+- [x] 3.6 Staleness banner, dismiss persistence, and confirm-current flows verified end-to-end — 3589c1c

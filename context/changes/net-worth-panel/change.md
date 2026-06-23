@@ -1,7 +1,7 @@
 ---
 change_id: net-worth-panel
 title: Net worth panel
-status: implementing
+status: implemented
 created: 2026-06-23
 updated: 2026-06-23
 archived_at: null
