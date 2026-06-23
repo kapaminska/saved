@@ -357,29 +357,29 @@ Build shared `GoalForm`, create/edit pages, dashboard with active goals list, ar
 
 #### Automated
 
-- [x] 1.1 Migration applies cleanly: `npx supabase db reset`
-- [x] 1.2 RLS script passes: `supabase/tests/rls-savings-goals.sql`
-- [x] 1.3 Build passes: `npm run build`
-- [x] 1.4 Lint passes: `npm run lint`
-- [x] 1.5 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 1.1 Migration applies cleanly: `npx supabase db reset` — 8031c63
+- [x] 1.2 RLS script passes: `supabase/tests/rls-savings-goals.sql` — 8031c63
+- [x] 1.3 Build passes: `npm run build` — 8031c63
+- [x] 1.4 Lint passes: `npm run lint` — 8031c63
+- [x] 1.5 Type checking passes: `npx astro sync && npx tsc --noEmit` — 8031c63
 
 #### Manual
 
-- [x] 1.6 Studio shows table, constraints, and seed goals
-- [x] 1.7 Auto-complete trigger fires when saved_amount reaches target
+- [x] 1.6 Studio shows table, constraints, and seed goals — 8031c63
+- [x] 1.7 Auto-complete trigger fires when saved_amount reaches target — 8031c63
 
 ### Phase 2: Goal API
 
 #### Automated
 
-- [ ] 2.1 Build passes: `npm run build`
-- [ ] 2.2 Lint passes: `npm run lint`
-- [ ] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 2.1 Build passes: `npm run build`
+- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
 
 #### Manual
 
-- [ ] 2.4 Create, update, abandon endpoints behave per contract
-- [ ] 2.5 Validation rejects invalid input; RLS blocks cross-user access
+- [x] 2.4 Create, update, abandon endpoints behave per contract
+- [x] 2.5 Validation rejects invalid input; RLS blocks cross-user access
 
 ### Phase 3: Goals UI
 
