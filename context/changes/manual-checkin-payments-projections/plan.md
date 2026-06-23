@@ -401,16 +401,16 @@ Dashboard check-in modal, projection/status on goal cards, new goal detail page 
 
 #### Automated
 
-- [x] 1.1 Migration applies cleanly: `npx supabase db reset`
-- [x] 1.2 RLS script passes: `supabase/tests/rls-goal-payments.sql`
-- [x] 1.3 Build passes: `npm run build`
-- [x] 1.4 Lint passes: `npm run lint`
-- [x] 1.5 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 1.1 Migration applies cleanly: `npx supabase db reset` — c9896bf
+- [x] 1.2 RLS script passes: `supabase/tests/rls-goal-payments.sql` — c9896bf
+- [x] 1.3 Build passes: `npm run build` — c9896bf
+- [x] 1.4 Lint passes: `npm run lint` — c9896bf
+- [x] 1.5 Type checking passes: `npx astro sync && npx tsc --noEmit` — c9896bf
 
 #### Manual
 
-- [x] 1.6 Studio shows table, uniqueness constraint, and seed payments
-- [x] 1.7 Duplicate goal+month insert rejected
+- [x] 1.6 Studio shows table, uniqueness constraint, and seed payments — c9896bf
+- [x] 1.7 Duplicate goal+month insert rejected — c9896bf
 
 ### Phase 2: Projection Logic & Payment Validation
 
