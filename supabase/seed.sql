@@ -114,4 +114,30 @@ where g.user_id = '00000000-0000-0000-0000-000000000001'
   and g.name = 'Fundusz awaryjny'
   and g.status = 'active';
 
+-- Sample assets and liabilities for net worth panel (includes one stale asset for FR-027 testing)
+insert into public.assets (user_id, name, amount, category, last_updated_at)
+values
+  (
+    '00000000-0000-0000-0000-000000000001',
+    'Konto oszczędnościowe',
+    50000.00,
+    'savings',
+    now()
+  ),
+  (
+    '00000000-0000-0000-0000-000000000001',
+    'Mieszkanie',
+    120000.00,
+    'real_estate',
+    now() - interval '4 months'
+  );
+
+insert into public.liabilities (user_id, name, amount)
+values
+  (
+    '00000000-0000-0000-0000-000000000001',
+    'Kredyt hipoteczny',
+    80000.00
+  );
+
 commit;
