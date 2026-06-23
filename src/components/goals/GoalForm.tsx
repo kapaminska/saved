@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Target, Banknote, Calendar, ArrowRight, TriangleAlert } from "lucide-react";
+import { Target, Banknote, Calendar, ArrowRight, TriangleAlert, PiggyBank } from "lucide-react";
 import { FormField } from "@/components/auth/FormField";
 import { SubmitButton } from "@/components/auth/SubmitButton";
 import { ServerError } from "@/components/auth/ServerError";
+import { deadlineToMonthInput } from "@/lib/goals/validation";
 
 interface GoalInitial {
   name: string;
   target_amount: number;
+  saved_amount: number;
   deadline: string | null;
 }
 
@@ -14,6 +16,7 @@ interface Props {
   mode: "create" | "edit";
   initial: GoalInitial | null;
   goalId?: string;
+  hasPayments?: boolean;
   successRedirect?: string;
 }
 
@@ -21,20 +24,30 @@ function formatAmount(value: number): string {
   return value.toFixed(2);
 }
 
-export default function GoalForm({ mode, initial, goalId, successRedirect = "/dashboard" }: Props) {
+export default function GoalForm({
+  mode,
+  initial,
+  goalId,
+  hasPayments = false,
+  successRedirect = "/dashboard",
+}: Props) {
   const [name, setName] = useState(initial?.name ?? "");
   const [targetAmount, setTargetAmount] = useState(
     initial?.target_amount != null ? formatAmount(initial.target_amount) : "",
   );
-  const [deadline, setDeadline] = useState(initial?.deadline ?? "");
+  const [savedAmount, setSavedAmount] = useState(
+    initial?.saved_amount != null ? formatAmount(initial.saved_amount) : "0",
+  );
+  const [deadline, setDeadline] = useState(deadlineToMonthInput(initial?.deadline ?? null));
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [nameError, setNameError] = useState<string | undefined>();
   const [amountError, setAmountError] = useState<string | undefined>();
+  const [savedAmountError, setSavedAmountError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
 
   const initialTarget = initial?.target_amount != null ? formatAmount(initial.target_amount) : "";
-  const initialDeadline = initial?.deadline ?? "";
+  const initialDeadline = deadlineToMonthInput(initial?.deadline ?? null);
   const showWarning =
     mode === "edit" && initial != null && (targetAmount !== initialTarget || deadline !== initialDeadline);
 
@@ -66,6 +79,22 @@ export default function GoalForm({ mode, initial, goalId, successRedirect = "/da
       setAmountError(undefined);
     }
 
+    if (!hasPayments) {
+      const rawSaved = savedAmount.trim();
+      if (!rawSaved) {
+        setSavedAmountError("Saved amount is required");
+        valid = false;
+      } else if (!/^\d+(\.\d{1,2})?$/.test(rawSaved)) {
+        setSavedAmountError("Enter an amount with at most 2 decimal places");
+        valid = false;
+      } else if (parseFloat(rawSaved) < 0) {
+        setSavedAmountError("Saved amount must be 0 or greater");
+        valid = false;
+      } else {
+        setSavedAmountError(undefined);
+      }
+    }
+
     return valid;
   }
 
@@ -82,6 +111,9 @@ export default function GoalForm({ mode, initial, goalId, successRedirect = "/da
       body.set("name", name.trim());
       body.set("target_amount", targetAmount.trim());
       body.set("deadline", deadline.trim());
+      if (!hasPayments) {
+        body.set("saved_amount", savedAmount.trim());
+      }
 
       const url = mode === "create" ? "/api/goals" : `/api/goals/${goalId}`;
       const res = await fetch(url, {
@@ -103,12 +135,12 @@ export default function GoalForm({ mode, initial, goalId, successRedirect = "/da
 
       const id = json.goal?.id ?? goalId;
       if (mode === "create" && id) {
-        window.location.href = successRedirect;
+        window.location.assign(successRedirect);
         return;
       }
 
       if (json.completed && id) {
-        window.location.href = `/dashboard?celebrated=${id}`;
+        window.location.assign(`/dashboard?celebrated=${id}`);
         return;
       }
 
@@ -152,9 +184,33 @@ export default function GoalForm({ mode, initial, goalId, successRedirect = "/da
         inputProps={{ step: "0.01", min: "0.01" }}
       />
 
+      {hasPayments ? (
+        <div>
+          <p className="mb-1 block text-sm text-blue-100/80">Already saved (PLN)</p>
+          <p className="rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-blue-100/70">
+            {formatAmount(initial?.saved_amount ?? 0)} — tracked via payment history
+          </p>
+        </div>
+      ) : (
+        <FormField
+          id="saved_amount"
+          type="number"
+          label="Already saved (PLN)"
+          value={savedAmount}
+          onChange={(v) => {
+            setSavedAmount(v);
+            if (savedAmountError) setSavedAmountError(undefined);
+          }}
+          placeholder="e.g. 500.00"
+          error={savedAmountError}
+          icon={<PiggyBank className="size-4" />}
+          inputProps={{ step: "0.01", min: "0" }}
+        />
+      )}
+
       <FormField
         id="deadline"
-        type="date"
+        type="month"
         label="Deadline (optional)"
         value={deadline}
         onChange={setDeadline}

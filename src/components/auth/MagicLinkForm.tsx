@@ -86,29 +86,10 @@ export default function MagicLinkForm({ serverError }: Props) {
     await sendOtp();
   }
 
-  async function handleOtpSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  function handleOtpSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!validateToken()) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const body = new URLSearchParams({ email: email.trim(), token: token.trim() });
-      const res = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body,
-      });
-      const json = (await res.json()) as { success: boolean; redirect?: string; error?: string };
-      if (!json.success) {
-        setError(json.error ?? "Invalid code");
-        return;
-      }
-      window.location.href = json.redirect ?? "/dashboard";
-    } catch {
-      setError("Network error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    e.currentTarget.submit();
   }
 
   async function handleResend() {
@@ -144,13 +125,15 @@ export default function MagicLinkForm({ serverError }: Props) {
   }
 
   return (
-    <form onSubmit={handleOtpSubmit} className="space-y-4" noValidate>
+    <form method="POST" action="/api/auth/verify-otp" onSubmit={handleOtpSubmit} className="space-y-4" noValidate>
+      <input type="hidden" name="email" value={email} />
       <p className="text-center text-sm text-blue-100/70">
         We sent a 6-digit code to <span className="font-medium text-white">{email}</span>
       </p>
 
       <FormField
         id="token"
+        name="token"
         type="text"
         label="Verification code"
         value={token}

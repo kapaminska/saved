@@ -429,29 +429,29 @@ Dashboard check-in modal, projection/status on goal cards, new goal detail page 
 
 #### Automated
 
-- [x] 3.1 Build passes: `npm run build`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 3.1 Build passes: `npm run build` — edbbc48
+- [x] 3.2 Lint passes: `npm run lint` — edbbc48
+- [x] 3.3 Type checking passes: `npx astro sync && npx tsc --noEmit` — edbbc48
 
 #### Manual
 
-- [x] 3.4 Batch check-in upsert, skip, and zero paths work
-- [x] 3.5 Future month and duplicate-month edit rejected
-- [x] 3.6 Completion detected and returned in API response
-- [x] 3.7 RLS isolation verified for payments
+- [x] 3.4 Batch check-in upsert, skip, and zero paths work — edbbc48
+- [x] 3.5 Future month and duplicate-month edit rejected — edbbc48
+- [x] 3.6 Completion detected and returned in API response — edbbc48
+- [x] 3.7 RLS isolation verified for payments — edbbc48
 
 ### Phase 4: Check-in Modal, Dashboard Metrics & Goal Detail
 
 #### Automated
 
-- [ ] 4.1 Build passes: `npm run build`
-- [ ] 4.2 Lint passes: `npm run lint`
-- [ ] 4.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
+- [x] 4.1 Build passes: `npm run build`
+- [x] 4.2 Lint passes: `npm run lint`
+- [x] 4.3 Type checking passes: `npx astro sync && npx tsc --noEmit`
 
 #### Manual
 
-- [ ] 4.4 Full dashboard check-in flow end-to-end
-- [ ] 4.5 Dashboard cards show pace, projection, status badges
-- [ ] 4.6 Goal detail history edit/delete works
-- [ ] 4.7 Payment-triggered celebration fires
-- [ ] 4.8 Active-only goals in check-in modal
+- [x] 4.4 Full dashboard check-in flow end-to-end
+- [x] 4.5 Dashboard cards show pace, projection, status badges
+- [x] 4.6 Goal detail history edit/delete works
+- [x] 4.7 Payment-triggered celebration fires
+- [x] 4.8 Active-only goals in check-in modal

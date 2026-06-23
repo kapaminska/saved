@@ -2,33 +2,62 @@
 import Layout from "@/layouts/Layout.astro";
 import Topbar from "@/components/Topbar.astro";
 import CelebrationModal from "@/components/goals/CelebrationModal";
-import { createClient } from "@/lib/supabase";
+import CheckInModal from "@/components/goals/CheckInModal";
+import GoalQuickPayment from "@/components/goals/GoalQuickPayment";
+import GoalStatusBadge from "@/components/goals/GoalStatusBadge";
+import { getSupabase } from "@/lib/supabase";
+import { computeGoalMetrics, formatMonthsOfData, type GoalMetrics } from "@/lib/goals/projection";
 
 const { user, profile } = Astro.locals;
 const greeting = profile?.display_name ?? user?.email;
 
-const supabase = createClient(Astro.request.headers, Astro.cookies);
+const supabase = getSupabase(Astro.locals, Astro.request.headers, Astro.cookies);
 const celebratedGoalId = Astro.url.searchParams.get("celebrated");
 
-let activeGoals: {
+const now = new Date();
+const defaultMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+interface ActiveGoal {
   id: string;
   name: string;
   saved_amount: number;
   target_amount: number;
   deadline: string | null;
-}[] = [];
+  created_at: string;
+}
 
+let activeGoals: ActiveGoal[] = [];
+let paymentsByGoal: Record<string, { amount: number; payment_month: string }[]> = {};
+let metricsByGoal: Record<string, GoalMetrics> = {};
 let celebratedGoalName: string | null = null;
 
 if (supabase && user) {
   const { data } = await supabase
     .from("savings_goals")
-    .select("id, name, saved_amount, target_amount, deadline")
+    .select("id, name, saved_amount, target_amount, deadline, created_at")
     .eq("user_id", user.id)
     .eq("status", "active")
     .order("created_at", { ascending: false });
 
   activeGoals = data ?? [];
+
+  const goalIds = activeGoals.map((g) => g.id);
+  if (goalIds.length > 0) {
+    const { data: payments } = await supabase
+      .from("goal_payments")
+      .select("goal_id, amount, payment_month")
+      .in("goal_id", goalIds);
+
+    for (const payment of payments ?? []) {
+      const list = paymentsByGoal[payment.goal_id] ?? [];
+      list.push({ amount: payment.amount, payment_month: payment.payment_month });
+      paymentsByGoal[payment.goal_id] = list;
+    }
+
+    for (const goal of activeGoals) {
+      metricsByGoal[goal.id] = computeGoalMetrics(goal, paymentsByGoal[goal.id] ?? []);
+    }
+  }
 
   if (celebratedGoalId) {
     const celebrated =
@@ -49,15 +78,23 @@ function formatPln(amount: number): string {
   return `${amount.toFixed(2)} zł`;
 }
 
-function formatDate(value: string | null): string {
+function formatDeadline(value: string | null): string {
   if (!value) return "";
-  return new Date(value).toLocaleDateString("pl-PL");
+  return formatProjectedMonth(value);
+}
+
+function formatProjectedMonth(value: string): string {
+  const [year, month] = value.split("-");
+  const date = new Date(Number(year), Number(month) - 1, 1);
+  return date.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
 }
 
 function progressPercent(saved: number, target: number): number {
   if (target <= 0) return 0;
   return Math.min(saved / target, 1) * 100;
 }
+
+const checkInGoals = activeGoals.map((g) => ({ id: g.id, name: g.name }));
 ---
 
 <Layout title="Dashboard">
@@ -76,14 +113,17 @@ function progressPercent(saved: number, target: number): number {
           </p>
         </div>
 
-        <div class="mb-4 flex items-center justify-between">
+        <div class="mb-4 flex items-center justify-between gap-3">
           <h2 class="text-lg font-semibold text-white">Active goals</h2>
-          <a
-            href="/goals/new"
-            class="rounded-lg border border-purple-400/40 bg-purple-900/30 px-3 py-1.5 text-sm text-purple-200 transition-colors hover:bg-purple-900/50"
-          >
-            Add goal
-          </a>
+          <div class="flex items-center gap-2">
+            <CheckInModal goals={checkInGoals} defaultMonth={defaultMonth} client:load />
+            <a
+              href="/goals/new"
+              class="rounded-lg border border-purple-400/40 bg-purple-900/30 px-3 py-1.5 text-sm text-purple-200 transition-colors hover:bg-purple-900/50"
+            >
+              Add goal
+            </a>
+          </div>
         </div>
 
         {
@@ -91,24 +131,54 @@ function progressPercent(saved: number, target: number): number {
             <ul class="space-y-4">
               {activeGoals.map((goal) => {
                 const pct = progressPercent(goal.saved_amount, goal.target_amount);
+                const metrics = metricsByGoal[goal.id];
                 return (
                   <li class="rounded-xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur-xl">
                     <div class="mb-3 flex items-start justify-between gap-4">
-                      <div>
-                        <h3 class="font-medium">{goal.name}</h3>
+                      <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <a
+                            href={`/goals/${goal.id}`}
+                            class="font-medium text-white transition-colors hover:text-purple-200"
+                          >
+                            {goal.name}
+                          </a>
+                          {metrics.status && <GoalStatusBadge status={metrics.status} />}
+                        </div>
                         <p class="mt-1 text-sm text-blue-100/70">
                           {formatPln(goal.saved_amount)} / {formatPln(goal.target_amount)}
                         </p>
                         {goal.deadline && (
-                          <p class="mt-1 text-xs text-blue-100/50">Deadline: {formatDate(goal.deadline)}</p>
+                          <p class="mt-1 text-xs text-blue-100/50">Deadline: {formatDeadline(goal.deadline)}</p>
+                        )}
+                        {metrics.requiredPace != null && (
+                          <p class="mt-1 text-xs text-blue-100/60">
+                            Required pace: {formatPln(metrics.requiredPace)}/mo
+                          </p>
+                        )}
+                        {metrics.projectedCompletionDate && (
+                          <p class="mt-1 text-xs text-blue-100/60">
+                            Projected: {formatProjectedMonth(metrics.projectedCompletionDate)}
+                            <span class="text-blue-100/40">
+                              (based on {formatMonthsOfData(metrics.monthsOfData)} of data)
+                            </span>
+                          </p>
                         )}
                       </div>
-                      <a
-                        href={`/goals/${goal.id}/edit`}
-                        class="shrink-0 text-sm text-purple-300 transition-colors hover:text-purple-100"
-                      >
-                        Edit
-                      </a>
+                      <div class="flex shrink-0 items-center gap-2">
+                        <GoalQuickPayment
+                          goalId={goal.id}
+                          goalName={goal.name}
+                          defaultMonth={defaultMonth}
+                          client:load
+                        />
+                        <a
+                          href={`/goals/${goal.id}/edit`}
+                          class="text-sm text-purple-300 transition-colors hover:text-purple-100"
+                        >
+                          Edit
+                        </a>
+                      </div>
                     </div>
                     <div class="h-2 overflow-hidden rounded-full bg-white/10">
                       <div

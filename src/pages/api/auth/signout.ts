@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
-import { createClient } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 export const POST: APIRoute = async (context) => {
-  const supabase = createClient(context.request.headers, context.cookies);
+  const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (supabase) {
     await supabase.auth.signOut();
   }

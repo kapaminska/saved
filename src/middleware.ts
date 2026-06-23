@@ -7,7 +7,7 @@ const ONBOARDING_EXEMPT = new Set(["/onboarding", "/api/profile", "/api/profile/
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const supabase = createClient(context.request.headers, context.cookies);
-
+  context.locals.supabase = supabase;
   context.locals.profile = null;
 
   if (supabase) {
@@ -17,7 +17,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.user = user ?? null;
 
     if (user) {
-      const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+      const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
       context.locals.profile = profile ?? null;
     }
   } else {
@@ -25,6 +25,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const { pathname } = context.url;
+
+  if (pathname.startsWith("/auth/signin") && context.locals.user && context.locals.profile?.display_name) {
+    return context.redirect("/dashboard");
+  }
 
   if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
     if (!context.locals.user) {

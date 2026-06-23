@@ -7,7 +7,13 @@ import ClientRedirect from "@/components/goals/ClientRedirect";
 import { getEditGoalPageData } from "@/lib/goals/edit-page";
 
 const { user } = Astro.locals;
-const pageData = await getEditGoalPageData(Astro.request.headers, Astro.cookies, user?.id, Astro.params.id ?? "");
+const pageData = await getEditGoalPageData(
+  Astro.locals.supabase,
+  Astro.request.headers,
+  Astro.cookies,
+  user?.id,
+  Astro.params.id ?? "",
+);
 ---
 
 {
@@ -34,9 +40,11 @@ const pageData = await getEditGoalPageData(Astro.request.headers, Astro.cookies,
                 initial={{
                   name: pageData.goal.name,
                   target_amount: pageData.goal.target_amount,
+                  saved_amount: pageData.goal.saved_amount,
                   deadline: pageData.goal.deadline,
                 }}
                 goalId={pageData.goal.id}
+                hasPayments={pageData.hasPayments}
                 client:load
               />
               <AbandonGoalButton goalId={pageData.goal.id} client:load />

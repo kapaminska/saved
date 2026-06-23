@@ -1,6 +1,12 @@
 import type { APIRoute } from "astro";
-import { formatGoalRow, parseDeadline, parseGoalName, parseTargetAmount } from "@/lib/goals/validation";
-import { createClient } from "@/lib/supabase";
+import {
+  formatGoalRow,
+  parseDeadline,
+  parseGoalName,
+  parseSavedAmount,
+  parseTargetAmount,
+} from "@/lib/goals/validation";
+import { getSupabase } from "@/lib/supabase";
 
 function jsonResponse(body: object, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -15,7 +21,7 @@ export const POST: APIRoute = async (context) => {
     return jsonResponse({ success: false, error: "Unauthorized" }, 401);
   }
 
-  const supabase = createClient(context.request.headers, context.cookies);
+  const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
     return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
   }
@@ -36,12 +42,19 @@ export const POST: APIRoute = async (context) => {
     return jsonResponse({ success: false, error: deadlineResult.error }, 400);
   }
 
+  const savedResult = parseSavedAmount(form.get("saved_amount") as string | null);
+  if (!savedResult.ok) {
+    return jsonResponse({ success: false, error: savedResult.error }, 400);
+  }
+
   const { data, error } = await supabase
     .from("savings_goals")
     .insert({
       user_id: user.id,
       name: nameResult.name,
       target_amount: amountResult.amount,
+      saved_amount: savedResult.amount,
+      opening_saved_amount: savedResult.amount,
       deadline: deadlineResult.deadline,
     })
     .select()

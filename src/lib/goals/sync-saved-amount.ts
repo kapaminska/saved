@@ -7,6 +7,16 @@ export async function recalcSavedAmount(
   supabase: SupabaseClient<Database>,
   goalId: string,
 ): Promise<{ ok: true; goal: GoalRow } | { ok: false; error: string }> {
+  const { data: goal, error: goalError } = await supabase
+    .from("savings_goals")
+    .select("opening_saved_amount")
+    .eq("id", goalId)
+    .single();
+
+  if (goalError) {
+    return { ok: false, error: "Failed to load goal" };
+  }
+
   const { data: payments, error: paymentsError } = await supabase
     .from("goal_payments")
     .select("amount")
@@ -16,7 +26,8 @@ export async function recalcSavedAmount(
     return { ok: false, error: "Failed to sum payments" };
   }
 
-  const total = payments.reduce((sum, payment) => sum + payment.amount, 0);
+  const paymentTotal = payments.reduce((sum, payment) => sum + payment.amount, 0);
+  const total = goal.opening_saved_amount + paymentTotal;
 
   const { data, error } = await supabase
     .from("savings_goals")

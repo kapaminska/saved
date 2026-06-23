@@ -1,6 +1,12 @@
 import type { APIRoute } from "astro";
-import { formatGoalRow, parseDeadline, parseGoalName, parseTargetAmount } from "@/lib/goals/validation";
-import { createClient } from "@/lib/supabase";
+import {
+  formatGoalRow,
+  parseDeadline,
+  parseGoalName,
+  parseSavedAmount,
+  parseTargetAmount,
+} from "@/lib/goals/validation";
+import { getSupabase } from "@/lib/supabase";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -22,7 +28,7 @@ export const POST: APIRoute = async (context) => {
     return jsonResponse({ success: false, error: "Goal not found" }, 404);
   }
 
-  const supabase = createClient(context.request.headers, context.cookies);
+  const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
     return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
   }
@@ -58,13 +64,40 @@ export const POST: APIRoute = async (context) => {
     return jsonResponse({ success: false, error: deadlineResult.error }, 400);
   }
 
+  const savedResult = parseSavedAmount(form.get("saved_amount") as string | null);
+  if (!savedResult.ok) {
+    return jsonResponse({ success: false, error: savedResult.error }, 400);
+  }
+
+  const { count: paymentCount, error: paymentCountError } = await supabase
+    .from("goal_payments")
+    .select("id", { count: "exact", head: true })
+    .eq("goal_id", goalId);
+
+  if (paymentCountError) {
+    return jsonResponse({ success: false, error: "Failed to update goal" }, 500);
+  }
+
+  const updatePayload: {
+    name: string;
+    target_amount: number;
+    deadline: string | null;
+    opening_saved_amount?: number;
+    saved_amount?: number;
+  } = {
+    name: nameResult.name,
+    target_amount: amountResult.amount,
+    deadline: deadlineResult.deadline,
+  };
+
+  if ((paymentCount ?? 0) === 0) {
+    updatePayload.opening_saved_amount = savedResult.amount;
+    updatePayload.saved_amount = savedResult.amount;
+  }
+
   const { error: updateError } = await supabase
     .from("savings_goals")
-    .update({
-      name: nameResult.name,
-      target_amount: amountResult.amount,
-      deadline: deadlineResult.deadline,
-    })
+    .update(updatePayload)
     .eq("id", goalId)
     .eq("user_id", user.id);
 

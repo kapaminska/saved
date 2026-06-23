@@ -40,6 +40,7 @@ export interface Database {
           name: string;
           target_amount: number;
           saved_amount: number;
+          opening_saved_amount: number;
           deadline: string | null;
           status: string;
           completed_at: string | null;
@@ -52,6 +53,7 @@ export interface Database {
           name: string;
           target_amount: number;
           saved_amount?: number;
+          opening_saved_amount?: number;
           deadline?: string | null;
           status?: string;
           completed_at?: string | null;
@@ -64,6 +66,7 @@ export interface Database {
           name?: string;
           target_amount?: number;
           saved_amount?: number;
+          opening_saved_amount?: number;
           deadline?: string | null;
           status?: string;
           completed_at?: string | null;

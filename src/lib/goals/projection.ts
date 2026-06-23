@@ -54,16 +54,40 @@ function compareCalendarDates(a: string, b: string): -1 | 0 | 1 {
   return 0;
 }
 
-export function countGoalLifetimeMonths(createdAt: string, asOfDate: string | Date): number {
+function getMetricsWindowStart(createdAt: string, payments: PaymentRow[]): { year: number; month: number } {
   const created = toYearMonth(createdAt);
+  let startYear = created.year;
+  let startMonth = created.month;
+
+  for (const payment of payments) {
+    const paymentMonth = toYearMonth(payment.payment_month);
+    if (paymentMonth.year < startYear || (paymentMonth.year === startYear && paymentMonth.month < startMonth)) {
+      startYear = paymentMonth.year;
+      startMonth = paymentMonth.month;
+    }
+  }
+
+  return { year: startYear, month: startMonth };
+}
+
+export function countGoalLifetimeMonths(
+  createdAt: string,
+  asOfDate: string | Date,
+  payments: PaymentRow[] = [],
+): number {
+  const start = getMetricsWindowStart(createdAt, payments);
   const asOf = toYearMonth(normalizeAsOfDate(asOfDate));
-  const count = monthsBetweenInclusive(created.year, created.month, asOf.year, asOf.month);
+  const count = monthsBetweenInclusive(start.year, start.month, asOf.year, asOf.month);
   return Math.max(count, 0);
 }
 
+export function formatMonthsOfData(count: number): string {
+  return count === 1 ? "1 month" : `${count} months`;
+}
+
 export function averageMonthlyPayment(createdAt: string, asOfDate: string | Date, payments: PaymentRow[]): number {
-  const created = toYearMonth(createdAt);
-  const monthCount = countGoalLifetimeMonths(createdAt, asOfDate);
+  const start = getMetricsWindowStart(createdAt, payments);
+  const monthCount = countGoalLifetimeMonths(createdAt, asOfDate, payments);
   if (monthCount <= 0) {
     return 0;
   }
@@ -75,8 +99,8 @@ export function averageMonthlyPayment(createdAt: string, asOfDate: string | Date
   }
 
   let total = 0;
-  let cursorYear = created.year;
-  let cursorMonth = created.month;
+  let cursorYear = start.year;
+  let cursorMonth = start.month;
   for (let i = 0; i < monthCount; i++) {
     const key = `${cursorYear}-${String(cursorMonth).padStart(2, "0")}`;
     total += amountsByMonth.get(key) ?? 0;
@@ -146,7 +170,7 @@ export function computeGoalMetrics(
   payments: PaymentRow[],
   asOfDate: string | Date = new Date(),
 ): GoalMetrics {
-  const monthsOfData = countGoalLifetimeMonths(goal.created_at, asOfDate);
+  const monthsOfData = countGoalLifetimeMonths(goal.created_at, asOfDate, payments);
   const averageMonthlyPaymentValue = averageMonthlyPayment(goal.created_at, asOfDate, payments);
   const requiredPaceValue = requiredPace(goal.target_amount, goal.saved_amount, goal.deadline, asOfDate);
   const projectedCompletionDateValue = projectedCompletionDate(

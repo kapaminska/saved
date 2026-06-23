@@ -1,5 +1,11 @@
 import type { APIRoute } from "astro";
-import { createClient } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
+
+function redirectWithError(context: Parameters<APIRoute>[0], message: string) {
+  const url = new URL("/auth/signin", context.url);
+  url.searchParams.set("error", message);
+  return context.redirect(url.toString());
+}
 
 export const POST: APIRoute = async (context) => {
   const form = await context.request.formData();
@@ -7,50 +13,27 @@ export const POST: APIRoute = async (context) => {
   const token = (form.get("token") as string | null)?.trim();
 
   if (!email || !token) {
-    return new Response(JSON.stringify({ success: false, error: "Email and code are required" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return redirectWithError(context, "Email and code are required");
   }
 
-  const supabase = createClient(context.request.headers, context.cookies);
+  const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return new Response(JSON.stringify({ success: false, error: "Supabase is not configured" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return redirectWithError(context, "Supabase is not configured");
   }
 
   const { data, error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
 
   if (error) {
-    return new Response(JSON.stringify({ success: false, error: error.message }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return redirectWithError(context, error.message);
   }
 
   const user = data.user;
   if (!user) {
-    return new Response(JSON.stringify({ success: false, error: "Verification failed" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return redirectWithError(context, "Verification failed");
   }
 
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("display_name")
-    .eq("id", user.id)
-    .single();
-
-  if (profileError) {
-    console.error("Profile query failed after OTP verification:", profileError.message);
-  }
+  const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle();
 
   const redirect = profile?.display_name ? "/dashboard" : "/onboarding";
-
-  return new Response(JSON.stringify({ success: true, redirect }), {
-    headers: { "Content-Type": "application/json" },
-  });
+  return context.redirect(redirect);
 };

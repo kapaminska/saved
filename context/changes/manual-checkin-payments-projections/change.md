@@ -1,7 +1,7 @@
 ---
 change_id: manual-checkin-payments-projections
 title: Manual checkin payments projections
-status: implementing
+status: implemented
 created: 2026-06-23
 updated: 2026-06-23
 archived_at: null

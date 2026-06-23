@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { recalcSavedAmount } from "@/lib/goals/sync-saved-amount";
-import { createClient } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -23,7 +23,7 @@ export const POST: APIRoute = async (context) => {
     return jsonResponse({ success: false, error: "Payment not found" }, 404);
   }
 
-  const supabase = createClient(context.request.headers, context.cookies);
+  const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
     return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
   }

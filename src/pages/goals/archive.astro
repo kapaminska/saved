@@ -1,11 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Topbar from "@/components/Topbar.astro";
-import { createClient } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 const { user } = Astro.locals;
 
-const supabase = createClient(Astro.request.headers, Astro.cookies);
+const supabase = getSupabase(Astro.locals, Astro.request.headers, Astro.cookies);
 
 const [{ data: completedGoals }, { data: abandonedGoals }] =
   supabase && user
