@@ -3,6 +3,7 @@ import { User, Calendar, Clock, Heart, ArrowRight, ChevronDown } from "lucide-re
 import { FormField } from "@/components/auth/FormField";
 import { SubmitButton } from "@/components/auth/SubmitButton";
 import { ServerError } from "@/components/auth/ServerError";
+import { toDateInputValue, validateDateOfBirth } from "@/lib/profile/date";
 
 interface ProfileData {
   display_name: string | null;
@@ -26,12 +27,13 @@ const RELATIONSHIP_OPTIONS = [
 
 export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" }: Props) {
   const [displayName, setDisplayName] = useState(profile.display_name ?? "");
-  const [dateOfBirth, setDateOfBirth] = useState(profile.date_of_birth ?? "");
+  const [dateOfBirth, setDateOfBirth] = useState(toDateInputValue(profile.date_of_birth));
   const [retirementAge, setRetirementAge] = useState(profile.retirement_age?.toString() ?? "");
   const [relationshipStatus, setRelationshipStatus] = useState(profile.relationship_status ?? "");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [nameError, setNameError] = useState<string | undefined>();
+  const [dateError, setDateError] = useState<string | undefined>();
   const [ageError, setAgeError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const successTimer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -64,6 +66,14 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
       setAgeError(undefined);
     }
 
+    const dobError = validateDateOfBirth(dateOfBirth);
+    if (dobError) {
+      setDateError(dobError);
+      valid = false;
+    } else {
+      setDateError(undefined);
+    }
+
     return valid;
   }
 
@@ -76,7 +86,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
     try {
       const body = new URLSearchParams();
       body.set("display_name", displayName.trim());
-      if (dateOfBirth) body.set("date_of_birth", dateOfBirth);
+      body.set("date_of_birth", dateOfBirth.trim());
       if (retirementAge.trim()) body.set("retirement_age", retirementAge.trim());
       body.set("relationship_status", relationshipStatus);
 
@@ -126,8 +136,22 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
         type="date"
         label="Date of birth"
         value={dateOfBirth}
-        onChange={setDateOfBirth}
+        onChange={(v) => {
+          setDateOfBirth(v);
+          if (dateError) setDateError(undefined);
+        }}
+        error={dateError}
+        hint={
+          !dateError ? (
+            <p className="mt-1 text-xs text-blue-100/50">Use the calendar picker — manual typing may not work.</p>
+          ) : undefined
+        }
         icon={<Calendar className="size-4" />}
+        inputProps={{
+          max: new Date().toISOString().slice(0, 10),
+          className:
+            "[color-scheme:dark] [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-70",
+        }}
       />
 
       <FormField

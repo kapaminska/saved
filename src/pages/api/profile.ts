@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { parseDateOfBirth } from "@/lib/profile/date";
 import { createClient } from "@/lib/supabase";
 
 const VALID_RELATIONSHIP_STATUSES = ["single", "married", "partnership", ""];
@@ -26,7 +27,6 @@ export const POST: APIRoute = async (context) => {
 
   const form = await context.request.formData();
   const displayName = (form.get("display_name") as string | null)?.trim();
-  const dateOfBirth = toNullable((form.get("date_of_birth") as string | null)?.trim());
   const retirementAgeRaw = toNullable((form.get("retirement_age") as string | null)?.trim());
   const relationshipStatus = (form.get("relationship_status") as string | null)?.trim() ?? "";
 
@@ -35,17 +35,6 @@ export const POST: APIRoute = async (context) => {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
-  }
-
-  if (dateOfBirth) {
-    const dateMatch = /^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth);
-    const parsed = dateMatch ? new Date(dateOfBirth) : null;
-    if (!dateMatch || !parsed || isNaN(parsed.getTime()) || parsed > new Date() || parsed.getFullYear() < 1900) {
-      return new Response(JSON.stringify({ success: false, error: "Invalid date of birth" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
   }
 
   let retirementAge: number | null = null;
@@ -66,15 +55,29 @@ export const POST: APIRoute = async (context) => {
     });
   }
 
-  const { error } = await supabase
-    .from("profiles")
-    .update({
-      display_name: displayName,
-      date_of_birth: dateOfBirth,
-      retirement_age: retirementAge,
-      relationship_status: toNullable(relationshipStatus),
-    })
-    .eq("id", user.id);
+  const updateData: {
+    display_name: string;
+    retirement_age: number | null;
+    relationship_status: string | null;
+    date_of_birth?: string | null;
+  } = {
+    display_name: displayName,
+    retirement_age: retirementAge,
+    relationship_status: toNullable(relationshipStatus),
+  };
+
+  if (form.has("date_of_birth")) {
+    const dateResult = parseDateOfBirth((form.get("date_of_birth") as string | null)?.trim() ?? "");
+    if (!dateResult.ok) {
+      return new Response(JSON.stringify({ success: false, error: dateResult.error }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    updateData.date_of_birth = dateResult.date;
+  }
+
+  const { error } = await supabase.from("profiles").update(updateData).eq("id", user.id);
 
   if (error) {
     return new Response(JSON.stringify({ success: false, error: "Failed to save profile" }), {

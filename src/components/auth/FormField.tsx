@@ -45,15 +45,16 @@ export function FormField({
           id={id}
           name={name ?? id}
           type={type}
+          placeholder={placeholder}
+          {...inputProps}
           value={value}
           onChange={(e) => {
             onChange(e.target.value);
           }}
-          placeholder={placeholder}
-          {...inputProps}
           className={cn(
             inputBase,
             error ? "border-red-400/60 focus:ring-red-400" : "border-white/20 focus:ring-purple-400",
+            inputProps?.className,
           )}
         />
         {endContent}
