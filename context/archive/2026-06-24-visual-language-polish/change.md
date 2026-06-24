@@ -1,10 +1,10 @@
 ---
 change_id: visual-language-polish
 title: Visual language polish
-status: implemented
+status: archived
 created: 2026-06-24
 updated: 2026-06-24
-archived_at: null
+archived_at: 2026-06-24T09:42:44Z
 ---
 
 ## Notes
