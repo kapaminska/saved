@@ -4,24 +4,24 @@ const displayName = profile?.display_name;
 ---
 
 <div
-  class="mb-4 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80"
+  class="border-border bg-card/80 mb-4 flex items-center justify-between rounded-xl border px-4 py-2 text-sm backdrop-blur-sm"
 >
   {
     user ? (
       <>
-        <span class="text-blue-100/70">{displayName ?? user.email}</span>
+        <span class="text-muted-foreground">{displayName ?? user.email}</span>
         <div class="flex items-center gap-3">
-          <a href="/dashboard" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+          <a href="/dashboard" class="text-primary hover:text-primary/80 transition-colors hover:underline">
             Dashboard
           </a>
-          <a href="/goals/archive" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+          <a href="/goals/archive" class="text-primary hover:text-primary/80 transition-colors hover:underline">
             Archive
           </a>
-          <a href="/profile" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+          <a href="/profile" class="text-primary hover:text-primary/80 transition-colors hover:underline">
             Profile
           </a>
           <form method="POST" action="/api/auth/signout">
-            <button type="submit" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+            <button type="submit" class="text-primary hover:text-primary/80 transition-colors hover:underline">
               Sign out
             </button>
           </form>
@@ -29,8 +29,8 @@ const displayName = profile?.display_name;
       </>
     ) : (
       <>
-        <span class="text-blue-100/70">Not signed in</span>
-        <a href="/auth/signin" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+        <span class="text-muted-foreground">Not signed in</span>
+        <a href="/auth/signin" class="text-primary hover:text-primary/80 transition-colors hover:underline">
           Sign in
         </a>
       </>

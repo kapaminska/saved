@@ -14,6 +14,9 @@ interface Props {
   editable: boolean;
 }
 
+const inputClass =
+  "border-input bg-background text-foreground focus:border-ring focus:ring-ring w-full rounded-lg border px-3 py-2 pl-10 text-sm focus:ring-2 focus:outline-none disabled:opacity-50";
+
 function monthInputValue(paymentMonth: string): string {
   return paymentMonth.slice(0, 7);
 }
@@ -109,7 +112,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
 
   if (payments.length === 0) {
     return (
-      <p className="rounded-lg border border-white/10 bg-white/5 p-4 text-sm text-blue-100/50">
+      <p className="border-border bg-muted/50 text-muted-foreground rounded-lg border p-4 text-sm">
         No payments recorded yet.
       </p>
     );
@@ -123,15 +126,15 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
           const isEditing = editingId === payment.id;
 
           return (
-            <li key={payment.id} className="rounded-lg border border-white/10 bg-white/5 p-3 text-white">
+            <li key={payment.id} className="border-border bg-muted/50 rounded-lg border p-3">
               {isEditing ? (
                 <div className="space-y-3">
                   <div>
-                    <label htmlFor={`edit-month-${payment.id}`} className="mb-1 block text-xs text-blue-100/70">
+                    <label htmlFor={`edit-month-${payment.id}`} className="text-muted-foreground mb-1 block text-xs">
                       Month
                     </label>
                     <div className="relative">
-                      <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+                      <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
                         <Calendar className="size-4" />
                       </span>
                       <input
@@ -142,16 +145,16 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                           setEditMonth(e.target.value);
                         }}
                         disabled={loading}
-                        className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 pl-10 text-sm text-white focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+                        className={inputClass}
                       />
                     </div>
                   </div>
                   <div>
-                    <label htmlFor={`edit-amount-${payment.id}`} className="mb-1 block text-xs text-blue-100/70">
+                    <label htmlFor={`edit-amount-${payment.id}`} className="text-muted-foreground mb-1 block text-xs">
                       Amount (PLN)
                     </label>
                     <div className="relative">
-                      <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+                      <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
                         <Banknote className="size-4" />
                       </span>
                       <input
@@ -164,7 +167,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                           setEditAmount(e.target.value);
                         }}
                         disabled={loading}
-                        className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 pl-10 text-sm text-white focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+                        className={inputClass}
                       />
                     </div>
                   </div>
@@ -173,7 +176,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                       type="button"
                       onClick={cancelEdit}
                       disabled={loading}
-                      className="inline-flex flex-1 items-center justify-center gap-1 rounded-lg border border-white/20 px-3 py-1.5 text-xs text-blue-100/80 hover:bg-white/10 disabled:opacity-50"
+                      className="border-border text-muted-foreground hover:bg-accent inline-flex flex-1 items-center justify-center gap-1 rounded-lg border px-3 py-1.5 text-xs disabled:opacity-50"
                     >
                       <X className="size-3" />
                       Cancel
@@ -184,7 +187,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                         void handleUpdate(payment.id);
                       }}
                       disabled={loading}
-                      className="flex-1 rounded-lg bg-white/20 px-3 py-1.5 text-xs font-medium hover:bg-white/30 disabled:opacity-50"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
                     >
                       {loading ? "Saving..." : "Save"}
                     </button>
@@ -193,8 +196,8 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
               ) : (
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm font-medium">{formatMonth(payment.payment_month)}</p>
-                    <p className="mt-0.5 text-sm text-blue-100/70">{formatPln(payment.amount)}</p>
+                    <p className="text-foreground text-sm font-medium">{formatMonth(payment.payment_month)}</p>
+                    <p className="text-muted-foreground mt-0.5 text-sm">{formatPln(payment.amount)}</p>
                   </div>
                   {editable && (
                     <div className="flex shrink-0 gap-1">
@@ -204,7 +207,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                           startEdit(payment);
                         }}
                         disabled={loading}
-                        className="rounded-lg p-2 text-purple-300 transition-colors hover:bg-white/10 hover:text-purple-100 disabled:opacity-50"
+                        className="text-primary hover:bg-accent hover:text-primary/80 rounded-lg p-2 transition-colors disabled:opacity-50"
                         aria-label="Edit payment"
                       >
                         <Pencil className="size-4" />
@@ -215,7 +218,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                           void handleDelete(payment.id);
                         }}
                         disabled={loading}
-                        className="rounded-lg p-2 text-red-300 transition-colors hover:bg-white/10 hover:text-red-100 disabled:opacity-50"
+                        className="text-destructive hover:bg-destructive/10 rounded-lg p-2 transition-colors disabled:opacity-50"
                         aria-label="Delete payment"
                       >
                         <Trash2 className="size-4" />

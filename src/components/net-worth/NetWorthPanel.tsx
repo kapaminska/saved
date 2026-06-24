@@ -138,13 +138,13 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
   if (!hasAnyItems) {
     return (
       <>
-        <div className="mb-8 rounded-xl border border-white/10 bg-white/10 p-6 text-white backdrop-blur-xl">
-          <h2 className="mb-1 text-lg font-semibold text-white">{headline}</h2>
-          <p className="mb-4 text-2xl font-bold text-white">—</p>
+        <div className="border-border bg-card mb-8 rounded-xl border p-6 shadow-sm">
+          <h2 className="text-foreground mb-1 text-lg font-semibold">{headline}</h2>
+          <p className="text-foreground mb-4 text-2xl font-bold">—</p>
           <button
             type="button"
             onClick={openCreateAsset}
-            className="rounded-lg border border-purple-400/40 bg-purple-900/30 px-4 py-2 text-sm text-purple-200 transition-colors hover:bg-purple-900/50"
+            className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-4 py-2 text-sm transition-colors"
           >
             Add your first asset
           </button>
@@ -163,9 +163,9 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
 
   return (
     <>
-      <div className="mb-8 rounded-xl border border-white/10 bg-white/10 p-6 text-white backdrop-blur-xl">
-        <h2 className="mb-1 text-lg font-semibold text-white">{headline}</h2>
-        <p className="mb-4 text-2xl font-bold text-white">{formatPln(netWorth)}</p>
+      <div className="border-border bg-card mb-8 rounded-xl border p-6 shadow-sm">
+        <h2 className="text-foreground mb-1 text-lg font-semibold">{headline}</h2>
+        <p className="text-foreground mb-4 text-2xl font-bold">{formatPln(netWorth)}</p>
 
         {stalestAsset && (
           <StaleAssetBanner
@@ -181,12 +181,12 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
 
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h3 className="text-sm font-semibold text-blue-100/90">Assets</h3>
+            <h3 className="text-foreground text-sm font-semibold">Assets</h3>
             <button
               type="button"
               onClick={openCreateAsset}
               disabled={actionLoading}
-              className="rounded-lg border border-purple-400/40 bg-purple-900/30 px-3 py-1 text-sm text-purple-200 transition-colors hover:bg-purple-900/50 disabled:opacity-50"
+              className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-3 py-1 text-sm transition-colors disabled:opacity-50"
             >
               Add asset
             </button>
@@ -196,16 +196,16 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
               {assets.map((asset) => (
                 <li
                   key={asset.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2"
+                  className="border-border bg-muted/50 flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2"
                 >
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium text-white">{asset.name}</span>
-                      <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-xs text-blue-100/70">
+                      <span className="text-foreground font-medium">{asset.name}</span>
+                      <span className="border-border bg-background text-muted-foreground rounded-full border px-2 py-0.5 text-xs">
                         {categoryLabel(asset.category)}
                       </span>
                     </div>
-                    <p className="text-sm text-blue-100/70">{formatPln(asset.amount)}</p>
+                    <p className="text-muted-foreground text-sm">{formatPln(asset.amount)}</p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
                     <button
@@ -214,7 +214,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                         void handleConfirmAsset(asset.id);
                       }}
                       disabled={actionLoading}
-                      className="text-xs text-blue-100/70 transition-colors hover:text-white disabled:opacity-50"
+                      className="text-muted-foreground hover:text-foreground text-xs transition-colors disabled:opacity-50"
                     >
                       Still current
                     </button>
@@ -224,7 +224,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                         openEditAsset(asset);
                       }}
                       disabled={actionLoading}
-                      className="rounded-lg p-1.5 text-purple-300 transition-colors hover:bg-white/10 hover:text-purple-100 disabled:opacity-50"
+                      className="text-primary hover:bg-accent hover:text-primary/80 rounded-lg p-1.5 transition-colors disabled:opacity-50"
                       aria-label={`Edit ${asset.name}`}
                     >
                       <Pencil className="size-4" />
@@ -235,7 +235,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                         void handleDeleteAsset(asset.id, asset.name);
                       }}
                       disabled={actionLoading}
-                      className="rounded-lg p-1.5 text-red-300/80 transition-colors hover:bg-white/10 hover:text-red-200 disabled:opacity-50"
+                      className="text-destructive hover:bg-destructive/10 rounded-lg p-1.5 transition-colors disabled:opacity-50"
                       aria-label={`Delete ${asset.name}`}
                     >
                       <Trash2 className="size-4" />
@@ -245,18 +245,18 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-blue-100/50">No assets yet.</p>
+            <p className="text-muted-foreground text-sm">No assets yet.</p>
           )}
         </div>
 
         <div>
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h3 className="text-sm font-semibold text-blue-100/90">Liabilities</h3>
+            <h3 className="text-foreground text-sm font-semibold">Liabilities</h3>
             <button
               type="button"
               onClick={openCreateLiability}
               disabled={actionLoading}
-              className="rounded-lg border border-purple-400/40 bg-purple-900/30 px-3 py-1 text-sm text-purple-200 transition-colors hover:bg-purple-900/50 disabled:opacity-50"
+              className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-3 py-1 text-sm transition-colors disabled:opacity-50"
             >
               Add liability
             </button>
@@ -266,11 +266,11 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
               {liabilities.map((liability) => (
                 <li
                   key={liability.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2"
+                  className="border-border bg-muted/50 flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2"
                 >
                   <div className="min-w-0">
-                    <span className="font-medium text-white">{liability.name}</span>
-                    <p className="text-sm text-blue-100/70">{formatPln(liability.amount)}</p>
+                    <span className="text-foreground font-medium">{liability.name}</span>
+                    <p className="text-muted-foreground text-sm">{formatPln(liability.amount)}</p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
                     <button
@@ -279,7 +279,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                         openEditLiability(liability);
                       }}
                       disabled={actionLoading}
-                      className="rounded-lg p-1.5 text-purple-300 transition-colors hover:bg-white/10 hover:text-purple-100 disabled:opacity-50"
+                      className="text-primary hover:bg-accent hover:text-primary/80 rounded-lg p-1.5 transition-colors disabled:opacity-50"
                       aria-label={`Edit ${liability.name}`}
                     >
                       <Pencil className="size-4" />
@@ -290,7 +290,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                         void handleDeleteLiability(liability.id, liability.name);
                       }}
                       disabled={actionLoading}
-                      className="rounded-lg p-1.5 text-red-300/80 transition-colors hover:bg-white/10 hover:text-red-200 disabled:opacity-50"
+                      className="text-destructive hover:bg-destructive/10 rounded-lg p-1.5 transition-colors disabled:opacity-50"
                       aria-label={`Delete ${liability.name}`}
                     >
                       <Trash2 className="size-4" />
@@ -300,7 +300,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-blue-100/50">No liabilities yet.</p>
+            <p className="text-muted-foreground text-sm">No liabilities yet.</p>
           )}
         </div>
       </div>

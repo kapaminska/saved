@@ -6,14 +6,10 @@ const { profile } = Astro.locals;
 ---
 
 <Layout title="Welcome">
-  <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
-    <div class="w-full max-w-md rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
-      <h1
-        class="mb-2 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent"
-      >
-        Welcome!
-      </h1>
-      <p class="mb-6 text-center text-sm text-blue-100/70">
+  <div class="bg-warm flex min-h-screen items-center justify-center p-4">
+    <div class="border-border bg-card w-full max-w-md rounded-2xl border p-8 shadow-lg">
+      <h1 class="text-foreground mb-2 text-center text-2xl font-bold">Welcome!</h1>
+      <p class="text-muted-foreground mb-6 text-center text-sm">
         Tell us a bit about yourself to personalize your experience.
       </p>
 
@@ -31,7 +27,7 @@ const { profile } = Astro.locals;
 
       <div class="mt-4 text-center">
         <form method="POST" action="/api/profile/skip">
-          <button type="submit" class="text-sm text-blue-100/50 transition-colors hover:text-blue-100/80">
+          <button type="submit" class="text-muted-foreground hover:text-foreground text-sm transition-colors">
             Skip for now
           </button>
         </form>

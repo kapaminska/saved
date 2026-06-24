@@ -42,26 +42,26 @@ export default function StaleAssetBanner({ stalestAsset, onConfirm, onDismiss }:
   if (hidden) return null;
 
   return (
-    <div className="mb-4 rounded-xl border border-white/10 bg-white/10 p-4 text-white backdrop-blur-xl">
+    <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
       <div className="flex items-start gap-3">
-        <Clock className="mt-0.5 size-5 shrink-0 text-blue-200/80" />
+        <Clock className="mt-0.5 size-5 shrink-0 text-amber-700" />
         <div className="min-w-0 flex-1">
-          <p className="text-sm text-blue-100/90">
-            <span className="font-medium text-white">{stalestAsset.name}</span> hasn&apos;t been updated in over 3
-            months — still accurate?
+          <p className="text-sm text-amber-900">
+            <span className="font-medium">{stalestAsset.name}</span> hasn&apos;t been updated in over 3 months — still
+            accurate?
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={onConfirm}
-              className="rounded-lg border border-purple-400/40 bg-purple-900/30 px-3 py-1.5 text-sm text-purple-200 transition-colors hover:bg-purple-900/50"
+              className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-3 py-1.5 text-sm transition-colors"
             >
               Still current
             </button>
             <button
               type="button"
               onClick={handleDismiss}
-              className="rounded-lg border border-white/20 px-3 py-1.5 text-sm text-blue-100/80 transition-colors hover:bg-white/10"
+              className="border-border text-muted-foreground hover:bg-accent rounded-lg border px-3 py-1.5 text-sm transition-colors"
             >
               Dismiss
             </button>
@@ -70,7 +70,7 @@ export default function StaleAssetBanner({ stalestAsset, onConfirm, onDismiss }:
         <button
           type="button"
           onClick={handleDismiss}
-          className="rounded-lg p-1 text-blue-100/70 transition-colors hover:bg-white/10 hover:text-white"
+          className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors"
           aria-label="Dismiss"
         >
           <X className="size-4" />

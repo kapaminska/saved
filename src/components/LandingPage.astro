@@ -20,23 +20,23 @@ import MarketingHeader from "@/components/MarketingHeader.astro";
     <MarketingHeader />
 
     <div class="mx-auto flex max-w-4xl flex-col items-center justify-center px-4 py-16 text-center sm:py-24 lg:py-32">
-      <h1 class="mb-6 text-4xl leading-tight font-bold text-amber-950 sm:text-5xl lg:text-6xl">
+      <h1 class="text-foreground mb-6 text-4xl leading-tight font-bold sm:text-5xl lg:text-6xl">
         Odkładaj na cele. Świętuj każdy z nich.
       </h1>
-      <p class="mb-10 max-w-2xl text-lg text-amber-900/70 sm:text-xl">
+      <p class="text-muted-foreground mb-10 max-w-2xl text-lg sm:text-xl">
         Zdefiniuj cele oszczędnościowe, raz w miesiącu zrób check-in jednym zdaniem i śledź postęp z realistyczną
         projekcją.
       </p>
       <a
         href="/auth/signin"
-        class="inline-flex items-center justify-center rounded-lg bg-amber-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-amber-500"
+        class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center rounded-lg px-6 py-3 text-base font-medium transition-colors"
       >
         Zaloguj się
       </a>
     </div>
 
     <div class="mx-auto grid max-w-4xl grid-cols-1 gap-6 px-4 pb-24 sm:grid-cols-3">
-      <div class="rounded-xl border border-amber-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm">
+      <div class="border-border bg-card rounded-xl border p-6 shadow-sm">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -47,19 +47,19 @@ import MarketingHeader from "@/components/MarketingHeader.astro";
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="mb-4 text-amber-600"
+          class="text-primary mb-4"
         >
           <circle cx="12" cy="12" r="10"></circle>
           <circle cx="12" cy="12" r="6"></circle>
           <circle cx="12" cy="12" r="2"></circle>
         </svg>
-        <h3 class="mb-2 text-lg font-semibold text-amber-950">Cele oszczędnościowe</h3>
-        <p class="text-sm leading-relaxed text-amber-900/65">
+        <h3 class="text-foreground mb-2 text-lg font-semibold">Cele oszczędnościowe</h3>
+        <p class="text-muted-foreground text-sm leading-relaxed">
           Twórz wiele celów z kwotami docelowymi i opcjonalnymi terminami.
         </p>
       </div>
 
-      <div class="rounded-xl border border-amber-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm">
+      <div class="border-border bg-card rounded-xl border p-6 shadow-sm">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -70,17 +70,17 @@ import MarketingHeader from "@/components/MarketingHeader.astro";
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="mb-4 text-amber-600"
+          class="text-primary mb-4"
         >
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
-        <h3 class="mb-2 text-lg font-semibold text-amber-950">Miesięczny check-in</h3>
-        <p class="text-sm leading-relaxed text-amber-900/65">
+        <h3 class="text-foreground mb-2 text-lg font-semibold">Miesięczny check-in</h3>
+        <p class="text-muted-foreground text-sm leading-relaxed">
           Raz w miesiącu wpisz jedno zdanie po polsku albo uzupełnij wpłaty ręcznie.
         </p>
       </div>
 
-      <div class="rounded-xl border border-amber-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm">
+      <div class="border-border bg-card rounded-xl border p-6 shadow-sm">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -91,12 +91,12 @@ import MarketingHeader from "@/components/MarketingHeader.astro";
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="mb-4 text-amber-600"
+          class="text-primary mb-4"
         >
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
         </svg>
-        <h3 class="mb-2 text-lg font-semibold text-amber-950">Projekcja postępu</h3>
-        <p class="text-sm leading-relaxed text-amber-900/65">
+        <h3 class="text-foreground mb-2 text-lg font-semibold">Projekcja postępu</h3>
+        <p class="text-muted-foreground text-sm leading-relaxed">
           Zobacz wymagane tempo, prognozowaną datę ukończenia i status: na dobrej drodze, z tyłu lub z wyprzedzeniem.
         </p>
       </div>

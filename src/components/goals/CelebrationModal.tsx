@@ -7,6 +7,8 @@ interface Props {
   goalName: string | null;
 }
 
+const CONFETTI_COLORS = ["#d97706", "#f59e0b", "#fb923c", "#fcd34d", "#fef3c7"];
+
 export default function CelebrationModal({ goalId, goalName }: Props) {
   const [open, setOpen] = useState(Boolean(goalId));
   const firedRef = useRef(false);
@@ -22,6 +24,7 @@ export default function CelebrationModal({ goalId, goalName }: Props) {
       ticks: 120,
       gravity: 0.9,
       scalar: 0.9,
+      colors: CONFETTI_COLORS,
     });
   }, [goalId]);
 
@@ -35,24 +38,24 @@ export default function CelebrationModal({ goalId, goalName }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div className="bg-foreground/20 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="celebration-title"
-        className="w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-purple-900/90 to-blue-900/90 p-8 text-center text-white shadow-2xl"
+        className="border-border bg-card w-full max-w-md rounded-2xl border p-8 text-center shadow-xl"
       >
-        <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-white/10">
-          <PartyPopper className="size-7 text-yellow-300" />
+        <div className="bg-primary/10 mx-auto mb-4 flex size-14 items-center justify-center rounded-full">
+          <PartyPopper className="text-primary size-7" />
         </div>
-        <h2 id="celebration-title" className="mb-2 text-2xl font-bold text-white">
+        <h2 id="celebration-title" className="text-foreground mb-2 text-2xl font-bold">
           Cel osiągnięty!
         </h2>
-        <p className="mb-6 text-blue-100/90">Gratulacje — {goalName ?? "twój cel"} jest ukończony.</p>
+        <p className="text-muted-foreground mb-6">Gratulacje — {goalName ?? "twój cel"} jest ukończony.</p>
         <button
           type="button"
           onClick={handleDismiss}
-          className="rounded-lg bg-white/20 px-6 py-2 text-sm font-medium transition-colors hover:bg-white/30"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-6 py-2 text-sm font-medium transition-colors"
         >
           Świetnie!
         </button>

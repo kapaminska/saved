@@ -56,6 +56,9 @@ function createReviewProposals(proposals: ParsedProposal[]): ReviewProposal[] {
   }));
 }
 
+const inputClass =
+  "border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-ring focus:ring-ring w-full rounded-lg border px-3 py-2 focus:ring-2 focus:outline-none disabled:opacity-50";
+
 export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange, onSwitchToManual }: Props) {
   const [view, setView] = useState<View>("input");
   const [text, setText] = useState("");
@@ -186,9 +189,9 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
         {reviewProposals.length > 0 && (
           <ul className="space-y-3">
             {reviewProposals.map((proposal) => (
-              <li key={proposal.id} className="rounded-lg border border-white/10 bg-white/5 p-3">
+              <li key={proposal.id} className="border-border bg-muted/50 rounded-lg border p-3">
                 <div className="mb-2 flex items-center justify-between gap-2">
-                  <label htmlFor={`review-amount-${proposal.id}`} className="text-sm font-medium text-white">
+                  <label htmlFor={`review-amount-${proposal.id}`} className="text-foreground text-sm font-medium">
                     Amount
                   </label>
                   <button
@@ -197,13 +200,13 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
                       removeProposal(proposal.id);
                     }}
                     disabled={loading}
-                    className="text-xs text-red-300/80 transition-colors hover:text-red-200 disabled:opacity-50"
+                    className="text-destructive hover:text-destructive/80 text-xs transition-colors disabled:opacity-50"
                   >
                     Remove
                   </button>
                 </div>
                 <div className="relative mb-2">
-                  <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+                  <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
                     <Banknote className="size-4" />
                   </span>
                   <input
@@ -217,10 +220,10 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
                       updateProposal(proposal.id, { amount: e.target.value });
                     }}
                     disabled={loading}
-                    className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 pl-10 text-white focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+                    className={`${inputClass} pl-10`}
                   />
                 </div>
-                <label htmlFor={`review-goal-${proposal.id}`} className="mb-1 block text-xs text-blue-100/70">
+                <label htmlFor={`review-goal-${proposal.id}`} className="text-muted-foreground mb-1 block text-xs">
                   Goal
                 </label>
                 <select
@@ -230,10 +233,10 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
                     updateProposal(proposal.id, { goalId: e.target.value });
                   }}
                   disabled={loading}
-                  className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+                  className={inputClass}
                 >
                   {goals.map((goal) => (
-                    <option key={goal.id} value={goal.id} className="bg-purple-900">
+                    <option key={goal.id} value={goal.id}>
                       {goal.name}
                     </option>
                   ))}
@@ -244,16 +247,16 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
         )}
 
         {unrecognized.length > 0 && (
-          <div className="rounded-lg border border-amber-500/30 bg-amber-900/20 p-3">
-            <p className="mb-2 flex items-center gap-2 text-sm font-medium text-amber-200">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
+            <p className="mb-2 flex items-center gap-2 text-sm font-medium text-amber-900">
               <TriangleAlert className="size-4 shrink-0" />
               Unrecognized goals
             </p>
-            <ul className="space-y-2 text-sm text-amber-100/80">
+            <ul className="space-y-2 text-sm text-amber-800">
               {unrecognized.map((entry) => (
                 <li key={`${entry.rawGoalName}-${entry.amount}`}>
                   {entry.rawGoalName} ({entry.amount} zł) —{" "}
-                  <a href="/goals/new" className="underline hover:text-amber-100">
+                  <a href="/goals/new" className="text-primary hover:text-primary/80 underline">
                     Create this goal separately
                   </a>
                 </li>
@@ -263,7 +266,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
         )}
 
         {reviewProposals.length === 0 && (
-          <p className="text-sm text-blue-100/70">
+          <p className="text-muted-foreground text-sm">
             No proposals to save. Go back to edit your sentence or switch to manual check-in.
           </p>
         )}
@@ -278,7 +281,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
               setSaveError(null);
             }}
             disabled={loading}
-            className="flex-1 rounded-lg border border-white/20 px-4 py-2 text-sm text-blue-100/80 transition-colors hover:bg-white/10 disabled:opacity-50"
+            className="border-border text-muted-foreground hover:bg-accent flex-1 rounded-lg border px-4 py-2 text-sm transition-colors disabled:opacity-50"
           >
             Back
           </button>
@@ -288,7 +291,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
               void handleSaveReview();
             }}
             disabled={loading || reviewProposals.length === 0}
-            className="flex-1 rounded-lg bg-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/30 disabled:opacity-50"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
           >
             {loading ? "Saving..." : "Save check-in"}
           </button>
@@ -306,11 +309,11 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
         className="space-y-4"
       >
         <div>
-          <label htmlFor="ai-payment_month" className="mb-1 block text-sm text-blue-100/80">
+          <label htmlFor="ai-payment_month" className="text-foreground mb-1 block text-sm">
             Month
           </label>
           <div className="relative">
-            <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+            <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
               <Calendar className="size-4" />
             </span>
             <input
@@ -322,13 +325,13 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
                 onMonthChange(e.target.value);
               }}
               disabled={loading}
-              className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 pl-10 text-white focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+              className={`${inputClass} pl-10`}
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="ai-checkin-text" className="mb-1 block text-sm text-blue-100/80">
+          <label htmlFor="ai-checkin-text" className="text-foreground mb-1 block text-sm">
             Describe what you saved this month
           </label>
           <textarea
@@ -342,22 +345,22 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
               setInputError(null);
             }}
             disabled={loading}
-            className="w-full resize-y rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder-white/40 focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+            className={inputClass}
           />
-          <p className="mt-1 text-right text-xs text-blue-100/50">
+          <p className="text-muted-foreground/70 mt-1 text-right text-xs">
             {text.length}/{MAX_TEXT_LENGTH}
           </p>
         </div>
 
         {inputError && (
-          <p className="flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-900/30 px-3 py-2 text-sm text-red-300">
+          <p className="border-destructive/30 bg-destructive/10 text-destructive flex items-center gap-2 rounded-lg border px-3 py-2 text-sm">
             <AlertTriangle className="size-4 shrink-0" />
             {inputError}
           </p>
         )}
 
         {loading && (
-          <p className="flex items-center gap-2 text-sm text-blue-100/80">
+          <p className="text-muted-foreground flex items-center gap-2 text-sm">
             <Loader2 className="size-4 animate-spin" />
             Parsing your check-in…
           </p>
@@ -366,7 +369,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
         <button
           type="submit"
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/30 disabled:opacity-50"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
         >
           <Sparkles className="size-4" />
           {loading ? "Parsing..." : "Parse check-in"}
@@ -379,7 +382,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
         <button
           type="button"
           onClick={onSwitchToManual}
-          className="w-full rounded-lg border border-purple-400/40 bg-purple-900/30 px-4 py-2 text-sm font-medium text-purple-200 transition-colors hover:bg-purple-900/50"
+          className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 w-full rounded-lg border px-4 py-2 text-sm font-medium transition-colors"
         >
           Switch to manual check-in
         </button>

@@ -457,49 +457,49 @@ Legitimate exceptions: none expected. Decorative landing blur orbs using `orange
 
 #### Automated
 
-- [x] 1.1 Lint passes: `npm run lint`
-- [x] 1.2 Type checking passes: `npx astro sync && npx tsc --noEmit`
-- [x] 1.3 Build passes: `npm run build`
+- [x] 1.1 Lint passes: `npm run lint` — 57b0859
+- [x] 1.2 Type checking passes: `npx astro sync && npx tsc --noEmit` — 57b0859
+- [x] 1.3 Build passes: `npm run build` — 57b0859
 
 #### Manual
 
-- [x] 1.4 DevTools confirms Nunito font and warm `:root` CSS variables
+- [x] 1.4 DevTools confirms Nunito font and warm `:root` CSS variables — 57b0859
 
 ### Phase 2: Shared UI Primitives
 
 #### Automated
 
-- [ ] 2.1 Lint passes: `npm run lint`
-- [ ] 2.2 Build passes: `npm run build`
+- [x] 2.1 Lint passes: `npm run lint`
+- [x] 2.2 Build passes: `npm run build`
 
 #### Manual
 
-- [ ] 2.3 Sign-in form inputs, button, and error state readable on warm background with visible focus rings
+- [x] 2.3 Sign-in form inputs, button, and error state readable on warm background with visible focus rings
 
 ### Phase 3: All Surfaces Migration
 
 #### Automated
 
-- [ ] 3.1 Lint passes: `npm run lint`
-- [ ] 3.2 Build passes: `npm run build`
-- [ ] 3.3 Zero cosmic references: `rg 'bg-cosmic|purple-[0-9]{3}|from-blue-200' src/` returns zero matches
+- [x] 3.1 Lint passes: `npm run lint`
+- [x] 3.2 Build passes: `npm run build`
+- [x] 3.3 Zero cosmic references: `rg 'bg-cosmic|purple-[0-9]{3}|from-blue-200' src/` returns zero matches
 
 #### Manual
 
-- [ ] 3.4 Full user journey visually coherent (landing through celebration)
-- [ ] 3.5 Status badges, banners, and destructive controls readable on light backgrounds
-- [ ] 3.6 Confetti warm-toned and visible on light background
+- [x] 3.4 Full user journey visually coherent (landing through celebration)
+- [x] 3.5 Status badges, banners, and destructive controls readable on light backgrounds
+- [x] 3.6 Confetti warm-toned and visible on light background
 
 ### Phase 4: Cleanup & Verification
 
 #### Automated
 
-- [ ] 4.1 Lint passes: `npm run lint`
-- [ ] 4.2 Build passes: `npm run build`
-- [ ] 4.3 Format clean: `npm run format`
-- [ ] 4.4 Cosmic grep clean across full pattern set
+- [x] 4.1 Lint passes: `npm run lint`
+- [x] 4.2 Build passes: `npm run build`
+- [x] 4.3 Format clean: `npm run format`
+- [x] 4.4 Cosmic grep clean across full pattern set
 
 #### Manual
 
-- [ ] 4.5 Complete Phase 4 visual checklist (all routes)
-- [ ] 4.6 Landing → sign-in transition has no theme jump
+- [x] 4.5 Complete Phase 4 visual checklist (all routes)
+- [x] 4.6 Landing → sign-in transition has no theme jump

@@ -189,22 +189,22 @@ export default function AssetFormModal({ mode, initial, open, onOpenChange, onSu
   const isMultiCreate = mode === "create" && rows.length > 1;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div className="bg-foreground/20 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="asset-form-title"
-        className="flex max-h-[90vh] w-full max-w-md flex-col rounded-2xl border border-white/20 bg-gradient-to-br from-purple-900/95 to-blue-900/95 text-white shadow-2xl"
+        className="border-border bg-card text-foreground flex max-h-[90vh] w-full max-w-md flex-col rounded-2xl border shadow-xl"
       >
-        <div className="flex items-start justify-between gap-4 border-b border-white/10 p-6 pb-4">
-          <h2 id="asset-form-title" className="text-lg font-bold text-white">
+        <div className="border-border flex items-start justify-between gap-4 border-b p-6 pb-4">
+          <h2 id="asset-form-title" className="text-foreground text-lg font-bold">
             {mode === "create" ? (isMultiCreate ? "Add assets" : "Add asset") : "Edit asset"}
           </h2>
           <button
             type="button"
             onClick={handleClose}
             disabled={loading}
-            className="rounded-lg p-1 text-blue-100/70 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors disabled:opacity-50"
             aria-label="Close"
           >
             <X className="size-5" />
@@ -220,18 +220,18 @@ export default function AssetFormModal({ mode, initial, open, onOpenChange, onSu
               return (
                 <div
                   key={row.key}
-                  className={showRowHeader ? "rounded-xl border border-white/10 bg-white/5 p-4" : undefined}
+                  className={showRowHeader ? "border-border bg-muted/50 rounded-xl border p-4" : undefined}
                 >
                   {showRowHeader && (
                     <div className="mb-3 flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium text-blue-100/80">Asset {index + 1}</span>
+                      <span className="text-foreground text-sm font-medium">Asset {index + 1}</span>
                       <button
                         type="button"
                         onClick={() => {
                           removeRow(row.key);
                         }}
                         disabled={loading}
-                        className="rounded-lg p-1.5 text-red-300/80 transition-colors hover:bg-white/10 hover:text-red-200 disabled:opacity-50"
+                        className="text-destructive hover:bg-destructive/10 rounded-lg p-1.5 transition-colors disabled:opacity-50"
                         aria-label={`Remove asset ${index + 1}`}
                       >
                         <Trash2 className="size-4" />
@@ -269,11 +269,11 @@ export default function AssetFormModal({ mode, initial, open, onOpenChange, onSu
                     />
 
                     <div>
-                      <label htmlFor={`asset-category-${row.key}`} className="mb-1 block text-sm text-blue-100/80">
+                      <label htmlFor={`asset-category-${row.key}`} className="text-foreground mb-1 block text-sm">
                         Category
                       </label>
                       <div className="relative">
-                        <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+                        <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
                           <Tag className="size-4" />
                         </span>
                         <select
@@ -283,16 +283,16 @@ export default function AssetFormModal({ mode, initial, open, onOpenChange, onSu
                           onChange={(e) => {
                             updateRow(row.key, { category: e.target.value });
                           }}
-                          className="w-full appearance-none rounded-lg border border-white/20 bg-white/10 px-3 py-2 pl-10 text-white focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+                          className="border-input bg-background text-foreground focus:border-ring focus:ring-ring w-full appearance-none rounded-lg border px-3 py-2 pl-10 focus:ring-2 focus:outline-none disabled:opacity-50"
                         >
                           {ASSET_CATEGORIES.map((cat) => (
-                            <option key={cat} value={cat} className="bg-purple-900 text-white">
+                            <option key={cat} value={cat}>
                               {CATEGORY_LABELS[cat]}
                             </option>
                           ))}
                         </select>
                       </div>
-                      {errors.category && <p className="mt-1 text-xs text-red-300">{errors.category}</p>}
+                      {errors.category && <p className="text-destructive mt-1 text-xs">{errors.category}</p>}
                     </div>
                   </div>
                 </div>
@@ -304,7 +304,7 @@ export default function AssetFormModal({ mode, initial, open, onOpenChange, onSu
                 type="button"
                 onClick={addRow}
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-white/20 px-4 py-2.5 text-sm text-blue-100/80 transition-colors hover:border-purple-400/40 hover:bg-white/5 hover:text-white disabled:opacity-50"
+                className="border-border text-muted-foreground hover:border-primary/40 hover:bg-accent hover:text-foreground flex w-full items-center justify-center gap-2 rounded-lg border border-dashed px-4 py-2.5 text-sm transition-colors disabled:opacity-50"
               >
                 <Plus className="size-4" />
                 Add another asset
@@ -314,7 +314,7 @@ export default function AssetFormModal({ mode, initial, open, onOpenChange, onSu
             <ServerError message={error} />
           </div>
 
-          <div className="border-t border-white/10 p-6 pt-4">
+          <div className="border-border border-t p-6 pt-4">
             <SubmitButton pendingText="Saving..." icon={<ArrowRight className="size-4" />} disabled={loading}>
               {mode === "create" ? (rows.length > 1 ? `Add ${rows.length} assets` : "Add asset") : "Save changes"}
             </SubmitButton>

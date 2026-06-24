@@ -8,6 +8,9 @@ interface Props {
   defaultMonth: string;
 }
 
+const inputClass =
+  "border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-ring focus:ring-ring w-full rounded-lg border px-3 py-2 pl-10 focus:ring-2 focus:outline-none disabled:opacity-50";
+
 export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Props) {
   const [open, setOpen] = useState(false);
   const [month, setMonth] = useState(defaultMonth);
@@ -73,7 +76,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
       <button
         type="button"
         onClick={handleOpen}
-        className="inline-flex size-8 items-center justify-center rounded-lg border border-green-400/40 bg-green-900/30 text-green-200 transition-colors hover:bg-green-900/50"
+        className="inline-flex size-8 items-center justify-center rounded-lg border border-green-200 bg-green-100 text-green-800 transition-colors hover:bg-green-200"
         aria-label={`Add payment to ${goalName}`}
         title="Add payment"
       >
@@ -81,25 +84,25 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+        <div className="bg-foreground/20 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="quick-payment-title"
-            className="w-full max-w-sm rounded-2xl border border-white/20 bg-gradient-to-br from-purple-900/95 to-blue-900/95 p-6 text-white shadow-2xl"
+            className="border-border bg-card w-full max-w-sm rounded-2xl border p-6 shadow-xl"
           >
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
-                <h2 id="quick-payment-title" className="text-lg font-bold text-white">
+                <h2 id="quick-payment-title" className="text-foreground text-lg font-bold">
                   Add payment
                 </h2>
-                <p className="mt-1 text-sm text-blue-100/70">{goalName}</p>
+                <p className="text-muted-foreground mt-1 text-sm">{goalName}</p>
               </div>
               <button
                 type="button"
                 onClick={handleClose}
                 disabled={loading}
-                className="rounded-lg p-1 text-blue-100/70 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+                className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors disabled:opacity-50"
                 aria-label="Close"
               >
                 <X className="size-5" />
@@ -108,11 +111,11 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor={`quick-month-${goalId}`} className="mb-1 block text-sm text-blue-100/80">
+                <label htmlFor={`quick-month-${goalId}`} className="text-foreground mb-1 block text-sm">
                   Month
                 </label>
                 <div className="relative">
-                  <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+                  <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
                     <Calendar className="size-4" />
                   </span>
                   <input
@@ -124,17 +127,17 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
                       setMonth(e.target.value);
                     }}
                     disabled={loading}
-                    className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 pl-10 text-white focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor={`quick-amount-${goalId}`} className="mb-1 block text-sm text-blue-100/80">
+                <label htmlFor={`quick-amount-${goalId}`} className="text-foreground mb-1 block text-sm">
                   Amount (PLN)
                 </label>
                 <div className="relative">
-                  <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+                  <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
                     <Banknote className="size-4" />
                   </span>
                   <input
@@ -149,7 +152,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
                     }}
                     disabled={loading}
                     placeholder="e.g. 500.00"
-                    className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 pl-10 text-white placeholder-white/40 focus:ring-2 focus:ring-purple-400 focus:outline-none disabled:opacity-50"
+                    className={inputClass}
                   />
                 </div>
               </div>
@@ -161,14 +164,14 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
                   type="button"
                   onClick={handleClose}
                   disabled={loading}
-                  className="flex-1 rounded-lg border border-white/20 px-4 py-2 text-sm text-blue-100/80 transition-colors hover:bg-white/10 disabled:opacity-50"
+                  className="border-border text-muted-foreground hover:bg-accent flex-1 rounded-lg border px-4 py-2 text-sm transition-colors disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 rounded-lg bg-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/30 disabled:opacity-50"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
                 >
                   {loading ? "Saving..." : "Save"}
                 </button>

@@ -170,22 +170,22 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
   const isMultiCreate = mode === "create" && rows.length > 1;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div className="bg-foreground/20 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="liability-form-title"
-        className="flex max-h-[90vh] w-full max-w-md flex-col rounded-2xl border border-white/20 bg-gradient-to-br from-purple-900/95 to-blue-900/95 text-white shadow-2xl"
+        className="border-border bg-card text-foreground flex max-h-[90vh] w-full max-w-md flex-col rounded-2xl border shadow-xl"
       >
-        <div className="flex items-start justify-between gap-4 border-b border-white/10 p-6 pb-4">
-          <h2 id="liability-form-title" className="text-lg font-bold text-white">
+        <div className="border-border flex items-start justify-between gap-4 border-b p-6 pb-4">
+          <h2 id="liability-form-title" className="text-foreground text-lg font-bold">
             {mode === "create" ? (isMultiCreate ? "Add liabilities" : "Add liability") : "Edit liability"}
           </h2>
           <button
             type="button"
             onClick={handleClose}
             disabled={loading}
-            className="rounded-lg p-1 text-blue-100/70 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors disabled:opacity-50"
             aria-label="Close"
           >
             <X className="size-5" />
@@ -201,18 +201,18 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
               return (
                 <div
                   key={row.key}
-                  className={showRowHeader ? "rounded-xl border border-white/10 bg-white/5 p-4" : undefined}
+                  className={showRowHeader ? "border-border bg-muted/50 rounded-xl border p-4" : undefined}
                 >
                   {showRowHeader && (
                     <div className="mb-3 flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium text-blue-100/80">Liability {index + 1}</span>
+                      <span className="text-foreground text-sm font-medium">Liability {index + 1}</span>
                       <button
                         type="button"
                         onClick={() => {
                           removeRow(row.key);
                         }}
                         disabled={loading}
-                        className="rounded-lg p-1.5 text-red-300/80 transition-colors hover:bg-white/10 hover:text-red-200 disabled:opacity-50"
+                        className="text-destructive hover:bg-destructive/10 rounded-lg p-1.5 transition-colors disabled:opacity-50"
                         aria-label={`Remove liability ${index + 1}`}
                       >
                         <Trash2 className="size-4" />
@@ -258,7 +258,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
                 type="button"
                 onClick={addRow}
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-white/20 px-4 py-2.5 text-sm text-blue-100/80 transition-colors hover:border-purple-400/40 hover:bg-white/5 hover:text-white disabled:opacity-50"
+                className="border-border text-muted-foreground hover:border-primary/40 hover:bg-accent hover:text-foreground flex w-full items-center justify-center gap-2 rounded-lg border border-dashed px-4 py-2.5 text-sm transition-colors disabled:opacity-50"
               >
                 <Plus className="size-4" />
                 Add another liability
@@ -268,7 +268,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
             <ServerError message={error} />
           </div>
 
-          <div className="border-t border-white/10 p-6 pt-4">
+          <div className="border-border border-t p-6 pt-4">
             <SubmitButton pendingText="Saving..." icon={<ArrowRight className="size-4" />} disabled={loading}>
               {mode === "create"
                 ? rows.length > 1

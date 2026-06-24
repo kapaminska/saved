@@ -21,20 +21,15 @@ const pageData = await getEditGoalPageData(
     <ClientRedirect url={pageData.url} client:load />
   ) : (
     <Layout title={`Edit ${pageData.goal.name}`}>
-      <div class="bg-cosmic min-h-screen">
+      <div class="bg-warm min-h-screen">
         <div class="relative z-10 p-4 sm:p-8">
           <Topbar />
           <div class="mx-auto mt-8 max-w-md">
-            <a
-              href="/dashboard"
-              class="mb-4 inline-block text-sm text-purple-300 transition-colors hover:text-purple-100"
-            >
+            <a href="/dashboard" class="text-primary hover:text-primary/80 mb-4 inline-block text-sm transition-colors">
               ← Back to dashboard
             </a>
-            <div class="rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
-              <h1 class="mb-6 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent">
-                Edit goal
-              </h1>
+            <div class="border-border bg-card rounded-2xl border p-8 shadow-lg">
+              <h1 class="text-foreground mb-6 text-center text-2xl font-bold">Edit goal</h1>
               <GoalForm
                 mode="edit"
                 initial={{

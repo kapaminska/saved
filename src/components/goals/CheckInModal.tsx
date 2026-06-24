@@ -15,6 +15,9 @@ interface Props {
 
 type ActiveTab = "ai" | "manual";
 
+const tabActive = "bg-primary text-primary-foreground font-medium";
+const tabInactive = "text-muted-foreground hover:bg-accent hover:text-accent-foreground";
+
 export default function CheckInModal({ goals, defaultMonth }: Props) {
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>("ai");
@@ -104,39 +107,39 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
       <button
         type="button"
         onClick={handleOpen}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-blue-400/40 bg-blue-900/30 px-3 py-1.5 text-sm text-blue-200 transition-colors hover:bg-blue-900/50"
+        className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors"
       >
         <ClipboardCheck className="size-4" />
         Check in
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+        <div className="bg-foreground/20 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="checkin-title"
-            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/20 bg-gradient-to-br from-purple-900/95 to-blue-900/95 p-6 text-white shadow-2xl"
+            className="border-border bg-card max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border p-6 shadow-xl"
           >
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
-                <h2 id="checkin-title" className="text-xl font-bold text-white">
+                <h2 id="checkin-title" className="text-foreground text-xl font-bold">
                   Monthly check-in
                 </h2>
-                <p className="mt-1 text-sm text-blue-100/70">{subtitle}</p>
+                <p className="text-muted-foreground mt-1 text-sm">{subtitle}</p>
               </div>
               <button
                 type="button"
                 onClick={handleClose}
                 disabled={loading}
-                className="rounded-lg p-1 text-blue-100/70 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+                className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors disabled:opacity-50"
                 aria-label="Close"
               >
                 <X className="size-5" />
               </button>
             </div>
 
-            <div className="mb-4 flex gap-1 rounded-lg border border-white/10 bg-white/5 p-1">
+            <div className="border-border bg-muted mb-4 flex gap-1 rounded-lg border p-1">
               <button
                 type="button"
                 onClick={() => {
@@ -145,9 +148,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
                 }}
                 disabled={loading}
                 className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors disabled:opacity-50 ${
-                  activeTab === "ai"
-                    ? "bg-white/20 font-medium text-white"
-                    : "text-blue-100/70 hover:bg-white/10 hover:text-white"
+                  activeTab === "ai" ? tabActive : tabInactive
                 }`}
               >
                 AI check-in
@@ -160,9 +161,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
                 }}
                 disabled={loading}
                 className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors disabled:opacity-50 ${
-                  activeTab === "manual"
-                    ? "bg-white/20 font-medium text-white"
-                    : "text-blue-100/70 hover:bg-white/10 hover:text-white"
+                  activeTab === "manual" ? tabActive : tabInactive
                 }`}
               >
                 Manual
@@ -197,7 +196,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
                   type="button"
                   onClick={handleClose}
                   disabled={loading}
-                  className="flex-1 rounded-lg border border-white/20 px-4 py-2 text-sm text-blue-100/80 transition-colors hover:bg-white/10 disabled:opacity-50"
+                  className="border-border text-muted-foreground hover:bg-accent flex-1 rounded-lg border px-4 py-2 text-sm transition-colors disabled:opacity-50"
                 >
                   Cancel
                 </button>

@@ -143,14 +143,14 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
         error={dateError}
         hint={
           !dateError ? (
-            <p className="mt-1 text-xs text-blue-100/50">Use the calendar picker — manual typing may not work.</p>
+            <p className="text-muted-foreground mt-1 text-xs">Use the calendar picker — manual typing may not work.</p>
           ) : undefined
         }
         icon={<Calendar className="size-4" />}
         inputProps={{
           max: new Date().toISOString().slice(0, 10),
           className:
-            "[color-scheme:dark] [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-70",
+            "[&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-70",
         }}
       />
 
@@ -169,11 +169,11 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
       />
 
       <div>
-        <label htmlFor="relationship_status" className="mb-1 block text-sm text-blue-100/80">
+        <label htmlFor="relationship_status" className="text-foreground mb-1 block text-sm">
           Relationship status
         </label>
         <div className="relative">
-          <span className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-white/40">
+          <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
             <Heart className="size-4" />
           </span>
           <select
@@ -183,15 +183,15 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
             onChange={(e) => {
               setRelationshipStatus(e.target.value);
             }}
-            className="w-full appearance-none rounded-lg border border-white/20 bg-white/10 px-3 py-2 pr-9 pl-10 text-white transition-colors focus:ring-2 focus:ring-purple-400 focus:outline-none"
+            className="border-input bg-background text-foreground focus:border-ring focus:ring-ring w-full appearance-none rounded-lg border px-3 py-2 pr-9 pl-10 transition-colors focus:ring-2 focus:outline-none"
           >
             {RELATIONSHIP_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-gray-900 text-white">
+              <option key={opt.value} value={opt.value}>
                 {opt.label}
               </option>
             ))}
           </select>
-          <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-white/40">
+          <span className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2">
             <ChevronDown className="size-4" />
           </span>
         </div>
@@ -200,7 +200,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
       <ServerError message={error} />
 
       {success && (
-        <p className="rounded-lg border border-green-500/30 bg-green-900/30 px-3 py-2 text-center text-sm text-green-300">
+        <p className="rounded-lg border border-green-200 bg-green-100 px-3 py-2 text-center text-sm text-green-800">
           Saved!
         </p>
       )}

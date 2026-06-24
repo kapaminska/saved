@@ -127,8 +127,8 @@ export default function MagicLinkForm({ serverError }: Props) {
   return (
     <form method="POST" action="/api/auth/verify-otp" onSubmit={handleOtpSubmit} className="space-y-4" noValidate>
       <input type="hidden" name="email" value={email} />
-      <p className="text-center text-sm text-blue-100/70">
-        We sent a 6-digit code to <span className="font-medium text-white">{email}</span>
+      <p className="text-muted-foreground text-center text-sm">
+        We sent a 6-digit code to <span className="text-foreground font-medium">{email}</span>
       </p>
 
       <FormField
@@ -159,7 +159,7 @@ export default function MagicLinkForm({ serverError }: Props) {
           type="button"
           onClick={handleResend}
           disabled={cooldown > 0 || loading}
-          className="inline-flex items-center gap-1 text-sm text-purple-300 transition-colors hover:text-purple-100 hover:underline disabled:cursor-not-allowed disabled:text-white/30 disabled:no-underline"
+          className="text-primary hover:text-primary/80 disabled:text-muted-foreground/50 inline-flex items-center gap-1 text-sm transition-colors hover:underline disabled:cursor-not-allowed disabled:no-underline"
         >
           <RotateCw className="size-3" />
           {cooldown > 0 ? `Resend code (${cooldown}s)` : "Resend code"}
@@ -175,7 +175,7 @@ export default function MagicLinkForm({ serverError }: Props) {
             setError(null);
             setTokenError(undefined);
           }}
-          className="text-sm text-blue-100/50 transition-colors hover:text-blue-100/80"
+          className="text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
           Use a different email
         </button>

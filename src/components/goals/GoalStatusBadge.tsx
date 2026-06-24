@@ -8,15 +8,15 @@ interface Props {
 const STATUS_CONFIG: Record<GoalStatus, { label: string; className: string }> = {
   ahead: {
     label: "Ahead",
-    className: "border-green-500/40 bg-green-900/30 text-green-300",
+    className: "border-green-200 bg-green-100 text-green-800",
   },
   on_track: {
     label: "On track",
-    className: "border-blue-500/40 bg-blue-900/30 text-blue-300",
+    className: "border-blue-200 bg-blue-100 text-blue-800",
   },
   behind: {
     label: "Behind",
-    className: "border-amber-500/40 bg-amber-900/30 text-amber-300",
+    className: "border-amber-200 bg-amber-100 text-amber-800",
   },
 };
 

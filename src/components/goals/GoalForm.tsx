@@ -186,8 +186,8 @@ export default function GoalForm({
 
       {hasPayments ? (
         <div>
-          <p className="mb-1 block text-sm text-blue-100/80">Already saved (PLN)</p>
-          <p className="rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-blue-100/70">
+          <p className="text-foreground mb-1 block text-sm">Already saved (PLN)</p>
+          <p className="border-border bg-muted/50 text-muted-foreground rounded-lg border px-3 py-2 text-sm">
             {formatAmount(initial?.saved_amount ?? 0)} — tracked via payment history
           </p>
         </div>
@@ -218,7 +218,7 @@ export default function GoalForm({
       />
 
       {showWarning && (
-        <p className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-900/20 px-3 py-2 text-sm text-amber-200">
+        <p className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
           <TriangleAlert className="mt-0.5 size-4 shrink-0" />
           Changing the target or deadline may affect your progress tracking.
         </p>
@@ -227,7 +227,7 @@ export default function GoalForm({
       <ServerError message={error} />
 
       {success && (
-        <p className="rounded-lg border border-green-500/30 bg-green-900/30 px-3 py-2 text-center text-sm text-green-300">
+        <p className="rounded-lg border border-green-200 bg-green-100 px-3 py-2 text-center text-sm text-green-800">
           Saved!
         </p>
       )}
