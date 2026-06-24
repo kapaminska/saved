@@ -11,7 +11,7 @@ function toNullable(value: string | null | undefined): string | null {
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), {
+    return new Response(JSON.stringify({ success: false, error: "Brak autoryzacji" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
     });
@@ -19,7 +19,7 @@ export const POST: APIRoute = async (context) => {
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return new Response(JSON.stringify({ success: false, error: "Supabase is not configured" }), {
+    return new Response(JSON.stringify({ success: false, error: "Supabase nie jest skonfigurowany" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
@@ -31,7 +31,7 @@ export const POST: APIRoute = async (context) => {
   const relationshipStatus = (form.get("relationship_status") as string | null)?.trim() ?? "";
 
   if (!displayName) {
-    return new Response(JSON.stringify({ success: false, error: "Display name is required" }), {
+    return new Response(JSON.stringify({ success: false, error: "Imię jest wymagane" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
@@ -41,7 +41,7 @@ export const POST: APIRoute = async (context) => {
   if (retirementAgeRaw) {
     retirementAge = parseInt(retirementAgeRaw, 10);
     if (isNaN(retirementAge) || retirementAge < 30 || retirementAge > 100) {
-      return new Response(JSON.stringify({ success: false, error: "Retirement age must be between 30 and 100" }), {
+      return new Response(JSON.stringify({ success: false, error: "Wiek emerytalny musi być między 30 a 100" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
@@ -49,7 +49,7 @@ export const POST: APIRoute = async (context) => {
   }
 
   if (!VALID_RELATIONSHIP_STATUSES.includes(relationshipStatus)) {
-    return new Response(JSON.stringify({ success: false, error: "Invalid relationship status" }), {
+    return new Response(JSON.stringify({ success: false, error: "Nieprawidłowy status związku" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
@@ -80,7 +80,7 @@ export const POST: APIRoute = async (context) => {
   const { error } = await supabase.from("profiles").update(updateData).eq("id", user.id);
 
   if (error) {
-    return new Response(JSON.stringify({ success: false, error: "Failed to save profile" }), {
+    return new Response(JSON.stringify({ success: false, error: "Nie udało się zapisać profilu" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

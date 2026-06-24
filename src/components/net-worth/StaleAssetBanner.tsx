@@ -47,8 +47,8 @@ export default function StaleAssetBanner({ stalestAsset, onConfirm, onDismiss }:
         <Clock className="mt-0.5 size-5 shrink-0 text-amber-700" />
         <div className="min-w-0 flex-1">
           <p className="text-sm text-amber-900">
-            <span className="font-medium">{stalestAsset.name}</span> hasn&apos;t been updated in over 3 months — still
-            accurate?
+            <span className="font-medium">{stalestAsset.name}</span> nie był aktualizowany od ponad 3 miesięcy — czy
+            kwota jest nadal aktualna?
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button
@@ -56,14 +56,14 @@ export default function StaleAssetBanner({ stalestAsset, onConfirm, onDismiss }:
               onClick={onConfirm}
               className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-3 py-1.5 text-sm transition-colors"
             >
-              Still current
+              Nadal aktualne
             </button>
             <button
               type="button"
               onClick={handleDismiss}
               className="border-border text-muted-foreground hover:bg-accent rounded-lg border px-3 py-1.5 text-sm transition-colors"
             >
-              Dismiss
+              Odrzuć
             </button>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function StaleAssetBanner({ stalestAsset, onConfirm, onDismiss }:
           type="button"
           onClick={handleDismiss}
           className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors"
-          aria-label="Dismiss"
+          aria-label="Odrzuć"
         >
           <X className="size-4" />
         </button>

@@ -5,12 +5,12 @@ import ProfileForm from "@/components/profile/ProfileForm";
 const { profile } = Astro.locals;
 ---
 
-<Layout title="Welcome">
+<Layout title="Witaj">
   <div class="bg-warm flex min-h-screen items-center justify-center p-4">
     <div class="border-border bg-card w-full max-w-md rounded-2xl border p-8 shadow-lg">
-      <h1 class="text-foreground mb-2 text-center text-2xl font-bold">Welcome!</h1>
+      <h1 class="text-foreground mb-2 text-center text-2xl font-bold">Witaj!</h1>
       <p class="text-muted-foreground mb-6 text-center text-sm">
-        Tell us a bit about yourself to personalize your experience.
+        Opowiedz nam krótko o sobie — dzięki temu dopasujemy aplikację do Ciebie.
       </p>
 
       <ProfileForm
@@ -21,14 +21,14 @@ const { profile } = Astro.locals;
           relationship_status: profile?.relationship_status ?? null,
         }}
         redirectTo="/dashboard"
-        submitLabel="Continue"
+        submitLabel="Kontynuuj"
         client:load
       />
 
       <div class="mt-4 text-center">
         <form method="POST" action="/api/profile/skip">
           <button type="submit" class="text-muted-foreground hover:text-foreground text-sm transition-colors">
-            Skip for now
+            Pomiń na razie
           </button>
         </form>
       </div>

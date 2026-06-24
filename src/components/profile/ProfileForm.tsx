@@ -19,13 +19,13 @@ interface Props {
 }
 
 const RELATIONSHIP_OPTIONS = [
-  { value: "", label: "Prefer not to say" },
-  { value: "single", label: "Single" },
-  { value: "married", label: "Married" },
-  { value: "partnership", label: "In a partnership" },
+  { value: "", label: "Wolę nie podawać" },
+  { value: "single", label: "Singiel/ka" },
+  { value: "married", label: "Małżeństwo" },
+  { value: "partnership", label: "Związek partnerski" },
 ];
 
-export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" }: Props) {
+export default function ProfileForm({ profile, redirectTo, submitLabel = "Zapisz" }: Props) {
   const [displayName, setDisplayName] = useState(profile.display_name ?? "");
   const [dateOfBirth, setDateOfBirth] = useState(toDateInputValue(profile.date_of_birth));
   const [retirementAge, setRetirementAge] = useState(profile.retirement_age?.toString() ?? "");
@@ -48,7 +48,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
     let valid = true;
 
     if (!displayName.trim()) {
-      setNameError("Name is required");
+      setNameError("Imię jest wymagane");
       valid = false;
     } else {
       setNameError(undefined);
@@ -57,7 +57,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
     if (retirementAge.trim()) {
       const age = parseInt(retirementAge, 10);
       if (isNaN(age) || age < 30 || age > 100) {
-        setAgeError("Must be between 30 and 100");
+        setAgeError("Wiek musi być między 30 a 100");
         valid = false;
       } else {
         setAgeError(undefined);
@@ -97,7 +97,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
       });
       const json: { success: boolean; error?: string } = await res.json();
       if (!json.success) {
-        setError(json.error ?? "Failed to save profile");
+        setError(json.error ?? "Nie udało się zapisać profilu");
         return;
       }
       if (redirectTo) {
@@ -109,7 +109,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
         setSuccess(false);
       }, 3000);
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -120,13 +120,13 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
       <FormField
         id="display_name"
         type="text"
-        label="Display name"
+        label="Imię"
         value={displayName}
         onChange={(v) => {
           setDisplayName(v);
           if (nameError) setNameError(undefined);
         }}
-        placeholder="How should we call you?"
+        placeholder="Jak mamy się do Ciebie zwracać?"
         error={nameError}
         icon={<User className="size-4" />}
       />
@@ -134,7 +134,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
       <FormField
         id="date_of_birth"
         type="date"
-        label="Date of birth"
+        label="Data urodzenia"
         value={dateOfBirth}
         onChange={(v) => {
           setDateOfBirth(v);
@@ -143,7 +143,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
         error={dateError}
         hint={
           !dateError ? (
-            <p className="text-muted-foreground mt-1 text-xs">Use the calendar picker — manual typing may not work.</p>
+            <p className="text-muted-foreground mt-1 text-xs">Użyj kalendarza — ręczne wpisywanie może nie działać.</p>
           ) : undefined
         }
         icon={<Calendar className="size-4" />}
@@ -157,20 +157,20 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
       <FormField
         id="retirement_age"
         type="number"
-        label="Planned retirement age"
+        label="Planowany wiek emerytalny"
         value={retirementAge}
         onChange={(v) => {
           setRetirementAge(v);
           if (ageError) setAgeError(undefined);
         }}
-        placeholder="e.g. 65"
+        placeholder="np. 65"
         error={ageError}
         icon={<Clock className="size-4" />}
       />
 
       <div>
         <label htmlFor="relationship_status" className="text-foreground mb-1 block text-sm">
-          Relationship status
+          Status związku
         </label>
         <div className="relative">
           <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
@@ -201,11 +201,11 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Save" 
 
       {success && (
         <p className="rounded-lg border border-green-200 bg-green-100 px-3 py-2 text-center text-sm text-green-800">
-          Saved!
+          Zapisano!
         </p>
       )}
 
-      <SubmitButton pendingText="Saving..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+      <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} disabled={loading}>
         {submitLabel}
       </SubmitButton>
     </form>

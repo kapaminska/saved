@@ -6,13 +6,13 @@ import ProfileForm from "@/components/profile/ProfileForm";
 const { profile } = Astro.locals;
 ---
 
-<Layout title="Your profile">
+<Layout title="Twój profil">
   <div class="bg-warm min-h-screen">
     <div class="relative z-10 p-4 sm:p-8">
       <Topbar />
       <div class="mx-auto mt-8 max-w-md">
         <div class="border-border bg-card rounded-2xl border p-8 shadow-lg">
-          <h1 class="text-foreground mb-6 text-center text-2xl font-bold">Your profile</h1>
+          <h1 class="text-foreground mb-6 text-center text-2xl font-bold">Twój profil</h1>
           <ProfileForm
             profile={{
               display_name: profile?.display_name ?? null,
@@ -20,7 +20,7 @@ const { profile } = Astro.locals;
               retirement_age: profile?.retirement_age ?? null,
               relationship_status: profile?.relationship_status ?? null,
             }}
-            submitLabel="Save changes"
+            submitLabel="Zapisz zmiany"
             client:load
           />
         </div>

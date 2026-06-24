@@ -22,7 +22,7 @@ export function isValidDateInput(value: string): boolean {
 export function validateDateOfBirth(value: string): string | undefined {
   const trimmed = value.trim();
   if (!trimmed) return undefined;
-  if (!isValidDateInput(trimmed)) return "Enter a valid date (use the calendar picker)";
+  if (!isValidDateInput(trimmed)) return "Podaj poprawną datę (użyj kalendarza)";
   return undefined;
 }
 
@@ -33,7 +33,7 @@ export function parseDateOfBirth(
   const trimmed = (value ?? "").trim();
   if (!trimmed) return { ok: true, date: null };
   if (!isValidDateInput(trimmed)) {
-    return { ok: false, error: "Invalid date of birth" };
+    return { ok: false, error: "Nieprawidłowa data urodzenia" };
   }
   return { ok: true, date: trimmed };
 }

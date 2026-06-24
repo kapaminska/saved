@@ -35,19 +35,19 @@ function formatDate(value: string | null): string {
 }
 ---
 
-<Layout title="Goal archive">
+<Layout title="Archiwum celów">
   <div class="bg-warm min-h-screen">
     <div class="relative z-10 p-4 sm:p-8">
       <Topbar />
       <div class="mx-auto mt-8 max-w-2xl">
         <a href="/dashboard" class="text-primary hover:text-primary/80 mb-4 inline-block text-sm transition-colors">
-          ← Back to dashboard
+          ← Wróć do panelu
         </a>
-        <h1 class="text-foreground mb-8 text-3xl font-bold">Goal archive</h1>
+        <h1 class="text-foreground mb-8 text-3xl font-bold">Archiwum celów</h1>
 
         <section class="mb-10">
           <div class="mb-4 flex items-center gap-2">
-            <h2 class="text-foreground text-xl font-semibold">Completed</h2>
+            <h2 class="text-foreground text-xl font-semibold">Ukończone</h2>
             <span class="rounded-full border border-green-200 bg-green-100 px-2 py-0.5 text-xs text-green-800">
               {completedGoals?.length ?? 0}
             </span>
@@ -71,7 +71,7 @@ function formatDate(value: string | null): string {
               </ul>
             ) : (
               <p class="border-border bg-muted/50 text-muted-foreground rounded-xl border p-4 text-sm">
-                No completed goals yet.
+                Brak ukończonych celów.
               </p>
             )
           }
@@ -79,7 +79,7 @@ function formatDate(value: string | null): string {
 
         <section>
           <div class="mb-4 flex items-center gap-2">
-            <h2 class="text-foreground text-xl font-semibold">Abandoned</h2>
+            <h2 class="text-foreground text-xl font-semibold">Porzucone</h2>
             <span class="border-border bg-muted text-muted-foreground rounded-full border px-2 py-0.5 text-xs">
               {abandonedGoals?.length ?? 0}
             </span>
@@ -103,7 +103,7 @@ function formatDate(value: string | null): string {
               </ul>
             ) : (
               <p class="border-border bg-muted/50 text-muted-foreground rounded-xl border p-4 text-sm">
-                No abandoned goals.
+                Brak porzuconych celów.
               </p>
             )
           }

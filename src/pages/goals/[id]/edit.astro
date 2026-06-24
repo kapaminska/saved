@@ -20,16 +20,16 @@ const pageData = await getEditGoalPageData(
   pageData.kind === "redirect" ? (
     <ClientRedirect url={pageData.url} client:load />
   ) : (
-    <Layout title={`Edit ${pageData.goal.name}`}>
+    <Layout title={`Edytuj: ${pageData.goal.name}`}>
       <div class="bg-warm min-h-screen">
         <div class="relative z-10 p-4 sm:p-8">
           <Topbar />
           <div class="mx-auto mt-8 max-w-md">
             <a href="/dashboard" class="text-primary hover:text-primary/80 mb-4 inline-block text-sm transition-colors">
-              ← Back to dashboard
+              ← Wróć do panelu
             </a>
             <div class="border-border bg-card rounded-2xl border p-8 shadow-lg">
-              <h1 class="text-foreground mb-6 text-center text-2xl font-bold">Edit goal</h1>
+              <h1 class="text-foreground mb-6 text-center text-2xl font-bold">Edytuj cel</h1>
               <GoalForm
                 mode="edit"
                 initial={{

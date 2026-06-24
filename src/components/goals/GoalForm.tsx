@@ -56,10 +56,10 @@ export default function GoalForm({
 
     const trimmedName = name.trim();
     if (!trimmedName) {
-      setNameError("Goal name is required");
+      setNameError("Nazwa celu jest wymagana");
       valid = false;
     } else if (trimmedName.length > 100) {
-      setNameError("Goal name must be at most 100 characters");
+      setNameError("Nazwa celu może mieć maksymalnie 100 znaków");
       valid = false;
     } else {
       setNameError(undefined);
@@ -67,13 +67,13 @@ export default function GoalForm({
 
     const rawAmount = targetAmount.trim();
     if (!rawAmount) {
-      setAmountError("Target amount is required");
+      setAmountError("Kwota docelowa jest wymagana");
       valid = false;
     } else if (!/^\d+(\.\d{1,2})?$/.test(rawAmount)) {
-      setAmountError("Enter a positive amount with at most 2 decimal places");
+      setAmountError("Podaj dodatnią kwotę z maksymalnie 2 miejscami po przecinku");
       valid = false;
     } else if (parseFloat(rawAmount) <= 0) {
-      setAmountError("Target amount must be greater than 0");
+      setAmountError("Kwota docelowa musi być większa od 0");
       valid = false;
     } else {
       setAmountError(undefined);
@@ -82,13 +82,13 @@ export default function GoalForm({
     if (!hasPayments) {
       const rawSaved = savedAmount.trim();
       if (!rawSaved) {
-        setSavedAmountError("Saved amount is required");
+        setSavedAmountError("Odłożona kwota jest wymagana");
         valid = false;
       } else if (!/^\d+(\.\d{1,2})?$/.test(rawSaved)) {
-        setSavedAmountError("Enter an amount with at most 2 decimal places");
+        setSavedAmountError("Podaj kwotę z maksymalnie 2 miejscami po przecinku");
         valid = false;
       } else if (parseFloat(rawSaved) < 0) {
-        setSavedAmountError("Saved amount must be 0 or greater");
+        setSavedAmountError("Odłożona kwota musi być 0 lub większa");
         valid = false;
       } else {
         setSavedAmountError(undefined);
@@ -129,7 +129,7 @@ export default function GoalForm({
       } = await res.json();
 
       if (!json.success) {
-        setError(json.error ?? "Failed to save goal");
+        setError(json.error ?? "Nie udało się zapisać celu");
         return;
       }
 
@@ -146,7 +146,7 @@ export default function GoalForm({
 
       setSuccess(true);
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -157,13 +157,13 @@ export default function GoalForm({
       <FormField
         id="name"
         type="text"
-        label="Goal name"
+        label="Nazwa celu"
         value={name}
         onChange={(v) => {
           setName(v);
           if (nameError) setNameError(undefined);
         }}
-        placeholder="e.g. Emergency fund"
+        placeholder="np. Poduszka finansowa"
         error={nameError}
         icon={<Target className="size-4" />}
         inputProps={{ maxLength: 100 }}
@@ -172,13 +172,13 @@ export default function GoalForm({
       <FormField
         id="target_amount"
         type="number"
-        label="Target amount (PLN)"
+        label="Kwota docelowa (PLN)"
         value={targetAmount}
         onChange={(v) => {
           setTargetAmount(v);
           if (amountError) setAmountError(undefined);
         }}
-        placeholder="e.g. 5000.00"
+        placeholder="np. 5000.00"
         error={amountError}
         icon={<Banknote className="size-4" />}
         inputProps={{ step: "0.01", min: "0.01" }}
@@ -186,22 +186,22 @@ export default function GoalForm({
 
       {hasPayments ? (
         <div>
-          <p className="text-foreground mb-1 block text-sm">Already saved (PLN)</p>
+          <p className="text-foreground mb-1 block text-sm">Już odłożono (PLN)</p>
           <p className="border-border bg-muted/50 text-muted-foreground rounded-lg border px-3 py-2 text-sm">
-            {formatAmount(initial?.saved_amount ?? 0)} — tracked via payment history
+            {formatAmount(initial?.saved_amount ?? 0)} — śledzone przez historię wpłat
           </p>
         </div>
       ) : (
         <FormField
           id="saved_amount"
           type="number"
-          label="Already saved (PLN)"
+          label="Już odłożono (PLN)"
           value={savedAmount}
           onChange={(v) => {
             setSavedAmount(v);
             if (savedAmountError) setSavedAmountError(undefined);
           }}
-          placeholder="e.g. 500.00"
+          placeholder="np. 500.00"
           error={savedAmountError}
           icon={<PiggyBank className="size-4" />}
           inputProps={{ step: "0.01", min: "0" }}
@@ -211,7 +211,7 @@ export default function GoalForm({
       <FormField
         id="deadline"
         type="month"
-        label="Deadline (optional)"
+        label="Termin (opcjonalnie)"
         value={deadline}
         onChange={setDeadline}
         icon={<Calendar className="size-4" />}
@@ -220,7 +220,7 @@ export default function GoalForm({
       {showWarning && (
         <p className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
           <TriangleAlert className="mt-0.5 size-4 shrink-0" />
-          Changing the target or deadline may affect your progress tracking.
+          Zmiana kwoty docelowej lub terminu może wpłynąć na śledzenie postępu.
         </p>
       )}
 
@@ -228,12 +228,12 @@ export default function GoalForm({
 
       {success && (
         <p className="rounded-lg border border-green-200 bg-green-100 px-3 py-2 text-center text-sm text-green-800">
-          Saved!
+          Zapisano!
         </p>
       )}
 
-      <SubmitButton pendingText="Saving..." icon={<ArrowRight className="size-4" />} disabled={loading}>
-        {mode === "create" ? "Create goal" : "Save changes"}
+      <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+        {mode === "create" ? "Utwórz cel" : "Zapisz zmiany"}
       </SubmitButton>
     </form>
   );

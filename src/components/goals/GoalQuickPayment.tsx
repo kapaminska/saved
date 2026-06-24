@@ -53,7 +53,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
       } = await res.json();
 
       if (!json.success) {
-        setError(json.error ?? "Failed to save payment");
+        setError(json.error ?? "Nie udało się zapisać wpłaty");
         return;
       }
 
@@ -65,7 +65,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
 
       window.location.reload();
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -77,8 +77,8 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
         type="button"
         onClick={handleOpen}
         className="inline-flex size-8 items-center justify-center rounded-lg border border-green-200 bg-green-100 text-green-800 transition-colors hover:bg-green-200"
-        aria-label={`Add payment to ${goalName}`}
-        title="Add payment"
+        aria-label={`Dodaj wpłatę do ${goalName}`}
+        title="Dodaj wpłatę"
       >
         <Plus className="size-4" />
       </button>
@@ -94,7 +94,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
                 <h2 id="quick-payment-title" className="text-foreground text-lg font-bold">
-                  Add payment
+                  Dodaj wpłatę
                 </h2>
                 <p className="text-muted-foreground mt-1 text-sm">{goalName}</p>
               </div>
@@ -103,7 +103,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
                 onClick={handleClose}
                 disabled={loading}
                 className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors disabled:opacity-50"
-                aria-label="Close"
+                aria-label="Zamknij"
               >
                 <X className="size-5" />
               </button>
@@ -112,7 +112,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor={`quick-month-${goalId}`} className="text-foreground mb-1 block text-sm">
-                  Month
+                  Miesiąc
                 </label>
                 <div className="relative">
                   <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
@@ -134,7 +134,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
 
               <div>
                 <label htmlFor={`quick-amount-${goalId}`} className="text-foreground mb-1 block text-sm">
-                  Amount (PLN)
+                  Kwota (PLN)
                 </label>
                 <div className="relative">
                   <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
@@ -151,7 +151,7 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
                       setAmount(e.target.value);
                     }}
                     disabled={loading}
-                    placeholder="e.g. 500.00"
+                    placeholder="np. 500.00"
                     className={inputClass}
                   />
                 </div>
@@ -166,14 +166,14 @@ export default function GoalQuickPayment({ goalId, goalName, defaultMonth }: Pro
                   disabled={loading}
                   className="border-border text-muted-foreground hover:bg-accent flex-1 rounded-lg border px-4 py-2 text-sm transition-colors disabled:opacity-50"
                 >
-                  Cancel
+                  Anuluj
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
                   className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
                 >
-                  {loading ? "Saving..." : "Save"}
+                  {loading ? "Zapisywanie..." : "Zapisz"}
                 </button>
               </div>
             </form>

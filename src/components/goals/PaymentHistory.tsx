@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Banknote, Calendar, Pencil, Trash2, X } from "lucide-react";
 import { ServerError } from "@/components/auth/ServerError";
+import { formatMonthYear } from "@/lib/i18n/format";
 
 interface Payment {
   id: string;
@@ -23,12 +24,6 @@ function monthInputValue(paymentMonth: string): string {
 
 function formatPln(amount: number): string {
   return `${amount.toFixed(2)} zł`;
-}
-
-function formatMonth(paymentMonth: string): string {
-  const [year, month] = paymentMonth.split("-");
-  const date = new Date(Number(year), Number(month) - 1, 1);
-  return date.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
 }
 
 export default function PaymentHistory({ goalId, payments, editable }: Props) {
@@ -67,7 +62,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
       const json: { success: boolean; error?: string; completed?: boolean } = await res.json();
 
       if (!json.success) {
-        setError(json.error ?? "Failed to update payment");
+        setError(json.error ?? "Nie udało się zaktualizować wpłaty");
         return;
       }
 
@@ -78,14 +73,14 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
 
       window.location.reload();
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
   }
 
   async function handleDelete(paymentId: string) {
-    if (!window.confirm("Delete this payment permanently?")) return;
+    if (!window.confirm("Trwale usunąć tę wpłatę?")) return;
 
     setLoading(true);
     setError(null);
@@ -98,13 +93,13 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
       const json: { success: boolean; error?: string } = await res.json();
 
       if (!json.success) {
-        setError(json.error ?? "Failed to delete payment");
+        setError(json.error ?? "Nie udało się usunąć wpłaty");
         return;
       }
 
       window.location.reload();
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -113,7 +108,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
   if (payments.length === 0) {
     return (
       <p className="border-border bg-muted/50 text-muted-foreground rounded-lg border p-4 text-sm">
-        No payments recorded yet.
+        Brak zarejestrowanych wpłat.
       </p>
     );
   }
@@ -131,7 +126,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                 <div className="space-y-3">
                   <div>
                     <label htmlFor={`edit-month-${payment.id}`} className="text-muted-foreground mb-1 block text-xs">
-                      Month
+                      Miesiąc
                     </label>
                     <div className="relative">
                       <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
@@ -151,7 +146,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                   </div>
                   <div>
                     <label htmlFor={`edit-amount-${payment.id}`} className="text-muted-foreground mb-1 block text-xs">
-                      Amount (PLN)
+                      Kwota (PLN)
                     </label>
                     <div className="relative">
                       <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
@@ -179,7 +174,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                       className="border-border text-muted-foreground hover:bg-accent inline-flex flex-1 items-center justify-center gap-1 rounded-lg border px-3 py-1.5 text-xs disabled:opacity-50"
                     >
                       <X className="size-3" />
-                      Cancel
+                      Anuluj
                     </button>
                     <button
                       type="button"
@@ -189,14 +184,14 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                       disabled={loading}
                       className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
                     >
-                      {loading ? "Saving..." : "Save"}
+                      {loading ? "Zapisywanie..." : "Zapisz"}
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-foreground text-sm font-medium">{formatMonth(payment.payment_month)}</p>
+                    <p className="text-foreground text-sm font-medium">{formatMonthYear(payment.payment_month)}</p>
                     <p className="text-muted-foreground mt-0.5 text-sm">{formatPln(payment.amount)}</p>
                   </div>
                   {editable && (
@@ -208,7 +203,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                         }}
                         disabled={loading}
                         className="text-primary hover:bg-accent hover:text-primary/80 rounded-lg p-2 transition-colors disabled:opacity-50"
-                        aria-label="Edit payment"
+                        aria-label="Edytuj wpłatę"
                       >
                         <Pencil className="size-4" />
                       </button>
@@ -219,7 +214,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
                         }}
                         disabled={loading}
                         className="text-destructive hover:bg-destructive/10 rounded-lg p-2 transition-colors disabled:opacity-50"
-                        aria-label="Delete payment"
+                        aria-label="Usuń wpłatę"
                       >
                         <Trash2 className="size-4" />
                       </button>

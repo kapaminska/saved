@@ -32,11 +32,11 @@ export default function MagicLinkForm({ serverError }: Props) {
 
   function validateEmail(): boolean {
     if (!email.trim()) {
-      setEmailError("Email is required");
+      setEmailError("E-mail jest wymagany");
       return false;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError("Enter a valid email address");
+      setEmailError("Podaj poprawny adres e-mail");
       return false;
     }
     setEmailError(undefined);
@@ -45,11 +45,11 @@ export default function MagicLinkForm({ serverError }: Props) {
 
   function validateToken(): boolean {
     if (!token.trim()) {
-      setTokenError("Code is required");
+      setTokenError("Kod jest wymagany");
       return false;
     }
     if (!/^\d{6}$/.test(token.trim())) {
-      setTokenError("Enter a 6-digit code");
+      setTokenError("Podaj 6-cyfrowy kod");
       return false;
     }
     setTokenError(undefined);
@@ -68,13 +68,13 @@ export default function MagicLinkForm({ serverError }: Props) {
       });
       const json: { success: boolean; error?: string } = await res.json();
       if (!json.success) {
-        setError(json.error ?? "Failed to send code");
+        setError(json.error ?? "Nie udało się wysłać kodu");
         return;
       }
       setStep("otp");
       setCooldown(COOLDOWN_SECONDS);
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -104,21 +104,21 @@ export default function MagicLinkForm({ serverError }: Props) {
         <FormField
           id="email"
           type="email"
-          label="Email"
+          label="E-mail"
           value={email}
           onChange={(v) => {
             setEmail(v);
             if (emailError) setEmailError(undefined);
           }}
-          placeholder="you@example.com"
+          placeholder="ty@example.com"
           error={emailError}
           icon={<Mail className="size-4" />}
         />
 
         <ServerError message={error} />
 
-        <SubmitButton pendingText="Sending code..." icon={<ArrowRight className="size-4" />} disabled={loading}>
-          Continue
+        <SubmitButton pendingText="Wysyłanie kodu..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+          Kontynuuj
         </SubmitButton>
       </form>
     );
@@ -128,14 +128,14 @@ export default function MagicLinkForm({ serverError }: Props) {
     <form method="POST" action="/api/auth/verify-otp" onSubmit={handleOtpSubmit} className="space-y-4" noValidate>
       <input type="hidden" name="email" value={email} />
       <p className="text-muted-foreground text-center text-sm">
-        We sent a 6-digit code to <span className="text-foreground font-medium">{email}</span>
+        Wysłaliśmy 6-cyfrowy kod na <span className="text-foreground font-medium">{email}</span>
       </p>
 
       <FormField
         id="token"
         name="token"
         type="text"
-        label="Verification code"
+        label="Kod weryfikacyjny"
         value={token}
         onChange={(v) => {
           const digits = v.replace(/\D/g, "").slice(0, 6);
@@ -150,8 +150,8 @@ export default function MagicLinkForm({ serverError }: Props) {
 
       <ServerError message={error} />
 
-      <SubmitButton pendingText="Verifying..." icon={<ArrowRight className="size-4" />} disabled={loading}>
-        Sign in
+      <SubmitButton pendingText="Weryfikacja..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+        Zaloguj się
       </SubmitButton>
 
       <div className="text-center">
@@ -162,7 +162,7 @@ export default function MagicLinkForm({ serverError }: Props) {
           className="text-primary hover:text-primary/80 disabled:text-muted-foreground/50 inline-flex items-center gap-1 text-sm transition-colors hover:underline disabled:cursor-not-allowed disabled:no-underline"
         >
           <RotateCw className="size-3" />
-          {cooldown > 0 ? `Resend code (${cooldown}s)` : "Resend code"}
+          {cooldown > 0 ? `Wyślij kod ponownie (${cooldown}s)` : "Wyślij kod ponownie"}
         </button>
       </div>
 
@@ -177,7 +177,7 @@ export default function MagicLinkForm({ serverError }: Props) {
           }}
           className="text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
-          Use a different email
+          Użyj innego adresu e-mail
         </button>
       </div>
     </form>

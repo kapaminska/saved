@@ -5,10 +5,10 @@ import MagicLinkForm from "@/components/auth/MagicLinkForm";
 const error = Astro.url.searchParams.get("error");
 ---
 
-<Layout title="Sign in">
+<Layout title="Zaloguj się">
   <div class="bg-warm flex min-h-screen items-center justify-center p-4">
     <div class="border-border bg-card w-full max-w-sm rounded-2xl border p-8 shadow-lg">
-      <h1 class="text-foreground mb-6 text-center text-2xl font-bold">Sign in</h1>
+      <h1 class="text-foreground mb-6 text-center text-2xl font-bold">Zaloguj się</h1>
       <MagicLinkForm serverError={error} client:load />
     </div>
   </div>

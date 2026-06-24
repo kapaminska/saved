@@ -10,10 +10,10 @@ export type AssetCategory = (typeof ASSET_CATEGORIES)[number];
 export function parseName(value: string | null): { ok: true; name: string } | { ok: false; error: string } {
   const name = (value ?? "").trim();
   if (name.length < 1) {
-    return { ok: false, error: "Name is required" };
+    return { ok: false, error: "Nazwa jest wymagana" };
   }
   if (name.length > 100) {
-    return { ok: false, error: "Name must be at most 100 characters" };
+    return { ok: false, error: "Nazwa może mieć maksymalnie 100 znaków" };
   }
   return { ok: true, name };
 }
@@ -21,14 +21,14 @@ export function parseName(value: string | null): { ok: true; name: string } | { 
 export function parseAmount(value: string | null): { ok: true; amount: number } | { ok: false; error: string } {
   const raw = (value ?? "").trim();
   if (!raw) {
-    return { ok: false, error: "Amount is required" };
+    return { ok: false, error: "Kwota jest wymagana" };
   }
   if (!/^\d+(\.\d{1,2})?$/.test(raw)) {
-    return { ok: false, error: "Amount must be a number with at most 2 decimal places" };
+    return { ok: false, error: "Kwota musi być liczbą z maksymalnie 2 miejscami po przecinku" };
   }
   const amount = parseFloat(raw);
   if (isNaN(amount) || amount < 0) {
-    return { ok: false, error: "Amount must be 0 or greater" };
+    return { ok: false, error: "Kwota musi być 0 lub większa" };
   }
   return { ok: true, amount };
 }
@@ -38,7 +38,7 @@ export function parseAssetCategory(
 ): { ok: true; category: AssetCategory } | { ok: false; error: string } {
   const category = (value ?? "").trim();
   if (!ASSET_CATEGORIES.includes(category as AssetCategory)) {
-    return { ok: false, error: "Invalid asset category" };
+    return { ok: false, error: "Nieprawidłowa kategoria aktywa" };
   }
   return { ok: true, category: category as AssetCategory };
 }

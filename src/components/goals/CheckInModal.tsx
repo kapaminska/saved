@@ -59,7 +59,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
     }
 
     if (!hasPayment) {
-      setError("Enter an amount for at least one goal, or use 0 to record no savings.");
+      setError("Podaj kwotę dla co najmniej jednego celu lub wpisz 0, aby odnotować brak oszczędności.");
       setLoading(false);
       return;
     }
@@ -77,7 +77,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
       } = await res.json();
 
       if (!json.success) {
-        setError(json.error ?? "Failed to save check-in");
+        setError(json.error ?? "Nie udało się zapisać check-inu");
         return;
       }
 
@@ -89,7 +89,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
 
       window.location.reload();
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -99,8 +99,8 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
 
   const subtitle =
     activeTab === "ai"
-      ? "Describe what you saved in plain language. We'll suggest amounts to review before saving."
-      : "Record what you saved this month. Leave a field empty to skip a goal.";
+      ? "Opisz swoje oszczędności prostym językiem. Zaproponujemy kwoty do sprawdzenia przed zapisaniem."
+      : "Zapisz, ile odłożyłeś/aś w tym miesiącu. Zostaw pole puste, aby pominąć cel.";
 
   return (
     <>
@@ -110,7 +110,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
         className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors"
       >
         <ClipboardCheck className="size-4" />
-        Check in
+        Zrób check-in
       </button>
 
       {open && (
@@ -124,7 +124,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
                 <h2 id="checkin-title" className="text-foreground text-xl font-bold">
-                  Monthly check-in
+                  Miesięczny check-in
                 </h2>
                 <p className="text-muted-foreground mt-1 text-sm">{subtitle}</p>
               </div>
@@ -133,7 +133,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
                 onClick={handleClose}
                 disabled={loading}
                 className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors disabled:opacity-50"
-                aria-label="Close"
+                aria-label="Zamknij"
               >
                 <X className="size-5" />
               </button>
@@ -151,7 +151,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
                   activeTab === "ai" ? tabActive : tabInactive
                 }`}
               >
-                AI check-in
+                Check-in AI
               </button>
               <button
                 type="button"
@@ -164,7 +164,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
                   activeTab === "manual" ? tabActive : tabInactive
                 }`}
               >
-                Manual
+                Ręcznie
               </button>
             </div>
 
@@ -198,7 +198,7 @@ export default function CheckInModal({ goals, defaultMonth }: Props) {
                   disabled={loading}
                   className="border-border text-muted-foreground hover:bg-accent flex-1 rounded-lg border px-4 py-2 text-sm transition-colors disabled:opacity-50"
                 >
-                  Cancel
+                  Anuluj
                 </button>
               </div>
             )}

@@ -14,18 +14,18 @@ function jsonResponse(body: object, status = 200) {
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return jsonResponse({ success: false, error: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, error: "Brak autoryzacji" }, 401);
   }
 
   const goalId = context.params.id;
   const paymentId = context.params.paymentId;
   if (!goalId || !paymentId || !UUID_RE.test(goalId) || !UUID_RE.test(paymentId)) {
-    return jsonResponse({ success: false, error: "Payment not found" }, 404);
+    return jsonResponse({ success: false, error: "Nie znaleziono wpłaty" }, 404);
   }
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
+    return jsonResponse({ success: false, error: "Supabase nie jest skonfigurowany" }, 500);
   }
 
   const { data: goal, error: goalError } = await supabase
@@ -36,11 +36,11 @@ export const POST: APIRoute = async (context) => {
     .maybeSingle();
 
   if (goalError || !goal) {
-    return jsonResponse({ success: false, error: "Goal not found" }, 404);
+    return jsonResponse({ success: false, error: "Nie znaleziono celu" }, 404);
   }
 
   if (goal.status !== "active") {
-    return jsonResponse({ success: false, error: "Only active goals can be edited" }, 409);
+    return jsonResponse({ success: false, error: "Tylko aktywne cele można edytować" }, 409);
   }
 
   const { data: payment, error: paymentError } = await supabase
@@ -52,7 +52,7 @@ export const POST: APIRoute = async (context) => {
     .maybeSingle();
 
   if (paymentError || !payment) {
-    return jsonResponse({ success: false, error: "Payment not found" }, 404);
+    return jsonResponse({ success: false, error: "Nie znaleziono wpłaty" }, 404);
   }
 
   const { error: deleteError } = await supabase
@@ -63,7 +63,7 @@ export const POST: APIRoute = async (context) => {
     .eq("user_id", user.id);
 
   if (deleteError) {
-    return jsonResponse({ success: false, error: "Failed to delete payment" }, 500);
+    return jsonResponse({ success: false, error: "Nie udało się usunąć wpłaty" }, 500);
   }
 
   const recalc = await recalcSavedAmount(supabase, goalId);

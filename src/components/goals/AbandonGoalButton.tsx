@@ -11,7 +11,7 @@ export default function AbandonGoalButton({ goalId }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   async function handleAbandon() {
-    if (!window.confirm("Are you sure you want to abandon this goal? This cannot be undone.")) {
+    if (!window.confirm("Czy na pewno chcesz porzucić ten cel? Tej operacji nie można cofnąć.")) {
       return;
     }
 
@@ -25,12 +25,12 @@ export default function AbandonGoalButton({ goalId }: Props) {
       });
       const json: { success: boolean; error?: string } = await res.json();
       if (!json.success) {
-        setError(json.error ?? "Failed to abandon goal");
+        setError(json.error ?? "Nie udało się porzucić celu");
         return;
       }
       window.location.href = "/goals/archive";
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -48,7 +48,7 @@ export default function AbandonGoalButton({ goalId }: Props) {
         className="border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20 flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors disabled:opacity-50"
       >
         <Trash2 className="size-4" />
-        {loading ? "Abandoning..." : "Abandon goal"}
+        {loading ? "Porzucanie..." : "Porzuć cel"}
       </button>
     </div>
   );

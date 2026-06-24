@@ -105,7 +105,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
 
   async function handleDeleteAsset(id: string, name: string) {
     if (actionLoading) return;
-    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    if (!window.confirm(`Usunąć „${name}"? Tej operacji nie można cofnąć.`)) return;
 
     setActionLoading(true);
     try {
@@ -121,7 +121,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
 
   async function handleDeleteLiability(id: string, name: string) {
     if (actionLoading) return;
-    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    if (!window.confirm(`Usunąć „${name}"? Tej operacji nie można cofnąć.`)) return;
 
     setActionLoading(true);
     try {
@@ -146,7 +146,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
             onClick={openCreateAsset}
             className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-4 py-2 text-sm transition-colors"
           >
-            Add your first asset
+            Dodaj pierwszy aktyw
           </button>
         </div>
 
@@ -181,14 +181,14 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
 
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h3 className="text-foreground text-sm font-semibold">Assets</h3>
+            <h3 className="text-foreground text-sm font-semibold">Aktywa</h3>
             <button
               type="button"
               onClick={openCreateAsset}
               disabled={actionLoading}
               className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-3 py-1 text-sm transition-colors disabled:opacity-50"
             >
-              Add asset
+              Dodaj aktyw
             </button>
           </div>
           {assets.length > 0 ? (
@@ -216,7 +216,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                       disabled={actionLoading}
                       className="text-muted-foreground hover:text-foreground text-xs transition-colors disabled:opacity-50"
                     >
-                      Still current
+                      Nadal aktualne
                     </button>
                     <button
                       type="button"
@@ -225,7 +225,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                       }}
                       disabled={actionLoading}
                       className="text-primary hover:bg-accent hover:text-primary/80 rounded-lg p-1.5 transition-colors disabled:opacity-50"
-                      aria-label={`Edit ${asset.name}`}
+                      aria-label={`Edytuj ${asset.name}`}
                     >
                       <Pencil className="size-4" />
                     </button>
@@ -236,7 +236,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                       }}
                       disabled={actionLoading}
                       className="text-destructive hover:bg-destructive/10 rounded-lg p-1.5 transition-colors disabled:opacity-50"
-                      aria-label={`Delete ${asset.name}`}
+                      aria-label={`Usuń ${asset.name}`}
                     >
                       <Trash2 className="size-4" />
                     </button>
@@ -245,20 +245,20 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
               ))}
             </ul>
           ) : (
-            <p className="text-muted-foreground text-sm">No assets yet.</p>
+            <p className="text-muted-foreground text-sm">Brak aktywów.</p>
           )}
         </div>
 
         <div>
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h3 className="text-foreground text-sm font-semibold">Liabilities</h3>
+            <h3 className="text-foreground text-sm font-semibold">Zobowiązania</h3>
             <button
               type="button"
               onClick={openCreateLiability}
               disabled={actionLoading}
               className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-3 py-1 text-sm transition-colors disabled:opacity-50"
             >
-              Add liability
+              Dodaj zobowiązanie
             </button>
           </div>
           {liabilities.length > 0 ? (
@@ -280,7 +280,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                       }}
                       disabled={actionLoading}
                       className="text-primary hover:bg-accent hover:text-primary/80 rounded-lg p-1.5 transition-colors disabled:opacity-50"
-                      aria-label={`Edit ${liability.name}`}
+                      aria-label={`Edytuj ${liability.name}`}
                     >
                       <Pencil className="size-4" />
                     </button>
@@ -291,7 +291,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                       }}
                       disabled={actionLoading}
                       className="text-destructive hover:bg-destructive/10 rounded-lg p-1.5 transition-colors disabled:opacity-50"
-                      aria-label={`Delete ${liability.name}`}
+                      aria-label={`Usuń ${liability.name}`}
                     >
                       <Trash2 className="size-4" />
                     </button>
@@ -300,7 +300,7 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
               ))}
             </ul>
           ) : (
-            <p className="text-muted-foreground text-sm">No liabilities yet.</p>
+            <p className="text-muted-foreground text-sm">Brak zobowiązań.</p>
           )}
         </div>
       </div>

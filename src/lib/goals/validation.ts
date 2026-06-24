@@ -5,10 +5,10 @@ type SavingsGoalRow = Database["public"]["Tables"]["savings_goals"]["Row"];
 export function parseGoalName(value: string | null): { ok: true; name: string } | { ok: false; error: string } {
   const name = (value ?? "").trim();
   if (name.length < 1) {
-    return { ok: false, error: "Goal name is required" };
+    return { ok: false, error: "Nazwa celu jest wymagana" };
   }
   if (name.length > 100) {
-    return { ok: false, error: "Goal name must be at most 100 characters" };
+    return { ok: false, error: "Nazwa celu może mieć maksymalnie 100 znaków" };
   }
   return { ok: true, name };
 }
@@ -16,14 +16,14 @@ export function parseGoalName(value: string | null): { ok: true; name: string } 
 export function parseTargetAmount(value: string | null): { ok: true; amount: number } | { ok: false; error: string } {
   const raw = (value ?? "").trim();
   if (!raw) {
-    return { ok: false, error: "Target amount is required" };
+    return { ok: false, error: "Kwota docelowa jest wymagana" };
   }
   if (!/^\d+(\.\d{1,2})?$/.test(raw)) {
-    return { ok: false, error: "Target amount must be a positive number with at most 2 decimal places" };
+    return { ok: false, error: "Kwota docelowa musi być dodatnią liczbą z maksymalnie 2 miejscami po przecinku" };
   }
   const amount = parseFloat(raw);
   if (isNaN(amount) || amount <= 0) {
-    return { ok: false, error: "Target amount must be greater than 0" };
+    return { ok: false, error: "Kwota docelowa musi być większa od 0" };
   }
   return { ok: true, amount };
 }
@@ -34,11 +34,11 @@ export function parseSavedAmount(value: string | null): { ok: true; amount: numb
     return { ok: true, amount: 0 };
   }
   if (!/^\d+(\.\d{1,2})?$/.test(raw)) {
-    return { ok: false, error: "Saved amount must be a number with at most 2 decimal places" };
+    return { ok: false, error: "Odłożona kwota musi być liczbą z maksymalnie 2 miejscami po przecinku" };
   }
   const amount = parseFloat(raw);
   if (isNaN(amount) || amount < 0) {
-    return { ok: false, error: "Saved amount must be 0 or greater" };
+    return { ok: false, error: "Odłożona kwota musi być 0 lub większa" };
   }
   return { ok: true, amount };
 }
@@ -55,17 +55,17 @@ export function parseDeadline(
   if (yearMonthMatch) {
     const month = Number(yearMonthMatch[2]);
     if (month < 1 || month > 12) {
-      return { ok: false, error: "Invalid deadline month" };
+      return { ok: false, error: "Nieprawidłowy miesiąc terminu" };
     }
     return { ok: true, deadline: `${yearMonthMatch[1]}-${yearMonthMatch[2]}-01` };
   }
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
-    return { ok: false, error: "Invalid deadline date" };
+    return { ok: false, error: "Nieprawidłowa data terminu" };
   }
   const parsed = new Date(raw);
   if (isNaN(parsed.getTime())) {
-    return { ok: false, error: "Invalid deadline date" };
+    return { ok: false, error: "Nieprawidłowa data terminu" };
   }
   return { ok: true, deadline: `${raw.slice(0, 7)}-01` };
 }

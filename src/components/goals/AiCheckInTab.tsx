@@ -40,10 +40,10 @@ type View = "input" | "review";
 function validateInput(text: string): string | null {
   const trimmed = text.trim();
   if (!trimmed) {
-    return "Check-in text cannot be empty";
+    return "Tekst check-inu nie może być pusty";
   }
   if (trimmed.length > MAX_TEXT_LENGTH) {
-    return `Check-in text must be ${MAX_TEXT_LENGTH} characters or fewer`;
+    return `Tekst check-inu może mieć maksymalnie ${MAX_TEXT_LENGTH} znaków`;
   }
   return null;
 }
@@ -99,15 +99,15 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
 
       if (!json.success) {
         if (json.code === "INVALID_INPUT") {
-          setInputError(json.error ?? "Invalid check-in text");
+          setInputError(json.error ?? "Nieprawidłowy tekst check-inu");
           return;
         }
         if (json.code === "RATE_LIMITED" || json.code === "AI_UNAVAILABLE") {
-          setServerError(json.error ?? "AI check-in is unavailable");
+          setServerError(json.error ?? "Check-in AI jest niedostępny");
           setShowFallback(true);
           return;
         }
-        setServerError(json.error ?? "Failed to parse check-in");
+        setServerError(json.error ?? "Nie udało się przeanalizować check-inu");
         return;
       }
 
@@ -115,7 +115,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
       setUnrecognized(json.unrecognized ?? []);
       setView("review");
     } catch {
-      setServerError("Network error. Please try again.");
+      setServerError("Błąd sieci. Spróbuj ponownie.");
       setShowFallback(true);
     } finally {
       setLoading(false);
@@ -147,7 +147,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
     }
 
     if (paymentCount === 0) {
-      setSaveError("Enter an amount for at least one proposal.");
+      setSaveError("Podaj kwotę dla co najmniej jednej propozycji.");
       setLoading(false);
       return;
     }
@@ -165,7 +165,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
       } = await res.json();
 
       if (!json.success) {
-        setSaveError(json.error ?? "Failed to save check-in");
+        setSaveError(json.error ?? "Nie udało się zapisać check-inu");
         return;
       }
 
@@ -177,7 +177,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
 
       window.location.reload();
     } catch {
-      setSaveError("Network error. Please try again.");
+      setSaveError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -192,7 +192,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
               <li key={proposal.id} className="border-border bg-muted/50 rounded-lg border p-3">
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <label htmlFor={`review-amount-${proposal.id}`} className="text-foreground text-sm font-medium">
-                    Amount
+                    Kwota
                   </label>
                   <button
                     type="button"
@@ -202,7 +202,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
                     disabled={loading}
                     className="text-destructive hover:text-destructive/80 text-xs transition-colors disabled:opacity-50"
                   >
-                    Remove
+                    Usuń
                   </button>
                 </div>
                 <div className="relative mb-2">
@@ -224,7 +224,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
                   />
                 </div>
                 <label htmlFor={`review-goal-${proposal.id}`} className="text-muted-foreground mb-1 block text-xs">
-                  Goal
+                  Cel
                 </label>
                 <select
                   id={`review-goal-${proposal.id}`}
@@ -250,14 +250,14 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
             <p className="mb-2 flex items-center gap-2 text-sm font-medium text-amber-900">
               <TriangleAlert className="size-4 shrink-0" />
-              Unrecognized goals
+              Nierozpoznane cele
             </p>
             <ul className="space-y-2 text-sm text-amber-800">
               {unrecognized.map((entry) => (
                 <li key={`${entry.rawGoalName}-${entry.amount}`}>
                   {entry.rawGoalName} ({entry.amount} zł) —{" "}
                   <a href="/goals/new" className="text-primary hover:text-primary/80 underline">
-                    Create this goal separately
+                    Utwórz ten cel osobno
                   </a>
                 </li>
               ))}
@@ -267,7 +267,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
 
         {reviewProposals.length === 0 && (
           <p className="text-muted-foreground text-sm">
-            No proposals to save. Go back to edit your sentence or switch to manual check-in.
+            Brak propozycji do zapisania. Wróć, aby edytować zdanie, lub przełącz się na ręczny check-in.
           </p>
         )}
 
@@ -283,7 +283,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
             disabled={loading}
             className="border-border text-muted-foreground hover:bg-accent flex-1 rounded-lg border px-4 py-2 text-sm transition-colors disabled:opacity-50"
           >
-            Back
+            Wróć
           </button>
           <button
             type="button"
@@ -293,7 +293,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
             disabled={loading || reviewProposals.length === 0}
             className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
           >
-            {loading ? "Saving..." : "Save check-in"}
+            {loading ? "Zapisywanie..." : "Zapisz check-in"}
           </button>
         </div>
       </div>
@@ -310,7 +310,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
       >
         <div>
           <label htmlFor="ai-payment_month" className="text-foreground mb-1 block text-sm">
-            Month
+            Miesiąc
           </label>
           <div className="relative">
             <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
@@ -332,14 +332,14 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
 
         <div>
           <label htmlFor="ai-checkin-text" className="text-foreground mb-1 block text-sm">
-            Describe what you saved this month
+            Opisz, ile odłożyłeś/aś w tym miesiącu
           </label>
           <textarea
             id="ai-checkin-text"
             value={text}
             maxLength={MAX_TEXT_LENGTH}
             rows={4}
-            placeholder='e.g. "500 na wakacje, 1000 na poduszkę"'
+            placeholder='np. "500 na wakacje, 1000 na poduszkę"'
             onChange={(e) => {
               setText(e.target.value);
               setInputError(null);
@@ -362,7 +362,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
         {loading && (
           <p className="text-muted-foreground flex items-center gap-2 text-sm">
             <Loader2 className="size-4 animate-spin" />
-            Parsing your check-in…
+            Analizowanie check-inu…
           </p>
         )}
 
@@ -372,7 +372,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
           className="bg-primary text-primary-foreground hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
         >
           <Sparkles className="size-4" />
-          {loading ? "Parsing..." : "Parse check-in"}
+          {loading ? "Analizowanie..." : "Przeanalizuj check-in"}
         </button>
       </form>
 
@@ -384,7 +384,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
           onClick={onSwitchToManual}
           className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 w-full rounded-lg border px-4 py-2 text-sm font-medium transition-colors"
         >
-          Switch to manual check-in
+          Przełącz na ręczny check-in
         </button>
       )}
     </div>

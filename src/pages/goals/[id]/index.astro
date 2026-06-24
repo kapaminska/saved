@@ -6,6 +6,7 @@ import GoalQuickPayment from "@/components/goals/GoalQuickPayment";
 import PaymentHistory from "@/components/goals/PaymentHistory";
 import ClientRedirect from "@/components/goals/ClientRedirect";
 import { getGoalDetailPageData } from "@/lib/goals/detail-page";
+import { formatMonthYear } from "@/lib/i18n/format";
 import { formatMonthsOfData } from "@/lib/goals/projection";
 
 const { user } = Astro.locals;
@@ -26,13 +27,7 @@ function formatPln(amount: number): string {
 
 function formatDeadline(value: string | null): string {
   if (!value) return "";
-  return formatProjectedMonth(value);
-}
-
-function formatProjectedMonth(value: string): string {
-  const [year, month] = value.split("-");
-  const date = new Date(Number(year), Number(month) - 1, 1);
-  return date.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  return formatMonthYear(value);
 }
 
 function progressPercent(saved: number, target: number): number {
@@ -41,9 +36,9 @@ function progressPercent(saved: number, target: number): number {
 }
 
 const statusLabel: Record<string, string> = {
-  active: "Active",
-  completed: "Completed",
-  abandoned: "Abandoned",
+  active: "Aktywne",
+  completed: "Ukończone",
+  abandoned: "Porzucone",
 };
 ---
 
@@ -57,7 +52,7 @@ const statusLabel: Record<string, string> = {
           <Topbar />
           <div class="mx-auto mt-8 max-w-2xl">
             <a href="/dashboard" class="text-primary hover:text-primary/80 mb-4 inline-block text-sm transition-colors">
-              ← Back to dashboard
+              ← Wróć do panelu
             </a>
 
             <div class="border-border bg-card mb-6 rounded-2xl border p-6 shadow-sm">
@@ -83,7 +78,7 @@ const statusLabel: Record<string, string> = {
                       href={`/goals/${pageData.goal.id}/edit`}
                       class="text-primary hover:text-primary/80 text-sm transition-colors"
                     >
-                      Edit goal
+                      Edytuj cel
                     </a>
                   </div>
                 )}
@@ -93,7 +88,7 @@ const statusLabel: Record<string, string> = {
                 {formatPln(pageData.goal.saved_amount)} / {formatPln(pageData.goal.target_amount)}
               </p>
               {pageData.goal.deadline && (
-                <p class="text-muted-foreground/70 mb-3 text-xs">Deadline: {formatDeadline(pageData.goal.deadline)}</p>
+                <p class="text-muted-foreground/70 mb-3 text-xs">Termin: {formatDeadline(pageData.goal.deadline)}</p>
               )}
 
               <div class="bg-muted mb-1 h-2 overflow-hidden rounded-full">
@@ -105,13 +100,13 @@ const statusLabel: Record<string, string> = {
 
               <div class="text-muted-foreground/80 mt-4 space-y-1 text-xs">
                 {pageData.metrics.requiredPace != null && (
-                  <p>Required pace: {formatPln(pageData.metrics.requiredPace)}/mo</p>
+                  <p>Wymagane tempo: {formatPln(pageData.metrics.requiredPace)}/mies.</p>
                 )}
                 {pageData.metrics.projectedCompletionDate && (
                   <p>
-                    Projected completion: {formatProjectedMonth(pageData.metrics.projectedCompletionDate)}
+                    Prognoza: {formatMonthYear(pageData.metrics.projectedCompletionDate)}
                     <span class="text-muted-foreground/60">
-                      (based on {formatMonthsOfData(pageData.metrics.monthsOfData)} of data)
+                      (na podstawie {formatMonthsOfData(pageData.metrics.monthsOfData)} danych)
                     </span>
                   </p>
                 )}
@@ -119,9 +114,9 @@ const statusLabel: Record<string, string> = {
             </div>
 
             <section>
-              <h2 class="text-foreground mb-3 text-lg font-semibold">Payment history</h2>
+              <h2 class="text-foreground mb-3 text-lg font-semibold">Historia wpłat</h2>
               {!pageData.editable && (
-                <p class="text-muted-foreground mb-3 text-sm">Read-only — this goal is no longer active.</p>
+                <p class="text-muted-foreground mb-3 text-sm">Tylko do odczytu — ten cel nie jest już aktywny.</p>
               )}
               <PaymentHistory
                 goalId={pageData.goal.id}

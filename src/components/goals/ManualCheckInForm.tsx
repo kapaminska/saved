@@ -44,7 +44,7 @@ export default function ManualCheckInForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="payment_month" className="text-foreground mb-1 block text-sm">
-          Month
+          Miesiąc
         </label>
         <div className="relative">
           <span className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2">
@@ -91,7 +91,7 @@ export default function ManualCheckInForm({
                 inputMode="decimal"
                 step="0.01"
                 min="0"
-                placeholder="Skip if empty"
+                placeholder="Pomiń, jeśli puste"
                 value={amounts[goal.id] ?? ""}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -113,7 +113,7 @@ export default function ManualCheckInForm({
           disabled={loading}
           className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
         >
-          {loading ? "Saving..." : "Save check-in"}
+          {loading ? "Zapisywanie..." : "Zapisz check-in"}
         </button>
       </div>
     </form>

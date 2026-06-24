@@ -20,17 +20,17 @@ function jsonResponse(body: object, status = 200) {
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return jsonResponse({ success: false, error: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, error: "Brak autoryzacji" }, 401);
   }
 
   const goalId = context.params.id;
   if (!goalId || !UUID_RE.test(goalId)) {
-    return jsonResponse({ success: false, error: "Goal not found" }, 404);
+    return jsonResponse({ success: false, error: "Nie znaleziono celu" }, 404);
   }
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
+    return jsonResponse({ success: false, error: "Supabase nie jest skonfigurowany" }, 500);
   }
 
   const { data: existing, error: fetchError } = await supabase
@@ -41,11 +41,11 @@ export const POST: APIRoute = async (context) => {
     .maybeSingle();
 
   if (fetchError || !existing) {
-    return jsonResponse({ success: false, error: "Goal not found" }, 404);
+    return jsonResponse({ success: false, error: "Nie znaleziono celu" }, 404);
   }
 
   if (existing.status !== "active") {
-    return jsonResponse({ success: false, error: "Only active goals can be edited" }, 409);
+    return jsonResponse({ success: false, error: "Tylko aktywne cele można edytować" }, 409);
   }
 
   const form = await context.request.formData();
@@ -75,7 +75,7 @@ export const POST: APIRoute = async (context) => {
     .eq("goal_id", goalId);
 
   if (paymentCountError) {
-    return jsonResponse({ success: false, error: "Failed to update goal" }, 500);
+    return jsonResponse({ success: false, error: "Nie udało się zaktualizować celu" }, 500);
   }
 
   const updatePayload: {
@@ -102,7 +102,7 @@ export const POST: APIRoute = async (context) => {
     .eq("user_id", user.id);
 
   if (updateError) {
-    return jsonResponse({ success: false, error: "Failed to update goal" }, 500);
+    return jsonResponse({ success: false, error: "Nie udało się zaktualizować celu" }, 500);
   }
 
   const { data: updated, error: reReadError } = await supabase
@@ -113,7 +113,7 @@ export const POST: APIRoute = async (context) => {
     .single();
 
   if (reReadError) {
-    return jsonResponse({ success: false, error: "Failed to update goal" }, 500);
+    return jsonResponse({ success: false, error: "Nie udało się zaktualizować celu" }, 500);
   }
 
   return jsonResponse({

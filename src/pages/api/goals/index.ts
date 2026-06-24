@@ -18,12 +18,12 @@ function jsonResponse(body: object, status = 200) {
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return jsonResponse({ success: false, error: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, error: "Brak autoryzacji" }, 401);
   }
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
+    return jsonResponse({ success: false, error: "Supabase nie jest skonfigurowany" }, 500);
   }
 
   const form = await context.request.formData();
@@ -61,7 +61,7 @@ export const POST: APIRoute = async (context) => {
     .single();
 
   if (error) {
-    return jsonResponse({ success: false, error: "Failed to create goal" }, 500);
+    return jsonResponse({ success: false, error: "Nie udało się utworzyć celu" }, 500);
   }
 
   return jsonResponse({ success: true, goal: formatGoalRow(data) });

@@ -4,7 +4,7 @@ import { getSupabase } from "@/lib/supabase";
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), {
+    return new Response(JSON.stringify({ success: false, error: "Brak autoryzacji" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
     });
@@ -12,7 +12,7 @@ export const POST: APIRoute = async (context) => {
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), {
+    return new Response(JSON.stringify({ success: false, error: "Brak autoryzacji" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
     });
@@ -23,7 +23,7 @@ export const POST: APIRoute = async (context) => {
   const { error } = await supabase.from("profiles").update({ display_name: emailPrefix }).eq("id", user.id);
 
   if (error) {
-    return new Response(JSON.stringify({ success: false, error: "Failed to skip onboarding" }), {
+    return new Response(JSON.stringify({ success: false, error: "Nie udało się pominąć onboardingu" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

@@ -13,19 +13,19 @@ function jsonResponse(body: object, status = 200) {
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return jsonResponse({ success: false, error: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, error: "Brak autoryzacji" }, 401);
   }
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
+    return jsonResponse({ success: false, error: "Supabase nie jest skonfigurowany" }, 500);
   }
 
   let body: unknown;
   try {
     body = await context.request.json();
   } catch {
-    return jsonResponse({ success: false, error: "Check-in text cannot be empty", code: "INVALID_INPUT" }, 400);
+    return jsonResponse({ success: false, error: "Tekst check-inu nie może być pusty", code: "INVALID_INPUT" }, 400);
   }
 
   const requestText =
@@ -41,7 +41,7 @@ export const POST: APIRoute = async (context) => {
     return jsonResponse(
       {
         success: false,
-        error: `AI check-in limit reached (10 per hour). Try again in about ${retryMinutes} minute(s) or use manual check-in.`,
+        error: `Limit check-inu AI (10 na godzinę). Spróbuj ponownie za ok. ${retryMinutes} min lub użyj check-inu ręcznego.`,
         code: "RATE_LIMITED",
       },
       429,
@@ -55,17 +55,17 @@ export const POST: APIRoute = async (context) => {
     .eq("status", "active");
 
   if (goalsError) {
-    return jsonResponse({ success: false, error: "Failed to load goals" }, 500);
+    return jsonResponse({ success: false, error: "Nie udało się wczytać celów" }, 500);
   }
 
   if (activeGoals.length === 0) {
-    return jsonResponse({ success: false, error: "No active goals to check in against", code: "NO_GOALS" }, 400);
+    return jsonResponse({ success: false, error: "Brak aktywnych celów do check-inu", code: "NO_GOALS" }, 400);
   }
 
   try {
     await recordParseAttempt(supabase, user.id);
   } catch {
-    return jsonResponse({ success: false, error: "Failed to record parse attempt" }, 500);
+    return jsonResponse({ success: false, error: "Nie udało się zapisać próby parsowania" }, 500);
   }
 
   const parseResult = await parseCheckInSentence(env.AI, textResult.text, activeGoals);
@@ -73,7 +73,7 @@ export const POST: APIRoute = async (context) => {
     return jsonResponse(
       {
         success: false,
-        error: "AI check-in is temporarily unavailable. Please use manual check-in.",
+        error: "Check-in AI jest chwilowo niedostępny. Użyj check-inu ręcznego.",
         code: "AI_UNAVAILABLE",
       },
       503,

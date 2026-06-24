@@ -8,6 +8,7 @@ import GoalStatusBadge from "@/components/goals/GoalStatusBadge";
 import NetWorthPanel from "@/components/net-worth/NetWorthPanel";
 import { computeNetWorth, getNetWorthHeadline, getStalestAsset, isAssetStale } from "@/lib/net-worth/compute";
 import { getSupabase } from "@/lib/supabase";
+import { formatMonthYear } from "@/lib/i18n/format";
 import { computeGoalMetrics, formatMonthsOfData, type GoalMetrics } from "@/lib/goals/projection";
 
 const { user, profile } = Astro.locals;
@@ -130,13 +131,7 @@ function formatPln(amount: number): string {
 
 function formatDeadline(value: string | null): string {
   if (!value) return "";
-  return formatProjectedMonth(value);
-}
-
-function formatProjectedMonth(value: string): string {
-  const [year, month] = value.split("-");
-  const date = new Date(Number(year), Number(month) - 1, 1);
-  return date.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  return formatMonthYear(value);
 }
 
 function progressPercent(saved: number, target: number): number {
@@ -147,15 +142,15 @@ function progressPercent(saved: number, target: number): number {
 const checkInGoals = activeGoals.map((g) => ({ id: g.id, name: g.name }));
 ---
 
-<Layout title="Dashboard">
+<Layout title="Panel">
   <div class="bg-warm min-h-screen">
     <div class="relative z-10 p-4 sm:p-8">
       <Topbar />
       <div class="mx-auto mt-8 max-w-2xl">
         <div class="mb-8 text-center">
-          <h1 class="text-foreground mb-2 text-3xl font-bold">Dashboard</h1>
+          <h1 class="text-foreground mb-2 text-3xl font-bold">Panel</h1>
           <p class="text-muted-foreground">
-            Welcome, <span class="text-foreground font-semibold">{greeting}</span>
+            Witaj, <span class="text-foreground font-semibold">{greeting}</span>
           </p>
         </div>
 
@@ -176,14 +171,14 @@ const checkInGoals = activeGoals.map((g) => ({ id: g.id, name: g.name }));
         />
 
         <div class="mb-4 flex items-center justify-between gap-3">
-          <h2 class="text-foreground text-lg font-semibold">Active goals</h2>
+          <h2 class="text-foreground text-lg font-semibold">Aktywne cele</h2>
           <div class="flex items-center gap-2">
             <CheckInModal goals={checkInGoals} defaultMonth={defaultMonth} client:load />
             <a
               href="/goals/new"
               class="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg border px-3 py-1.5 text-sm transition-colors"
             >
-              Add goal
+              Dodaj cel
             </a>
           </div>
         </div>
@@ -211,18 +206,18 @@ const checkInGoals = activeGoals.map((g) => ({ id: g.id, name: g.name }));
                           {formatPln(goal.saved_amount)} / {formatPln(goal.target_amount)}
                         </p>
                         {goal.deadline && (
-                          <p class="text-muted-foreground/70 mt-1 text-xs">Deadline: {formatDeadline(goal.deadline)}</p>
+                          <p class="text-muted-foreground/70 mt-1 text-xs">Termin: {formatDeadline(goal.deadline)}</p>
                         )}
                         {metrics.requiredPace != null && (
                           <p class="text-muted-foreground/80 mt-1 text-xs">
-                            Required pace: {formatPln(metrics.requiredPace)}/mo
+                            Wymagane tempo: {formatPln(metrics.requiredPace)}/mies.
                           </p>
                         )}
                         {metrics.projectedCompletionDate && (
                           <p class="text-muted-foreground/80 mt-1 text-xs">
-                            Projected: {formatProjectedMonth(metrics.projectedCompletionDate)}
+                            Prognoza: {formatMonthYear(metrics.projectedCompletionDate)}
                             <span class="text-muted-foreground/60">
-                              (based on {formatMonthsOfData(metrics.monthsOfData)} of data)
+                              (na podstawie {formatMonthsOfData(metrics.monthsOfData)} danych)
                             </span>
                           </p>
                         )}
@@ -238,7 +233,7 @@ const checkInGoals = activeGoals.map((g) => ({ id: g.id, name: g.name }));
                           href={`/goals/${goal.id}/edit`}
                           class="text-primary hover:text-primary/80 text-sm transition-colors"
                         >
-                          Edit
+                          Edytuj
                         </a>
                       </div>
                     </div>
@@ -252,12 +247,14 @@ const checkInGoals = activeGoals.map((g) => ({ id: g.id, name: g.name }));
             </ul>
           ) : (
             <div class="border-border bg-card rounded-xl border p-8 text-center shadow-sm">
-              <p class="text-muted-foreground mb-4">No active goals yet. Start saving toward something meaningful.</p>
+              <p class="text-muted-foreground mb-4">
+                Brak aktywnych celów. Zacznij odkładać na coś, co ma dla Ciebie znaczenie.
+              </p>
               <a
                 href="/goals/new"
                 class="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 inline-block rounded-lg border px-4 py-2 text-sm transition-colors"
               >
-                Add goal
+                Dodaj cel
               </a>
             </div>
           )

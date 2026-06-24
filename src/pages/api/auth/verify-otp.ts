@@ -13,12 +13,12 @@ export const POST: APIRoute = async (context) => {
   const token = (form.get("token") as string | null)?.trim();
 
   if (!email || !token) {
-    return redirectWithError(context, "Email and code are required");
+    return redirectWithError(context, "Wymagany jest adres e-mail i kod");
   }
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return redirectWithError(context, "Supabase is not configured");
+    return redirectWithError(context, "Supabase nie jest skonfigurowany");
   }
 
   const { data, error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
@@ -29,7 +29,7 @@ export const POST: APIRoute = async (context) => {
 
   const user = data.user;
   if (!user) {
-    return redirectWithError(context, "Verification failed");
+    return redirectWithError(context, "Weryfikacja nie powiodła się");
   }
 
   const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle();

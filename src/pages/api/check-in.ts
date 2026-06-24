@@ -15,12 +15,12 @@ function jsonResponse(body: object, status = 200) {
 export const POST: APIRoute = async (context) => {
   const user = context.locals.user;
   if (!user) {
-    return jsonResponse({ success: false, error: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, error: "Brak autoryzacji" }, 401);
   }
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return jsonResponse({ success: false, error: "Supabase is not configured" }, 500);
+    return jsonResponse({ success: false, error: "Supabase nie jest skonfigurowany" }, 500);
   }
 
   const form = await context.request.formData();
@@ -32,7 +32,7 @@ export const POST: APIRoute = async (context) => {
   const goalIds = form.getAll("goal_id");
   const amounts = form.getAll("amount");
   if (goalIds.length !== amounts.length) {
-    return jsonResponse({ success: false, error: "Mismatched goal and amount fields" }, 400);
+    return jsonResponse({ success: false, error: "Niezgodne pola celu i kwoty" }, 400);
   }
 
   const entries: { goalId: string; amount: number }[] = [];
@@ -40,7 +40,7 @@ export const POST: APIRoute = async (context) => {
     const goalIdEntry = goalIds[i];
     const amountEntry = amounts[i];
     if (typeof goalIdEntry !== "string" || typeof amountEntry !== "string") {
-      return jsonResponse({ success: false, error: "Invalid form fields" }, 400);
+      return jsonResponse({ success: false, error: "Nieprawidłowe pola formularza" }, 400);
     }
 
     const goalId = goalIdEntry;
@@ -50,7 +50,7 @@ export const POST: APIRoute = async (context) => {
     }
 
     if (!UUID_RE.test(goalId)) {
-      return jsonResponse({ success: false, error: "Invalid goal" }, 400);
+      return jsonResponse({ success: false, error: "Nieprawidłowy cel" }, 400);
     }
 
     const amountResult = parsePaymentAmount(amountRaw);
@@ -62,7 +62,7 @@ export const POST: APIRoute = async (context) => {
   }
 
   if (entries.length === 0) {
-    return jsonResponse({ success: false, error: "No payments to save" }, 400);
+    return jsonResponse({ success: false, error: "Brak wpłat do zapisania" }, 400);
   }
 
   const uniqueGoalIds = [...new Set(entries.map((entry) => entry.goalId))];
@@ -74,7 +74,7 @@ export const POST: APIRoute = async (context) => {
     .in("id", uniqueGoalIds);
 
   if (goalsError || goals.length !== uniqueGoalIds.length) {
-    return jsonResponse({ success: false, error: "One or more goals not found or not active" }, 404);
+    return jsonResponse({ success: false, error: "Nie znaleziono co najmniej jednego aktywnego celu" }, 404);
   }
 
   const goalById = new Map(goals.map((goal) => [goal.id, goal]));
@@ -91,7 +91,7 @@ export const POST: APIRoute = async (context) => {
     );
 
     if (upsertError) {
-      return jsonResponse({ success: false, error: "Failed to save payment" }, 500);
+      return jsonResponse({ success: false, error: "Nie udało się zapisać wpłaty" }, 500);
     }
   }
 

@@ -50,18 +50,18 @@ function validateRow(row: LiabilityDraft): { ok: true } | { ok: false; errors: R
   const trimmedName = row.name.trim();
 
   if (!trimmedName) {
-    errors.name = "Name is required";
+    errors.name = "Nazwa jest wymagana";
   } else if (trimmedName.length > 100) {
-    errors.name = "Name must be at most 100 characters";
+    errors.name = "Nazwa może mieć maksymalnie 100 znaków";
   }
 
   const rawAmount = row.amount.trim();
   if (!rawAmount) {
-    errors.amount = "Amount is required";
+    errors.amount = "Kwota jest wymagana";
   } else if (!/^\d+(\.\d{1,2})?$/.test(rawAmount)) {
-    errors.amount = "Enter an amount with at most 2 decimal places";
+    errors.amount = "Podaj kwotę z maksymalnie 2 miejscami po przecinku";
   } else if (parseFloat(rawAmount) < 0) {
-    errors.amount = "Amount must be 0 or greater";
+    errors.amount = "Kwota musi być 0 lub większa";
   }
 
   return Object.keys(errors).length === 0 ? { ok: true } : { ok: false, errors };
@@ -132,7 +132,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
         const json: { success: boolean; error?: string } = await res.json();
 
         if (!json.success) {
-          setError(json.error ?? "Failed to save liability");
+          setError(json.error ?? "Nie udało się zapisać zobowiązania");
           return;
         }
       } else {
@@ -149,8 +149,10 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
           const json: { success: boolean; error?: string } = await res.json();
 
           if (!json.success) {
-            const label = row.name.trim() || "liability";
-            setError(json.error ? `Failed to save "${label}": ${json.error}` : `Failed to save "${label}"`);
+            const label = row.name.trim() || "zobowiązanie";
+            setError(
+              json.error ? `Nie udało się zapisać „${label}”: ${json.error}` : `Nie udało się zapisać „${label}"`,
+            );
             return;
           }
         }
@@ -159,7 +161,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
       onOpenChange(false);
       onSuccess();
     } catch {
-      setError("Network error. Please try again.");
+      setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
@@ -179,14 +181,14 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
       >
         <div className="border-border flex items-start justify-between gap-4 border-b p-6 pb-4">
           <h2 id="liability-form-title" className="text-foreground text-lg font-bold">
-            {mode === "create" ? (isMultiCreate ? "Add liabilities" : "Add liability") : "Edit liability"}
+            {mode === "create" ? (isMultiCreate ? "Dodaj zobowiązania" : "Dodaj zobowiązanie") : "Edytuj zobowiązanie"}
           </h2>
           <button
             type="button"
             onClick={handleClose}
             disabled={loading}
             className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-lg p-1 transition-colors disabled:opacity-50"
-            aria-label="Close"
+            aria-label="Zamknij"
           >
             <X className="size-5" />
           </button>
@@ -205,7 +207,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
                 >
                   {showRowHeader && (
                     <div className="mb-3 flex items-center justify-between gap-2">
-                      <span className="text-foreground text-sm font-medium">Liability {index + 1}</span>
+                      <span className="text-foreground text-sm font-medium">Zobowiązanie {index + 1}</span>
                       <button
                         type="button"
                         onClick={() => {
@@ -213,7 +215,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
                         }}
                         disabled={loading}
                         className="text-destructive hover:bg-destructive/10 rounded-lg p-1.5 transition-colors disabled:opacity-50"
-                        aria-label={`Remove liability ${index + 1}`}
+                        aria-label={`Usuń zobowiązanie ${index + 1}`}
                       >
                         <Trash2 className="size-4" />
                       </button>
@@ -224,12 +226,12 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
                     <FormField
                       id={`liability-name-${row.key}`}
                       type="text"
-                      label="Name"
+                      label="Nazwa"
                       value={row.name}
                       onChange={(v) => {
                         updateRow(row.key, { name: v });
                       }}
-                      placeholder="e.g. Mortgage"
+                      placeholder="np. Kredyt hipoteczny"
                       error={errors.name}
                       icon={<Target className="size-4" />}
                       inputProps={{ maxLength: 100, disabled: loading }}
@@ -238,12 +240,12 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
                     <FormField
                       id={`liability-amount-${row.key}`}
                       type="number"
-                      label="Amount (PLN)"
+                      label="Kwota (PLN)"
                       value={row.amount}
                       onChange={(v) => {
                         updateRow(row.key, { amount: v });
                       }}
-                      placeholder="e.g. 80000.00"
+                      placeholder="np. 80000.00"
                       error={errors.amount}
                       icon={<Banknote className="size-4" />}
                       inputProps={{ step: "0.01", min: "0", disabled: loading }}
@@ -261,7 +263,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
                 className="border-border text-muted-foreground hover:border-primary/40 hover:bg-accent hover:text-foreground flex w-full items-center justify-center gap-2 rounded-lg border border-dashed px-4 py-2.5 text-sm transition-colors disabled:opacity-50"
               >
                 <Plus className="size-4" />
-                Add another liability
+                Dodaj kolejne zobowiązanie
               </button>
             )}
 
@@ -269,12 +271,12 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
           </div>
 
           <div className="border-border border-t p-6 pt-4">
-            <SubmitButton pendingText="Saving..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+            <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} disabled={loading}>
               {mode === "create"
                 ? rows.length > 1
-                  ? `Add ${rows.length} liabilities`
-                  : "Add liability"
-                : "Save changes"}
+                  ? `Dodaj ${rows.length} zobowiązań`
+                  : "Dodaj zobowiązanie"
+                : "Zapisz zmiany"}
             </SubmitButton>
           </div>
         </form>

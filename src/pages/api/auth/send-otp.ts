@@ -6,7 +6,7 @@ export const POST: APIRoute = async (context) => {
   const email = (form.get("email") as string | null)?.trim();
 
   if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return new Response(JSON.stringify({ success: false, error: "A valid email is required" }), {
+    return new Response(JSON.stringify({ success: false, error: "Wymagany jest poprawny adres e-mail" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
@@ -14,7 +14,7 @@ export const POST: APIRoute = async (context) => {
 
   const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
   if (!supabase) {
-    return new Response(JSON.stringify({ success: false, error: "Supabase is not configured" }), {
+    return new Response(JSON.stringify({ success: false, error: "Supabase nie jest skonfigurowany" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
