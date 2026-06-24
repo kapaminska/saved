@@ -6,7 +6,7 @@ import GoalQuickPayment from "@/components/goals/GoalQuickPayment";
 import PaymentHistory from "@/components/goals/PaymentHistory";
 import ClientRedirect from "@/components/goals/ClientRedirect";
 import { getGoalDetailPageData } from "@/lib/goals/detail-page";
-import { formatMonthYear } from "@/lib/i18n/format";
+import { formatMonthYear, formatPln } from "@/lib/i18n/format";
 import { formatMonthsOfData } from "@/lib/goals/projection";
 
 const { user } = Astro.locals;
@@ -20,10 +20,6 @@ const pageData = await getGoalDetailPageData(
 
 const now = new Date();
 const defaultMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-
-function formatPln(amount: number): string {
-  return `${amount.toFixed(2)} zł`;
-}
 
 function formatDeadline(value: string | null): string {
   if (!value) return "";

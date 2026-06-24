@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Banknote, Calendar, Pencil, Trash2, X } from "lucide-react";
+import { formatAmountInput, formatMonthYear, formatPln } from "@/lib/i18n/format";
 import { ServerError } from "@/components/auth/ServerError";
-import { formatMonthYear } from "@/lib/i18n/format";
 
 interface Payment {
   id: string;
@@ -22,10 +22,6 @@ function monthInputValue(paymentMonth: string): string {
   return paymentMonth.slice(0, 7);
 }
 
-function formatPln(amount: number): string {
-  return `${amount.toFixed(2)} zł`;
-}
-
 export default function PaymentHistory({ goalId, payments, editable }: Props) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editAmount, setEditAmount] = useState("");
@@ -35,7 +31,7 @@ export default function PaymentHistory({ goalId, payments, editable }: Props) {
 
   function startEdit(payment: Payment) {
     setEditingId(payment.id);
-    setEditAmount(payment.amount.toFixed(2));
+    setEditAmount(formatAmountInput(payment.amount));
     setEditMonth(monthInputValue(payment.payment_month));
     setError(null);
   }

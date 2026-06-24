@@ -3,6 +3,7 @@ import { ArrowRight, Banknote, Plus, Target, Trash2, X } from "lucide-react";
 import { FormField } from "@/components/auth/FormField";
 import { SubmitButton } from "@/components/auth/SubmitButton";
 import { ServerError } from "@/components/auth/ServerError";
+import { formatAmountInput } from "@/lib/i18n/format";
 
 interface LiabilityInitial {
   id: string;
@@ -29,10 +30,6 @@ interface Props {
   onSuccess: () => void;
 }
 
-function formatAmount(value: number): string {
-  return value.toFixed(2);
-}
-
 function createEmptyRow(): LiabilityDraft {
   return { key: crypto.randomUUID(), name: "", amount: "" };
 }
@@ -41,7 +38,7 @@ function createEditRow(initial: LiabilityInitial): LiabilityDraft {
   return {
     key: "edit",
     name: initial.name,
-    amount: formatAmount(initial.amount),
+    amount: formatAmountInput(initial.amount),
   };
 }
 

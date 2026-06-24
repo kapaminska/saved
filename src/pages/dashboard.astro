@@ -8,7 +8,7 @@ import GoalStatusBadge from "@/components/goals/GoalStatusBadge";
 import NetWorthPanel from "@/components/net-worth/NetWorthPanel";
 import { computeNetWorth, getNetWorthHeadline, getStalestAsset, isAssetStale } from "@/lib/net-worth/compute";
 import { getSupabase } from "@/lib/supabase";
-import { formatMonthYear } from "@/lib/i18n/format";
+import { formatMonthYear, formatPln } from "@/lib/i18n/format";
 import { computeGoalMetrics, formatMonthsOfData, type GoalMetrics } from "@/lib/goals/projection";
 
 const { user, profile } = Astro.locals;
@@ -123,10 +123,6 @@ if (supabase && user) {
       lastUpdatedAt: stalest.last_updated_at,
     };
   }
-}
-
-function formatPln(amount: number): string {
-  return `${amount.toFixed(2)} zł`;
 }
 
 function formatDeadline(value: string | null): string {

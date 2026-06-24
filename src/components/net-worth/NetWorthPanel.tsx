@@ -3,6 +3,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import AssetFormModal, { CATEGORY_LABELS } from "@/components/net-worth/AssetFormModal";
 import LiabilityFormModal from "@/components/net-worth/LiabilityFormModal";
 import StaleAssetBanner from "@/components/net-worth/StaleAssetBanner";
+import { formatPln } from "@/lib/i18n/format";
 import type { AssetCategory } from "@/lib/net-worth/validation";
 
 interface AssetItem {
@@ -32,11 +33,6 @@ interface Props {
   liabilities: LiabilityItem[];
   stalestAsset: StaleAsset | null;
   hasAnyItems: boolean;
-}
-
-function formatPln(amount: number): string {
-  const abs = Math.abs(amount).toFixed(2);
-  return amount < 0 ? `-${abs} zł` : `${abs} zł`;
 }
 
 function categoryLabel(category: string): string {

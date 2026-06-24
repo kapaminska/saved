@@ -1,5 +1,20 @@
 export const LOCALE = "pl-PL";
 
+const plnFormatter = new Intl.NumberFormat(LOCALE, {
+  style: "currency",
+  currency: "PLN",
+});
+
+/** Display amount in PLN with locale grouping (e.g. "10 000,50 zł"). */
+export function formatPln(amount: number): string {
+  return plnFormatter.format(amount);
+}
+
+/** Plain decimal string for `<input type="number">` values (no grouping). */
+export function formatAmountInput(value: number): string {
+  return value.toFixed(2);
+}
+
 /** Format YYYY-MM or YYYY-MM-DD as localized month + year. */
 export function formatMonthYear(value: string): string {
   const [year, month] = value.split("-");

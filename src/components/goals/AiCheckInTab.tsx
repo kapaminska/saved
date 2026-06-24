@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AlertTriangle, Banknote, Calendar, Loader2, Sparkles, TriangleAlert } from "lucide-react";
 import { ServerError } from "@/components/auth/ServerError";
+import { formatPln } from "@/lib/i18n/format";
 
 const MAX_TEXT_LENGTH = 500;
 
@@ -255,7 +256,7 @@ export default function AiCheckInTab({ goals, month, defaultMonth, onMonthChange
             <ul className="space-y-2 text-sm text-amber-800">
               {unrecognized.map((entry) => (
                 <li key={`${entry.rawGoalName}-${entry.amount}`}>
-                  {entry.rawGoalName} ({entry.amount} zł) —{" "}
+                  {entry.rawGoalName} ({formatPln(entry.amount)}) —{" "}
                   <a href="/goals/new" className="text-primary hover:text-primary/80 underline">
                     Utwórz ten cel osobno
                   </a>

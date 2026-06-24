@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Topbar from "@/components/Topbar.astro";
 import { getSupabase } from "@/lib/supabase";
+import { formatPln } from "@/lib/i18n/format";
 
 const { user } = Astro.locals;
 
@@ -24,10 +25,6 @@ const [{ data: completedGoals }, { data: abandonedGoals }] =
           .order("updated_at", { ascending: false }),
       ])
     : [{ data: [] }, { data: [] }];
-
-function formatPln(amount: number): string {
-  return `${amount.toFixed(2)} zł`;
-}
 
 function formatDate(value: string | null): string {
   if (!value) return "—";

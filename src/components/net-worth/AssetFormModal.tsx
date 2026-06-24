@@ -4,6 +4,7 @@ import { FormField } from "@/components/auth/FormField";
 import { SubmitButton } from "@/components/auth/SubmitButton";
 import { ServerError } from "@/components/auth/ServerError";
 import { ASSET_CATEGORIES, type AssetCategory } from "@/lib/net-worth/validation";
+import { formatAmountInput } from "@/lib/i18n/format";
 
 const CATEGORY_LABELS: Record<AssetCategory, string> = {
   cash: "Gotówka",
@@ -41,10 +42,6 @@ interface Props {
   onSuccess: () => void;
 }
 
-function formatAmount(value: number): string {
-  return value.toFixed(2);
-}
-
 function createEmptyRow(): AssetDraft {
   return { key: crypto.randomUUID(), name: "", amount: "", category: "cash" };
 }
@@ -53,7 +50,7 @@ function createEditRow(initial: AssetInitial): AssetDraft {
   return {
     key: "edit",
     name: initial.name,
-    amount: formatAmount(initial.amount),
+    amount: formatAmountInput(initial.amount),
     category: initial.category,
   };
 }

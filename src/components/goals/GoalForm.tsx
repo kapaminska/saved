@@ -3,6 +3,7 @@ import { Target, Banknote, Calendar, ArrowRight, TriangleAlert, PiggyBank } from
 import { FormField } from "@/components/auth/FormField";
 import { SubmitButton } from "@/components/auth/SubmitButton";
 import { ServerError } from "@/components/auth/ServerError";
+import { formatAmountInput, formatPln } from "@/lib/i18n/format";
 import { deadlineToMonthInput } from "@/lib/goals/validation";
 
 interface GoalInitial {
@@ -20,10 +21,6 @@ interface Props {
   successRedirect?: string;
 }
 
-function formatAmount(value: number): string {
-  return value.toFixed(2);
-}
-
 export default function GoalForm({
   mode,
   initial,
@@ -33,10 +30,10 @@ export default function GoalForm({
 }: Props) {
   const [name, setName] = useState(initial?.name ?? "");
   const [targetAmount, setTargetAmount] = useState(
-    initial?.target_amount != null ? formatAmount(initial.target_amount) : "",
+    initial?.target_amount != null ? formatAmountInput(initial.target_amount) : "",
   );
   const [savedAmount, setSavedAmount] = useState(
-    initial?.saved_amount != null ? formatAmount(initial.saved_amount) : "0",
+    initial?.saved_amount != null ? formatAmountInput(initial.saved_amount) : "0",
   );
   const [deadline, setDeadline] = useState(deadlineToMonthInput(initial?.deadline ?? null));
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +43,7 @@ export default function GoalForm({
   const [savedAmountError, setSavedAmountError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
 
-  const initialTarget = initial?.target_amount != null ? formatAmount(initial.target_amount) : "";
+  const initialTarget = initial?.target_amount != null ? formatAmountInput(initial.target_amount) : "";
   const initialDeadline = deadlineToMonthInput(initial?.deadline ?? null);
   const showWarning =
     mode === "edit" && initial != null && (targetAmount !== initialTarget || deadline !== initialDeadline);
@@ -188,7 +185,7 @@ export default function GoalForm({
         <div>
           <p className="text-foreground mb-1 block text-sm">Już odłożono (PLN)</p>
           <p className="border-border bg-muted/50 text-muted-foreground rounded-lg border px-3 py-2 text-sm">
-            {formatAmount(initial?.saved_amount ?? 0)} — śledzone przez historię wpłat
+            {formatPln(initial?.saved_amount ?? 0)} — śledzone przez historię wpłat
           </p>
         </div>
       ) : (
