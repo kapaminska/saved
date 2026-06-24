@@ -16,20 +16,21 @@ Unauthenticated visitors see a warm-toned Polish landing: marketing header ("Sav
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| Auth redirect on `/` | Match existing flow: `display_name` → dashboard, else → onboarding | Consistent with verify-otp and signin redirect patterns already in middleware | Plan |
-| Content depth | Hero + 3 feature cards | Covers FR-037 pillars fast; mirrors existing Welcome layout | Plan |
-| Language | Polish | Matches PRD persona and examples | Plan |
-| Slogan | "Odkładaj na cele. Świętuj każdy z nich." | Warm, celebration-aligned brand line from PRD options | Plan |
-| Visual scope | Warm palette on landing in this slice | User chose early warm identity over deferring entirely to S-06 | Plan |
-| Header | Dedicated marketing header | Cleaner marketing presentation; no app nav on landing | Plan |
-| CTA target | `/auth/signin` | Single magic-link entry point (S-01) | Research / PRD |
-| Phase structure | 2 phases: routing, then content+theme | Routing verifiable independently before UI work | Plan |
+| Decision             | Choice                                                             | Why (1 sentence)                                                              | Source         |
+| -------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- | -------------- |
+| Auth redirect on `/` | Match existing flow: `display_name` → dashboard, else → onboarding | Consistent with verify-otp and signin redirect patterns already in middleware | Plan           |
+| Content depth        | Hero + 3 feature cards                                             | Covers FR-037 pillars fast; mirrors existing Welcome layout                   | Plan           |
+| Language             | Polish                                                             | Matches PRD persona and examples                                              | Plan           |
+| Slogan               | "Odkładaj na cele. Świętuj każdy z nich."                          | Warm, celebration-aligned brand line from PRD options                         | Plan           |
+| Visual scope         | Warm palette on landing in this slice                              | User chose early warm identity over deferring entirely to S-06                | Plan           |
+| Header               | Dedicated marketing header                                         | Cleaner marketing presentation; no app nav on landing                         | Plan           |
+| CTA target           | `/auth/signin`                                                     | Single magic-link entry point (S-01)                                          | Research / PRD |
+| Phase structure      | 2 phases: routing, then content+theme                              | Routing verifiable independently before UI work                               | Plan           |
 
 ## Scope
 
 **In scope:**
+
 - Middleware redirect for authenticated users on `/`
 - `LandingPage.astro` with Polish hero + 3 value-prop cards
 - `MarketingHeader.astro` (product name + login CTA)
@@ -38,6 +39,7 @@ Unauthenticated visitors see a warm-toned Polish landing: marketing header ("Sav
 - Optional `lang="pl"` on landing via Layout prop
 
 **Out of scope:**
+
 - How-it-works sections, example check-in, footer
 - Polish localization of auth/app pages
 - App-wide warm theme (S-06)
@@ -50,9 +52,9 @@ Phase 1 adds an exact-match `/` redirect in middleware after user/profile resolu
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Authenticated `/` redirect | Middleware closes FR-037 auth gap | Redirect loop if pathname match is too broad |
+| Phase                                     | What it delivers                         | Key risk                                                        |
+| ----------------------------------------- | ---------------------------------------- | --------------------------------------------------------------- |
+| 1. Authenticated `/` redirect             | Middleware closes FR-037 auth gap        | Redirect loop if pathname match is too broad                    |
 | 2. Product landing (content + warm theme) | Polish landing replaces starter scaffold | Warm palette scope creep into app pages; S-06 may refine tokens |
 
 **Prerequisites:** None (parallel with Stream B; auth at `/auth/signin` already works)

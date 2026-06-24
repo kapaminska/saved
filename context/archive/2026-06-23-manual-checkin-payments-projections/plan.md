@@ -76,15 +76,15 @@ Create `goal_payments` table with per-goal per-month uniqueness, RLS mirroring g
 
 Table `public.goal_payments`:
 
-| Column | Type | Constraints |
-| --- | --- | --- |
-| id | UUID | PK, DEFAULT gen_random_uuid() |
-| goal_id | UUID | NOT NULL, FK → savings_goals(id) ON DELETE CASCADE |
-| user_id | UUID | NOT NULL, FK → auth.users(id) ON DELETE CASCADE |
-| amount | NUMERIC(12,2) | NOT NULL, CHECK (amount >= 0) |
-| payment_month | DATE | NOT NULL — always first day of month (e.g. `2026-06-01`) |
-| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
-| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
+| Column        | Type          | Constraints                                              |
+| ------------- | ------------- | -------------------------------------------------------- |
+| id            | UUID          | PK, DEFAULT gen_random_uuid()                            |
+| goal_id       | UUID          | NOT NULL, FK → savings_goals(id) ON DELETE CASCADE       |
+| user_id       | UUID          | NOT NULL, FK → auth.users(id) ON DELETE CASCADE          |
+| amount        | NUMERIC(12,2) | NOT NULL, CHECK (amount >= 0)                            |
+| payment_month | DATE          | NOT NULL — always first day of month (e.g. `2026-06-01`) |
+| created_at    | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                                  |
+| updated_at    | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                                  |
 
 Constraints: `UNIQUE (goal_id, payment_month)`. Index on `(user_id, payment_month)` and `(goal_id, payment_month)`.
 

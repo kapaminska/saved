@@ -74,27 +74,27 @@ Create `assets` and `liabilities` tables with RLS (including DELETE), seed data,
 
 Table `public.assets`:
 
-| Column | Type | Constraints |
-| --- | --- | --- |
-| id | UUID | PK, DEFAULT gen_random_uuid() |
-| user_id | UUID | NOT NULL, FK → auth.users(id) ON DELETE CASCADE |
-| name | TEXT | NOT NULL, CHECK (char_length(name) BETWEEN 1 AND 100) |
-| amount | NUMERIC(12,2) | NOT NULL, CHECK (amount >= 0) |
-| category | TEXT | NOT NULL, CHECK (category IN ('cash', 'savings', 'investments', 'real_estate', 'other')) |
-| last_updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
-| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
-| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
+| Column          | Type          | Constraints                                                                              |
+| --------------- | ------------- | ---------------------------------------------------------------------------------------- |
+| id              | UUID          | PK, DEFAULT gen_random_uuid()                                                            |
+| user_id         | UUID          | NOT NULL, FK → auth.users(id) ON DELETE CASCADE                                          |
+| name            | TEXT          | NOT NULL, CHECK (char_length(name) BETWEEN 1 AND 100)                                    |
+| amount          | NUMERIC(12,2) | NOT NULL, CHECK (amount >= 0)                                                            |
+| category        | TEXT          | NOT NULL, CHECK (category IN ('cash', 'savings', 'investments', 'real_estate', 'other')) |
+| last_updated_at | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                                                                  |
+| created_at      | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                                                                  |
+| updated_at      | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                                                                  |
 
 Table `public.liabilities`:
 
-| Column | Type | Constraints |
-| --- | --- | --- |
-| id | UUID | PK, DEFAULT gen_random_uuid() |
-| user_id | UUID | NOT NULL, FK → auth.users(id) ON DELETE CASCADE |
-| name | TEXT | NOT NULL, CHECK (char_length(name) BETWEEN 1 AND 100) |
-| amount | NUMERIC(12,2) | NOT NULL, CHECK (amount >= 0) |
-| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
-| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
+| Column     | Type          | Constraints                                           |
+| ---------- | ------------- | ----------------------------------------------------- |
+| id         | UUID          | PK, DEFAULT gen_random_uuid()                         |
+| user_id    | UUID          | NOT NULL, FK → auth.users(id) ON DELETE CASCADE       |
+| name       | TEXT          | NOT NULL, CHECK (char_length(name) BETWEEN 1 AND 100) |
+| amount     | NUMERIC(12,2) | NOT NULL, CHECK (amount >= 0)                         |
+| created_at | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                               |
+| updated_at | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                               |
 
 Indexes: `assets_user_id_idx` on `(user_id)`; `liabilities_user_id_idx` on `(user_id)`.
 

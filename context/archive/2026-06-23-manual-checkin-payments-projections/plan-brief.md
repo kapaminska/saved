@@ -16,21 +16,22 @@ Users check in from a dashboard modal — one month, all active goals, skip or e
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| Status classification | Projected date vs deadline (date compare) | PRD open question resolved: ahead/on track/behind from calendar date comparison. | Plan |
-| Check-in location | Dashboard modal | Keeps monthly ritual on the main screen; no extra nav route. | Plan |
-| Payment history location | New `/goals/[id]` detail page | S-02 scoped out history on edit page; detail is the natural home. | Plan |
-| Zero months | Explicit zero payment row | Visible in history (FR-020); same projection math as gaps. | Plan |
-| saved_amount sync | SUM recalc after every mutation | Single source of truth in payments; trigger handles completion. | Plan |
-| Projection window | Goal lifetime (creation → now) | Matches PRD; N = calendar months in window, gaps = 0. | Plan |
-| Payment uniqueness | One row per goal per month | DB UNIQUE constraint; edit moves row, not duplicates. | Plan |
-| Check-in scope | Active goals only | Completed/abandoned goals excluded from modal. | Plan |
-| Skip vs zero in modal | Amount field + "0" shortcut; empty = skip | Skip creates no row; zero creates explicit 0 row. | Plan |
+| Decision                 | Choice                                    | Why (1 sentence)                                                                 | Source |
+| ------------------------ | ----------------------------------------- | -------------------------------------------------------------------------------- | ------ |
+| Status classification    | Projected date vs deadline (date compare) | PRD open question resolved: ahead/on track/behind from calendar date comparison. | Plan   |
+| Check-in location        | Dashboard modal                           | Keeps monthly ritual on the main screen; no extra nav route.                     | Plan   |
+| Payment history location | New `/goals/[id]` detail page             | S-02 scoped out history on edit page; detail is the natural home.                | Plan   |
+| Zero months              | Explicit zero payment row                 | Visible in history (FR-020); same projection math as gaps.                       | Plan   |
+| saved_amount sync        | SUM recalc after every mutation           | Single source of truth in payments; trigger handles completion.                  | Plan   |
+| Projection window        | Goal lifetime (creation → now)            | Matches PRD; N = calendar months in window, gaps = 0.                            | Plan   |
+| Payment uniqueness       | One row per goal per month                | DB UNIQUE constraint; edit moves row, not duplicates.                            | Plan   |
+| Check-in scope           | Active goals only                         | Completed/abandoned goals excluded from modal.                                   | Plan   |
+| Skip vs zero in modal    | Amount field + "0" shortcut; empty = skip | Skip creates no row; zero creates explicit 0 row.                                | Plan   |
 
 ## Scope
 
 **In scope:**
+
 - `goal_payments` migration (RLS, uniqueness, seed, RLS test)
 - Projection library (pace, projected date, status)
 - APIs: batch check-in, payment update, payment delete
@@ -38,6 +39,7 @@ Users check in from a dashboard modal — one month, all active goals, skip or e
 - FR-012, FR-015–FR-022
 
 **Out of scope:**
+
 - AI NL check-in (S-04)
 - Dedicated `/check-in` page
 - Payments on completed/abandoned goals
@@ -50,12 +52,12 @@ Payments are monthly atoms in `goal_payments` with UNIQUE `(goal_id, payment_mon
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Schema & RLS | Payments table, types, seed, RLS test | Seed `saved_amount` must match payment SUM |
-| 2. Projection logic | Pace, projected date, status, validation | Zero-average edge case; date compare boundaries |
-| 3. Payment APIs | Check-in batch, CRUD, SUM sync | Transaction ordering for trigger + completion detect |
-| 4. UI | Modal, dashboard metrics, goal detail | Modal UX for skip/zero; inline edit month collision |
+| Phase               | What it delivers                         | Key risk                                             |
+| ------------------- | ---------------------------------------- | ---------------------------------------------------- |
+| 1. Schema & RLS     | Payments table, types, seed, RLS test    | Seed `saved_amount` must match payment SUM           |
+| 2. Projection logic | Pace, projected date, status, validation | Zero-average edge case; date compare boundaries      |
+| 3. Payment APIs     | Check-in batch, CRUD, SUM sync           | Transaction ordering for trigger + completion detect |
+| 4. UI               | Modal, dashboard metrics, goal detail    | Modal UX for skip/zero; inline edit month collision  |
 
 **Prerequisites:** S-02 complete ✓ (`savings_goals` + celebration)
 **Estimated effort:** ~3–4 sessions across 4 phases

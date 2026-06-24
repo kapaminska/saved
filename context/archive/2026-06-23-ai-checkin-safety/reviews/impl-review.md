@@ -1,4 +1,5 @@
 <!-- IMPL-REVIEW-REPORT -->
+
 # Implementation Review: AI Check-in + Safety
 
 - **Plan**: context/changes/ai-checkin-safety/plan.md
@@ -9,14 +10,14 @@
 
 ## Verdicts
 
-| Dimension | Verdict |
-|-----------|---------|
-| Plan Adherence | WARNING ⚠️ |
-| Scope Discipline | PASS ✅ |
-| Safety & Quality | WARNING ⚠️ |
-| Architecture | PASS ✅ |
+| Dimension           | Verdict    |
+| ------------------- | ---------- |
+| Plan Adherence      | WARNING ⚠️ |
+| Scope Discipline    | PASS ✅    |
+| Safety & Quality    | WARNING ⚠️ |
+| Architecture        | PASS ✅    |
 | Pattern Consistency | WARNING ⚠️ |
-| Success Criteria | WARNING ⚠️ |
+| Success Criteria    | WARNING ⚠️ |
 
 ## Findings
 

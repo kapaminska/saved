@@ -16,19 +16,20 @@ User enters email on `/auth/signin`, receives a 6-digit code, types it, and is a
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) |
-| --- | --- | --- |
-| Auth mechanism | Email OTP (6-digit code) | No tab-switching; works reliably on all devices including mobile. |
-| Signup/signin unification | Single `/auth/signin` page | Magic link erases the signup/signin distinction — one flow handles both (FR-031). |
-| Onboarding trigger | `display_name IS NULL` check | Simple, reliable heuristic — no extra DB column; nudges users to set a name. |
-| Onboarding structure | Single page, all fields | Only 4 fields total — a wizard would over-engineer it. |
-| Navigation | Extend Topbar with profile link | Builds on existing component; sidebar is premature with only 2 authenticated pages. |
-| Profile page | Separate `/profile` route | Clean separation from dashboard; matches FR-028 ("dedicated profile page"). |
-| OTP error handling | Inline errors + resend with 60s cooldown | Standard pattern; user stays on the same page. |
+| Decision                  | Choice                                   | Why (1 sentence)                                                                    |
+| ------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------- |
+| Auth mechanism            | Email OTP (6-digit code)                 | No tab-switching; works reliably on all devices including mobile.                   |
+| Signup/signin unification | Single `/auth/signin` page               | Magic link erases the signup/signin distinction — one flow handles both (FR-031).   |
+| Onboarding trigger        | `display_name IS NULL` check             | Simple, reliable heuristic — no extra DB column; nudges users to set a name.        |
+| Onboarding structure      | Single page, all fields                  | Only 4 fields total — a wizard would over-engineer it.                              |
+| Navigation                | Extend Topbar with profile link          | Builds on existing component; sidebar is premature with only 2 authenticated pages. |
+| Profile page              | Separate `/profile` route                | Clean separation from dashboard; matches FR-028 ("dedicated profile page").         |
+| OTP error handling        | Inline errors + resend with 60s cooldown | Standard pattern; user stays on the same page.                                      |
 
 ## Scope
 
 **In scope:**
+
 - Magic link OTP auth (send, verify, resend with cooldown)
 - Remove all password-based auth code and signup page
 - Onboarding page with name (required feel) + optional fields (DOB, retirement age, relationship status)
@@ -39,6 +40,7 @@ User enters email on `/auth/signin`, receives a 6-digit code, types it, and is a
 - Dashboard: welcome with display name
 
 **Out of scope:**
+
 - OAuth / social login
 - Email template customization
 - Production SMTP setup
@@ -51,11 +53,11 @@ Two-step React island on `/auth/signin` handles the OTP flow client-side (email 
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Auth flow overhaul | Magic link OTP login, password auth removed | OTP email delivery in local dev depends on Inbucket working correctly |
-| 2. Onboarding flow | First-login detection + profile collection page | Middleware redirect logic must avoid loops on exempt paths |
-| 3. Profile page & navigation | Profile editing + Topbar improvements | Low risk — builds on Phase 2 components |
+| Phase                        | What it delivers                                | Key risk                                                              |
+| ---------------------------- | ----------------------------------------------- | --------------------------------------------------------------------- |
+| 1. Auth flow overhaul        | Magic link OTP login, password auth removed     | OTP email delivery in local dev depends on Inbucket working correctly |
+| 2. Onboarding flow           | First-login detection + profile collection page | Middleware redirect logic must avoid loops on exempt paths            |
+| 3. Profile page & navigation | Profile editing + Topbar improvements           | Low risk — builds on Phase 2 components                               |
 
 **Prerequisites:** F-01 complete (profiles table + RLS + trigger) ✓
 **Estimated effort:** ~3 sessions across 3 phases

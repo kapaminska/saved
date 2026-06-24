@@ -66,17 +66,17 @@ The lesson focus is safe throughput: isolated contexts, choosing the right execu
 
 ### Task Router - Where to start
 
-| Skill | Use it when |
-| --- | --- |
-| **Code isolation** | |
-| `git worktree add` | You need a separate working directory for a parallel change. One change per worktree, one fresh agent context per worktree. |
-| **Complex changes** | |
-| `/10x-implement <change-id> phase <n>` | The change has multiple phases, needs manual gates, or benefits from interactive decision-making during execution. |
-| **Simple changes** | |
-| `/goal` | You have a clear, bounded task and want goal-directed delegation. The agent works autonomously toward the stated goal with a stop condition. |
-| `claude -p` | You want headless execution for a well-defined task. The Ralph Wiggum loop (run, check, retry) is the universal autonomous pattern. |
-| **Multi-session orchestration** | |
-| Superset / Conductor / Antigravity / VS Code Agent View | You are running multiple agent sessions in parallel and need visibility, coordination, or session management across them. |
+| Skill                                                   | Use it when                                                                                                                                  |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Code isolation**                                      |                                                                                                                                              |
+| `git worktree add`                                      | You need a separate working directory for a parallel change. One change per worktree, one fresh agent context per worktree.                  |
+| **Complex changes**                                     |                                                                                                                                              |
+| `/10x-implement <change-id> phase <n>`                  | The change has multiple phases, needs manual gates, or benefits from interactive decision-making during execution.                           |
+| **Simple changes**                                      |                                                                                                                                              |
+| `/goal`                                                 | You have a clear, bounded task and want goal-directed delegation. The agent works autonomously toward the stated goal with a stop condition. |
+| `claude -p`                                             | You want headless execution for a well-defined task. The Ralph Wiggum loop (run, check, retry) is the universal autonomous pattern.          |
+| **Multi-session orchestration**                         |                                                                                                                                              |
+| Superset / Conductor / Antigravity / VS Code Agent View | You are running multiple agent sessions in parallel and need visibility, coordination, or session management across them.                    |
 
 ### Parallel work rules
 

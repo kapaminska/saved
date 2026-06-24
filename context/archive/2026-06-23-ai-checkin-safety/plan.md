@@ -81,11 +81,11 @@ Add Supabase table for AI parse rate limiting, Zod dependency, Workers AI bindin
 
 Table `public.ai_checkin_requests`:
 
-| Column | Type | Constraints |
-| --- | --- | --- |
-| id | UUID | PK, DEFAULT gen_random_uuid() |
-| user_id | UUID | NOT NULL, FK → auth.users(id) ON DELETE CASCADE |
-| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
+| Column     | Type        | Constraints                                     |
+| ---------- | ----------- | ----------------------------------------------- |
+| id         | UUID        | PK, DEFAULT gen_random_uuid()                   |
+| user_id    | UUID        | NOT NULL, FK → auth.users(id) ON DELETE CASCADE |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now()                         |
 
 Index on `(user_id, created_at DESC)`. RLS enabled; policies `insert_own`, `select_own` using `auth.uid() = user_id`. No UPDATE/DELETE policies needed.
 

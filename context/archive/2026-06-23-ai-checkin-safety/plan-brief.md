@@ -16,22 +16,23 @@ User opens the dashboard check-in modal (tabbed: **AI** default, **Manual** fall
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| AI provider | Cloudflare Workers AI (free tier) | 10,000 Neurons/day at no cost; runs on existing edge runtime — no external API key. | Plan |
-| Model | `@cf/meta/llama-3.1-8b-instruct` | Small, fast, low Neuron cost; sufficient for structured extraction with Zod validation safety net. | Plan |
-| Rate limit storage | Supabase `ai_checkin_requests` table | Persists across Worker instances; auditable; fits existing stack. | Plan |
-| Rate limit threshold | 10 requests / hour / user | Generous for monthly ritual + re-parses; manual tab always available. | Plan |
-| Check-in UX | Tabbed modal (AI \| Manual) | Single entry point; FR-034 fallback is one click to Manual tab. | Plan |
-| Goal matching | LLM extraction + server-side fuzzy match | Catches typos and Polish inflections; unrecognized names flagged per FR-014. | Plan |
-| Review editing | Amount + goal dropdown + remove | Full FR-013 — reassign, edit amount, remove before save. | Plan |
-| Fallback UX | Inline error + switch to Manual tab | User never blocked; preserves modal context. | Plan |
-| Language | Polish + English NL input | Matches PRD examples and demo audiences; UI stays English. | Plan |
-| Save path | Reuse `/api/check-in` | Existing validation, RLS, SUM sync, and celebration redirect — no duplicate save logic. | Plan |
+| Decision             | Choice                                   | Why (1 sentence)                                                                                   | Source |
+| -------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------- | ------ |
+| AI provider          | Cloudflare Workers AI (free tier)        | 10,000 Neurons/day at no cost; runs on existing edge runtime — no external API key.                | Plan   |
+| Model                | `@cf/meta/llama-3.1-8b-instruct`         | Small, fast, low Neuron cost; sufficient for structured extraction with Zod validation safety net. | Plan   |
+| Rate limit storage   | Supabase `ai_checkin_requests` table     | Persists across Worker instances; auditable; fits existing stack.                                  | Plan   |
+| Rate limit threshold | 10 requests / hour / user                | Generous for monthly ritual + re-parses; manual tab always available.                              | Plan   |
+| Check-in UX          | Tabbed modal (AI \| Manual)              | Single entry point; FR-034 fallback is one click to Manual tab.                                    | Plan   |
+| Goal matching        | LLM extraction + server-side fuzzy match | Catches typos and Polish inflections; unrecognized names flagged per FR-014.                       | Plan   |
+| Review editing       | Amount + goal dropdown + remove          | Full FR-013 — reassign, edit amount, remove before save.                                           | Plan   |
+| Fallback UX          | Inline error + switch to Manual tab      | User never blocked; preserves modal context.                                                       | Plan   |
+| Language             | Polish + English NL input                | Matches PRD examples and demo audiences; UI stays English.                                         | Plan   |
+| Save path            | Reuse `/api/check-in`                    | Existing validation, RLS, SUM sync, and celebration redirect — no duplicate save logic.            | Plan   |
 
 ## Scope
 
 **In scope:**
+
 - Workers AI binding + parse service with Zod structural validation (FR-036)
 - NL input validation (500 char, non-empty) — FR-032, FR-033
 - Per-user rate limiting with Supabase table — FR-034
@@ -42,6 +43,7 @@ User opens the dashboard check-in modal (tabbed: **AI** default, **Manual** fall
 - FR-011, FR-013–FR-014, FR-032–FR-036, US-01
 
 **Out of scope:**
+
 - Inline goal creation from check-in (FR-014 — flag only)
 - AI for anything other than check-in parsing (PRD non-goal)
 - AI parse audit UI / admin dashboard
@@ -66,12 +68,12 @@ Workers AI binding added to `wrangler.jsonc`. Parse logic in `src/lib/goals/ai-c
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Rate-limit schema & Workers AI wiring | Migration, Zod dep, AI binding, env types | Local dev requires `remote: true` — Workers AI always hits Cloudflare |
-| 2. Parse library | NL validation, Zod schema, fuzzy match, AI orchestration | Model JSON reliability — mitigated by Zod + fallback |
-| 3. Parse API | `POST /api/check-in/parse` with auth, rate limit, error codes | Accessing `locals.runtime.env.AI` in Astro adapter |
-| 4. Tabbed UI | AI tab + review screen + manual fallback wiring | Modal state complexity (tab switch, review sub-view) |
+| Phase                                    | What it delivers                                              | Key risk                                                              |
+| ---------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------- |
+| 1. Rate-limit schema & Workers AI wiring | Migration, Zod dep, AI binding, env types                     | Local dev requires `remote: true` — Workers AI always hits Cloudflare |
+| 2. Parse library                         | NL validation, Zod schema, fuzzy match, AI orchestration      | Model JSON reliability — mitigated by Zod + fallback                  |
+| 3. Parse API                             | `POST /api/check-in/parse` with auth, rate limit, error codes | Accessing `locals.runtime.env.AI` in Astro adapter                    |
+| 4. Tabbed UI                             | AI tab + review screen + manual fallback wiring               | Modal state complexity (tab switch, review sub-view)                  |
 
 **Prerequisites:** S-03 complete ✓ (`/api/check-in`, `CheckInModal`, payment validation)
 **Estimated effort:** ~3–4 sessions across 4 phases

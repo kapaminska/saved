@@ -1,4 +1,5 @@
 <!-- IMPL-REVIEW-REPORT -->
+
 # Implementation Review: Auth, Onboarding & Profile
 
 - **Plan**: context/changes/auth-onboarding-profile/plan.md
@@ -9,14 +10,14 @@
 
 ## Verdicts
 
-| Dimension | Verdict |
-|-----------|---------|
-| Plan Adherence | WARNING |
-| Scope Discipline | PASS |
-| Safety & Quality | WARNING |
-| Architecture | PASS |
+| Dimension           | Verdict |
+| ------------------- | ------- |
+| Plan Adherence      | WARNING |
+| Scope Discipline    | PASS    |
+| Safety & Quality    | WARNING |
+| Architecture        | PASS    |
 | Pattern Consistency | WARNING |
-| Success Criteria | PASS |
+| Success Criteria    | PASS    |
 
 ## Findings
 
@@ -26,7 +27,7 @@
 - **Impact**: 🏃 LOW — quick decision; fix is obvious and narrowly scoped
 - **Dimension**: Plan Adherence
 - **Location**: src/components/auth/MagicLinkForm.tsx
-- **Detail**: Plan specifies maxLength={6}, inputMode="numeric", pattern="[0-9]*" on the OTP input for mobile UX. The FormField component doesn't forward these attributes. Digit enforcement is handled client-side via onChange handler, but mobile users see a full QWERTY keyboard instead of a numpad.
+- **Detail**: Plan specifies maxLength={6}, inputMode="numeric", pattern="[0-9]\*" on the OTP input for mobile UX. The FormField component doesn't forward these attributes. Digit enforcement is handled client-side via onChange handler, but mobile users see a full QWERTY keyboard instead of a numpad.
 - **Fix**: Add inputProps spread to the OTP FormField usage or render a raw `<input>` with the correct attributes for the OTP step.
 - **Decision**: FIXED — Added inputProps spread to FormField, applied maxLength/inputMode/pattern/autoComplete on OTP input.
 

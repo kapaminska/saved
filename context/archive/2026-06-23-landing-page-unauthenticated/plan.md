@@ -25,11 +25,13 @@ Auth is unified at `/auth/signin` via magic-link OTP (S-01). Landing CTAs alread
 ## Desired End State
 
 An unauthenticated visitor at `/` sees a warm-toned landing page in Polish with:
+
 - A dedicated marketing header (product name + login CTA)
 - Hero headline **"Odkładaj na cele. Świętuj każdy z nich."** with supporting subhead and primary CTA to magic-link sign-in
 - Three feature cards covering savings goals, monthly check-in, and progress projection
 
 An authenticated user visiting `/` is redirected immediately:
+
 - Has `display_name` → `/dashboard`
 - No `display_name` → `/onboarding`
 
@@ -113,6 +115,7 @@ Replace starter landing content with Saved! product messaging in Polish, a dedic
 **Intent**: Add landing-scoped background and surface utilities with a warm palette (cream/amber tones, humanist feel) without altering global shadcn tokens used by authenticated pages.
 
 **Contract**: Add `@utility` entries (or equivalent Tailwind 4 custom utilities) such as:
+
 - `bg-warm` — warm gradient or solid background for the landing page shell (light/cream base, not cosmic dark)
 - Optionally `text-warm-*` / border utilities if needed for card surfaces
 
@@ -125,6 +128,7 @@ Keep existing `bg-cosmic` untouched — auth and app pages continue using it unt
 **Intent**: Provide landing-only top chrome: product wordmark ("Saved!") on the left and a primary login CTA on the right. No app navigation links (Dashboard, Archive, Profile).
 
 **Contract**: Astro component, no props required. Contains:
+
 - Product name/link to `/`
 - `<a href="/auth/signin">` styled as a button or prominent link with label **"Zaloguj się"**
 
@@ -139,17 +143,18 @@ Does not read `Astro.locals.user` — authenticated users never reach the landin
 **Contract**: Structure:
 
 **Hero section:**
+
 - `<h1>`: `Odkładaj na cele. Świętuj każdy z nich.`
 - Subhead (1–2 sentences): communicates multiple savings goals, monthly check-in (one sentence or manual), and progress projection — derived from PRD vision, not starter copy
 - Primary CTA: **"Zaloguj się"** → `/auth/signin`
 
 **Three feature cards** (grid, responsive — mirror current 1-col mobile / 3-col desktop layout from `Welcome.astro`):
 
-| Card | Title (PL) | Body (PL) — covers FR-037 pillar |
-|------|------------|----------------------------------|
-| 1 | Cele oszczędnościowe | Define multiple goals with target amounts and optional deadlines |
-| 2 | Miesięczny check-in | Monthly check-in via one natural-language sentence or manual entry |
-| 3 | Projekcja postępu | Required pace, projected completion date, on-track/behind/ahead status |
+| Card | Title (PL)           | Body (PL) — covers FR-037 pillar                                       |
+| ---- | -------------------- | ---------------------------------------------------------------------- |
+| 1    | Cele oszczędnościowe | Define multiple goals with target amounts and optional deadlines       |
+| 2    | Miesięczny check-in  | Monthly check-in via one natural-language sentence or manual entry     |
+| 3    | Projekcja postępu    | Required pace, projected completion date, on-track/behind/ahead status |
 
 Use warm landing utilities (`bg-warm`, warm card borders/backgrounds, amber/warm primary CTA). Rounded card surfaces per PRD NFR. Include appropriate lucide or inline SVG icons per card (consistent with existing icon usage in `Welcome.astro`).
 

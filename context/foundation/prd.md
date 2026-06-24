@@ -28,12 +28,15 @@ Osoba oszczędzająca na konkretne cele (wakacje, poduszka finansowa, sprzęt), 
 ## Success Criteria
 
 ### Primary
+
 - Użytkownik definiuje cel oszczędnościowy, robi miesięczny check-in (AI lub manualnie), widzi zaktualizowany postęp z projekcją i klasyfikacją statusu. Pełna pętla działa end-to-end.
 
 ### Secondary
+
 - Panel wartości netto (aktywa minus pasywa) działa jako kontekst motywacyjny obok celów oszczędnościowych.
 
 ### Guardrails
+
 - AI failure never blocks the user — manual fallback musi działać zawsze, niezależnie od dostępności AI.
 - Data integrity — zapisany check-in nigdy nie gubi, nie duplikuje i nie przypisuje błędnie wpłaty. Zero tolerancji dla korupcji danych finansowych.
 - Privacy — user A nigdy nie widzi danych user B. Izolacja danych per użytkownik jest bezwzględna.
@@ -47,6 +50,7 @@ Osoba oszczędzająca na konkretne cele (wakacje, poduszka finansowa, sprzęt), 
 - **Then** AI parsuje tekst na strukturalne wpłaty przypisane do celów, użytkownik widzi ekran review, może edytować/usunąć, po zapisaniu wraca na dashboard ze zaktualizowanym postępem, projekcją i statusem
 
 #### Acceptance Criteria
+
 - Każda wpłata z review trafia do właściwego celu
 - Nierozpoznana nazwa celu → flagowana, user tworzy cel osobno (nie inline)
 - Po zapisaniu: pasek postępu, projekcja i plakietka statusu odzwierciedlają nowe dane

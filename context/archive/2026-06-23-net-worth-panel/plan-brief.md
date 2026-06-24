@@ -16,29 +16,31 @@ Above Active goals, users see a net worth section: compact teaser when empty, fu
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| CRUD UX | Dashboard inline modals | Keeps net worth as ambient context without new routes. | Plan |
-| Empty state | Teaser card → full panel after first item | Balances discoverability with a clean goals-first dashboard. | Plan |
-| Staleness dismiss | localStorage keyed to stalest asset id + lastUpdatedAt | Persists across sessions; re-shows when staleness identity changes. | Plan |
-| Delete UX | Confirm before hard delete | Prevents accidental loss of named financial entries. | Plan |
-| Confirm current (FR-026) | Per-row button + banner CTA | Usable anytime; banner is a shortcut for the stalest asset. | Plan |
-| Asset sort order | Amount descending | Highlights what drives net worth. | Plan |
-| Panel placement | Above Active goals | Matches PRD motivational-context positioning. | Plan |
-| Relationship headline | married/partnership → Wasza, else Twoja | Implements FR-003 label intent from PRD. | Plan |
-| Negative net worth | Same styling, show minus | Honest math per PRD guardrail — no sugarcoating. | Plan |
-| Staleness scope | Oldest asset by last_updated_at; liabilities ignored | Matches FR-027 one-banner-by-oldest-asset spec. | PRD |
-| Dedicated routes | None — dashboard only | Scope cut; modals sufficient for MVP panel. | Plan |
+| Decision                 | Choice                                                 | Why (1 sentence)                                                    | Source |
+| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------- | ------ |
+| CRUD UX                  | Dashboard inline modals                                | Keeps net worth as ambient context without new routes.              | Plan   |
+| Empty state              | Teaser card → full panel after first item              | Balances discoverability with a clean goals-first dashboard.        | Plan   |
+| Staleness dismiss        | localStorage keyed to stalest asset id + lastUpdatedAt | Persists across sessions; re-shows when staleness identity changes. | Plan   |
+| Delete UX                | Confirm before hard delete                             | Prevents accidental loss of named financial entries.                | Plan   |
+| Confirm current (FR-026) | Per-row button + banner CTA                            | Usable anytime; banner is a shortcut for the stalest asset.         | Plan   |
+| Asset sort order         | Amount descending                                      | Highlights what drives net worth.                                   | Plan   |
+| Panel placement          | Above Active goals                                     | Matches PRD motivational-context positioning.                       | Plan   |
+| Relationship headline    | married/partnership → Wasza, else Twoja                | Implements FR-003 label intent from PRD.                            | Plan   |
+| Negative net worth       | Same styling, show minus                               | Honest math per PRD guardrail — no sugarcoating.                    | Plan   |
+| Staleness scope          | Oldest asset by last_updated_at; liabilities ignored   | Matches FR-027 one-banner-by-oldest-asset spec.                     | PRD    |
+| Dedicated routes         | None — dashboard only                                  | Scope cut; modals sufficient for MVP panel.                         | Plan   |
 
 ## Scope
 
 **In scope:**
+
 - `assets` + `liabilities` migration (RLS with DELETE, seed, RLS tests, regen types)
 - API: asset CRUD + confirm-current; liability CRUD
 - Dashboard: teaser, full panel, modals, staleness banner, SSR integration
 - FR-023–FR-027, FR-003 headline copy
 
 **Out of scope:**
+
 - Net worth history, liability categories, custom asset categories, multi-currency
 - Dedicated `/net-worth` pages, server-side banner dismiss, payment-to-asset linking
 - Middleware changes, unit test framework
@@ -49,11 +51,11 @@ Database-first: two user-scoped tables with full CRUD RLS. Assets carry `last_up
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Schema & RLS | Tables, seed, RLS tests, types | `last_updated_at` semantics must stay separate from generic `updated_at` |
-| 2. Net Worth API | Validation, CRUD, confirm endpoint | Confirm route must not accept amount changes |
-| 3. Dashboard Panel UI | Teaser, modals, banner, SSR wiring | Teaser→full transition must reload SSR data after first save |
+| Phase                 | What it delivers                   | Key risk                                                                 |
+| --------------------- | ---------------------------------- | ------------------------------------------------------------------------ |
+| 1. Schema & RLS       | Tables, seed, RLS tests, types     | `last_updated_at` semantics must stay separate from generic `updated_at` |
+| 2. Net Worth API      | Validation, CRUD, confirm endpoint | Confirm route must not accept amount changes                             |
+| 3. Dashboard Panel UI | Teaser, modals, banner, SSR wiring | Teaser→full transition must reload SSR data after first save             |
 
 **Prerequisites:** F-01 complete ✓
 **Estimated effort:** ~3 sessions across 3 phases

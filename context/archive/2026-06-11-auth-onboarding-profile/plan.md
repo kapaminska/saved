@@ -97,6 +97,7 @@ Replace password-based authentication with email OTP. Create new API endpoints f
 #### 6. Remove password-based auth artifacts
 
 **Files**:
+
 - `src/pages/auth/signup.astro` — delete
 - `src/pages/auth/confirm-email.astro` — delete
 - `src/pages/api/auth/signin.ts` — delete (replaced by send-otp + verify-otp)

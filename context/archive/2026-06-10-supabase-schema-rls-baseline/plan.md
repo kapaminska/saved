@@ -63,25 +63,28 @@ Create the migration directory, write the migration SQL, generate TypeScript typ
 **Contract**:
 
 Table `public.profiles`:
-| Column              | Type        | Constraints                                        |
+| Column | Type | Constraints |
 |---------------------|-------------|----------------------------------------------------|
-| id                  | UUID        | PK, FK → auth.users(id) ON DELETE CASCADE          |
-| display_name        | TEXT        | nullable                                           |
-| date_of_birth       | DATE        | nullable                                           |
-| retirement_age      | INTEGER     | nullable, CHECK (retirement_age BETWEEN 30 AND 100)|
-| relationship_status | TEXT        | nullable                                           |
-| created_at          | TIMESTAMPTZ | NOT NULL, DEFAULT now()                            |
-| updated_at          | TIMESTAMPTZ | NOT NULL, DEFAULT now()                            |
+| id | UUID | PK, FK → auth.users(id) ON DELETE CASCADE |
+| display_name | TEXT | nullable |
+| date_of_birth | DATE | nullable |
+| retirement_age | INTEGER | nullable, CHECK (retirement_age BETWEEN 30 AND 100)|
+| relationship_status | TEXT | nullable |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
+| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
 
 RLS policies on `public.profiles`:
+
 - `profiles_select_own`: SELECT where `auth.uid() = id`
 - `profiles_update_own`: UPDATE where `auth.uid() = id` (both USING and WITH CHECK)
 
 Functions:
+
 - `public.set_updated_at()` — reusable trigger function; sets `NEW.updated_at = now()`. Downstream tables (goals, payments) reuse this.
 - `public.handle_new_user()` — `SECURITY DEFINER` function; inserts a row into `profiles` with `NEW.id` from the triggering `auth.users` insert.
 
 Triggers:
+
 - `on_auth_user_created` — AFTER INSERT on `auth.users`, executes `handle_new_user()`.
 - `set_profiles_updated_at` — BEFORE UPDATE on `profiles`, executes `set_updated_at()`.
 

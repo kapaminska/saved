@@ -16,16 +16,17 @@ Running `npx supabase db reset` locally creates the `profiles` table with all PR
 
 ## Key Decisions Made
 
-| Decision                    | Choice                          | Why (1 sentence)                                                                 |
-|-----------------------------|---------------------------------|----------------------------------------------------------------------------------|
-| Profile columns             | Full PRD set (name, DOB, retirement_age, relationship_status) | S-01 only needs UI work, not another migration.                     |
-| Table scope                 | Profiles only                   | Each slice owns its schema — clean ownership, easier review.                     |
-| Profile creation mechanism  | DB trigger on auth.users insert | Guarantees every auth user has a profile — no orphan states or race conditions.  |
-| Seed data                   | Yes, minimal (1 test user)      | Proves the full local flow and gives downstream slices something to test against.|
+| Decision                   | Choice                                                        | Why (1 sentence)                                                                  |
+| -------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Profile columns            | Full PRD set (name, DOB, retirement_age, relationship_status) | S-01 only needs UI work, not another migration.                                   |
+| Table scope                | Profiles only                                                 | Each slice owns its schema — clean ownership, easier review.                      |
+| Profile creation mechanism | DB trigger on auth.users insert                               | Guarantees every auth user has a profile — no orphan states or race conditions.   |
+| Seed data                  | Yes, minimal (1 test user)                                    | Proves the full local flow and gives downstream slices something to test against. |
 
 ## Scope
 
 **In scope:**
+
 - Migration directory + migration file (profiles table, RLS policies, triggers)
 - Seed file for local development
 - TypeScript database type generation
@@ -34,6 +35,7 @@ Running `npx supabase db reset` locally creates the `profiles` table with all PR
 - Inline pattern documentation for downstream slices
 
 **Out of scope:**
+
 - Goals/payments tables (S-02, S-03)
 - Magic link auth migration (S-01)
 - Profile UI or API endpoints (S-01)
@@ -46,10 +48,10 @@ Single SQL migration file creates the `profiles` table with a FK to `auth.users`
 
 ## Phases at a Glance
 
-| Phase     | What it delivers                              | Key risk                                              |
-|-----------|-----------------------------------------------|-------------------------------------------------------|
-| 1. Schema | Migration + seed + TS types + client typing   | Migration tooling untested in this project — may need config fixes |
-| 2. Verify | RLS test script + inline pattern docs         | RLS test requires local Supabase running (Docker)     |
+| Phase     | What it delivers                            | Key risk                                                           |
+| --------- | ------------------------------------------- | ------------------------------------------------------------------ |
+| 1. Schema | Migration + seed + TS types + client typing | Migration tooling untested in this project — may need config fixes |
+| 2. Verify | RLS test script + inline pattern docs       | RLS test requires local Supabase running (Docker)                  |
 
 **Prerequisites:** Docker running (for `npx supabase start`), Supabase env vars in `.dev.vars`
 **Estimated effort:** ~1 session, 2 phases

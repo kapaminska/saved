@@ -16,20 +16,21 @@ Users create goals from `/goals/new`, manage active goals from the dashboard (pr
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| Progress storage | `saved_amount` column on goals | Enables dashboard reads and auto-complete without payments table; S-03 keeps it in sync. | Plan |
-| Auto-complete in S-02 | DB trigger + full celebration UI | Delivers complete S-02 outcome; S-03 inherits trigger on payment updates. | Plan |
-| Overpayment | Complete at ≥100%, cap display at 100% | Matches FR-009 literally; avoids goals stuck active forever. | Plan |
-| Name length limit | 100 characters | Enough for descriptive names; matches schema CHECK and form maxLength. | Plan |
-| Create/edit UX | `/goals/new` and `/goals/[id]/edit` | Matches ProfileForm dedicated-route pattern; clean URLs and middleware. | Plan |
-| Archive UX | Separate `/goals/archive` page | Keeps dashboard focused on active goals; clear FR-030 archive section. | Plan |
-| Celebration | `canvas-confetti` + modal via `?celebrated=` param | Lightweight brand moment; fires once per event, reusable from S-03 redirect. | Plan |
-| Edit warning | Inline amber callout on target/deadline change | Satisfies FR-006 without blocking browser confirm dialogs. | Plan |
+| Decision              | Choice                                             | Why (1 sentence)                                                                         | Source |
+| --------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------ |
+| Progress storage      | `saved_amount` column on goals                     | Enables dashboard reads and auto-complete without payments table; S-03 keeps it in sync. | Plan   |
+| Auto-complete in S-02 | DB trigger + full celebration UI                   | Delivers complete S-02 outcome; S-03 inherits trigger on payment updates.                | Plan   |
+| Overpayment           | Complete at ≥100%, cap display at 100%             | Matches FR-009 literally; avoids goals stuck active forever.                             | Plan   |
+| Name length limit     | 100 characters                                     | Enough for descriptive names; matches schema CHECK and form maxLength.                   | Plan   |
+| Create/edit UX        | `/goals/new` and `/goals/[id]/edit`                | Matches ProfileForm dedicated-route pattern; clean URLs and middleware.                  | Plan   |
+| Archive UX            | Separate `/goals/archive` page                     | Keeps dashboard focused on active goals; clear FR-030 archive section.                   | Plan   |
+| Celebration           | `canvas-confetti` + modal via `?celebrated=` param | Lightweight brand moment; fires once per event, reusable from S-03 redirect.             | Plan   |
+| Edit warning          | Inline amber callout on target/deadline change     | Satisfies FR-006 without blocking browser confirm dialogs.                               | Plan   |
 
 ## Scope
 
 **In scope:**
+
 - `savings_goals` migration (RLS, auto-complete trigger, seed, RLS test)
 - API: create, edit (active only), abandon
 - UI: GoalForm, dashboard list, create/edit pages, archive, celebration modal
@@ -37,6 +38,7 @@ Users create goals from `/goals/new`, manage active goals from the dashboard (pr
 - FR-005–007, FR-009–010, FR-030
 
 **Out of scope:**
+
 - Payments, check-in, projections, status badges (S-03)
 - AI parsing (S-04)
 - Restore goals (FR-008 dropped), hard delete
@@ -49,11 +51,11 @@ Database-first: `savings_goals` table with denormalized `saved_amount` and a `BE
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
+| Phase           | What it delivers                      | Key risk                                                              |
+| --------------- | ------------------------------------- | --------------------------------------------------------------------- |
 | 1. Schema & RLS | Table, trigger, types, seed, RLS test | Trigger must fire on target lowering, not just saved_amount increases |
-| 2. Goal API | Create, edit, abandon endpoints | Edit-after-complete race if response doesn't re-read post-trigger row |
-| 3. Goals UI | Forms, dashboard, archive, confetti | Celebration must not replay on refresh — query param cleanup |
+| 2. Goal API     | Create, edit, abandon endpoints       | Edit-after-complete race if response doesn't re-read post-trigger row |
+| 3. Goals UI     | Forms, dashboard, archive, confetti   | Celebration must not replay on refresh — query param cleanup          |
 
 **Prerequisites:** F-01 complete ✓ (profiles + RLS pattern)
 **Estimated effort:** ~3 sessions across 3 phases

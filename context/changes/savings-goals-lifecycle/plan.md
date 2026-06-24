@@ -67,18 +67,18 @@ Create the `savings_goals` table with denormalized `saved_amount`, status lifecy
 
 Table `public.savings_goals`:
 
-| Column | Type | Constraints |
-| --- | --- | --- |
-| id | UUID | PK, DEFAULT gen_random_uuid() |
-| user_id | UUID | NOT NULL, FK → auth.users(id) ON DELETE CASCADE |
-| name | TEXT | NOT NULL, CHECK (char_length(name) BETWEEN 1 AND 100) |
-| target_amount | NUMERIC(12,2) | NOT NULL, CHECK (target_amount > 0) |
-| saved_amount | NUMERIC(12,2) | NOT NULL, DEFAULT 0, CHECK (saved_amount >= 0) |
-| deadline | DATE | nullable |
-| status | TEXT | NOT NULL, DEFAULT 'active', CHECK (status IN ('active', 'completed', 'abandoned')) |
-| completed_at | TIMESTAMPTZ | nullable |
-| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
-| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
+| Column        | Type          | Constraints                                                                        |
+| ------------- | ------------- | ---------------------------------------------------------------------------------- |
+| id            | UUID          | PK, DEFAULT gen_random_uuid()                                                      |
+| user_id       | UUID          | NOT NULL, FK → auth.users(id) ON DELETE CASCADE                                    |
+| name          | TEXT          | NOT NULL, CHECK (char_length(name) BETWEEN 1 AND 100)                              |
+| target_amount | NUMERIC(12,2) | NOT NULL, CHECK (target_amount > 0)                                                |
+| saved_amount  | NUMERIC(12,2) | NOT NULL, DEFAULT 0, CHECK (saved_amount >= 0)                                     |
+| deadline      | DATE          | nullable                                                                           |
+| status        | TEXT          | NOT NULL, DEFAULT 'active', CHECK (status IN ('active', 'completed', 'abandoned')) |
+| completed_at  | TIMESTAMPTZ   | nullable                                                                           |
+| created_at    | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                                                            |
+| updated_at    | TIMESTAMPTZ   | NOT NULL, DEFAULT now()                                                            |
 
 Index: `savings_goals_user_id_status_idx` on `(user_id, status)` for dashboard/archive queries.
 

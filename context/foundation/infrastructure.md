@@ -18,14 +18,14 @@ The project already ships with `@astrojs/cloudflare` v13.5+ and a fully configur
 
 ## Platform Comparison
 
-| Platform | CLI-first | Managed/Serverless | Agent-readable docs | Stable deploy API | MCP/Integration | Total | Migration cost |
-|---|---|---|---|---|---|---|---|
-| **Cloudflare Workers** | Pass | Pass | Pass | Pass | Pass (GA) | 5/5 | None — native adapter |
-| **Netlify** | Pass | Pass | Pass | Pass | Pass (GA) | 5/5 | Adapter swap to `@astrojs/netlify` |
-| **Vercel** | Pass | Pass | Pass | Pass | Partial (beta MCP) | 4.5/5 | Adapter swap to `@astrojs/vercel` |
-| **Railway** | Pass | Pass | Partial (no llms.txt) | Pass | Pass (GA) | 4.5/5 | Adapter swap to `@astrojs/node` |
-| **Render** | Pass | Partial | Pass | Pass | Pass (GA) | 4.5/5 | Adapter swap to `@astrojs/node` |
-| **Fly.io** | Partial | Partial | Partial | Partial | Partial (experimental) | 2.5/5 | Adapter swap + Dockerfile |
+| Platform               | CLI-first | Managed/Serverless | Agent-readable docs   | Stable deploy API | MCP/Integration        | Total | Migration cost                     |
+| ---------------------- | --------- | ------------------ | --------------------- | ----------------- | ---------------------- | ----- | ---------------------------------- |
+| **Cloudflare Workers** | Pass      | Pass               | Pass                  | Pass              | Pass (GA)              | 5/5   | None — native adapter              |
+| **Netlify**            | Pass      | Pass               | Pass                  | Pass              | Pass (GA)              | 5/5   | Adapter swap to `@astrojs/netlify` |
+| **Vercel**             | Pass      | Pass               | Pass                  | Pass              | Partial (beta MCP)     | 4.5/5 | Adapter swap to `@astrojs/vercel`  |
+| **Railway**            | Pass      | Pass               | Partial (no llms.txt) | Pass              | Pass (GA)              | 4.5/5 | Adapter swap to `@astrojs/node`    |
+| **Render**             | Pass      | Partial            | Pass                  | Pass              | Pass (GA)              | 4.5/5 | Adapter swap to `@astrojs/node`    |
+| **Fly.io**             | Partial   | Partial            | Partial               | Partial           | Partial (experimental) | 2.5/5 | Adapter swap + Dockerfile          |
 
 ### Shortlisted Platforms
 
@@ -73,18 +73,18 @@ The team deployed Saved! with the existing `@astrojs/cloudflare` adapter. Initia
 
 ## Risk Register
 
-| Risk | Source | Likelihood | Impact | Mitigation |
-|---|---|---|---|---|
-| npm package incompatible with workerd runtime | Devil's advocate | M | M | Check workerd compatibility before adding dependencies. Keep `nodejs_compat` flag enabled. Test in `wrangler dev` before deploy. |
-| 128 MB memory limit hit during AI check-in parsing | Devil's advocate | L | H | Stream LLM responses without buffering full response in memory. Limit max goals per check-in. Monitor with `wrangler tail`. |
-| Bundle size exceeds 3 MB on free tier | Devil's advocate | M | M | Upgrade to $5/mo paid plan when bundle approaches limit. Use dynamic imports to split server-side code. |
-| Supabase auth cookies behave differently on workerd vs Node.js | Unknown unknowns | M | H | Test auth flow end-to-end in deployed environment early (not just local dev). Pin `@supabase/ssr` version and test after upgrades. |
-| Free tier 10ms CPU limit exceeded on SSR pages | Unknown unknowns | H | M | Budget $5/mo paid plan from production launch. Free tier is for development/staging only. |
-| Ephemeral logs make post-mortem debugging difficult | Unknown unknowns | M | M | Enable Workers observability (already configured). Set up Logpush to R2 bucket before first real user. |
-| `wrangler dev` / production behavior divergence | Unknown unknowns | M | M | Deploy to a preview environment for integration testing. Do not rely solely on local dev for edge-runtime validation. |
-| Pages-era documentation confuses debugging | Devil's advocate | M | L | Prefer official Cloudflare Workers docs (`developers.cloudflare.com/workers/`) over community tutorials. Use `llms.txt` for agent-driven troubleshooting. |
-| Monthly check-in reminders need Cron Triggers (paid-only) | Unknown unknowns | L | L | Not in MVP scope (PRD has no scheduled jobs). Revisit when/if notification features are added. |
-| Supabase query latency from edge to single region | Devil's advocate | L | L | Acceptable for EU-only user base (~20-50ms). If latency becomes a concern, use Cloudflare's Smart Placement to pin the Worker near Supabase's region. |
+| Risk                                                           | Source           | Likelihood | Impact | Mitigation                                                                                                                                                |
+| -------------------------------------------------------------- | ---------------- | ---------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| npm package incompatible with workerd runtime                  | Devil's advocate | M          | M      | Check workerd compatibility before adding dependencies. Keep `nodejs_compat` flag enabled. Test in `wrangler dev` before deploy.                          |
+| 128 MB memory limit hit during AI check-in parsing             | Devil's advocate | L          | H      | Stream LLM responses without buffering full response in memory. Limit max goals per check-in. Monitor with `wrangler tail`.                               |
+| Bundle size exceeds 3 MB on free tier                          | Devil's advocate | M          | M      | Upgrade to $5/mo paid plan when bundle approaches limit. Use dynamic imports to split server-side code.                                                   |
+| Supabase auth cookies behave differently on workerd vs Node.js | Unknown unknowns | M          | H      | Test auth flow end-to-end in deployed environment early (not just local dev). Pin `@supabase/ssr` version and test after upgrades.                        |
+| Free tier 10ms CPU limit exceeded on SSR pages                 | Unknown unknowns | H          | M      | Budget $5/mo paid plan from production launch. Free tier is for development/staging only.                                                                 |
+| Ephemeral logs make post-mortem debugging difficult            | Unknown unknowns | M          | M      | Enable Workers observability (already configured). Set up Logpush to R2 bucket before first real user.                                                    |
+| `wrangler dev` / production behavior divergence                | Unknown unknowns | M          | M      | Deploy to a preview environment for integration testing. Do not rely solely on local dev for edge-runtime validation.                                     |
+| Pages-era documentation confuses debugging                     | Devil's advocate | M          | L      | Prefer official Cloudflare Workers docs (`developers.cloudflare.com/workers/`) over community tutorials. Use `llms.txt` for agent-driven troubleshooting. |
+| Monthly check-in reminders need Cron Triggers (paid-only)      | Unknown unknowns | L          | L      | Not in MVP scope (PRD has no scheduled jobs). Revisit when/if notification features are added.                                                            |
+| Supabase query latency from edge to single region              | Devil's advocate | L          | L      | Acceptable for EU-only user base (~20-50ms). If latency becomes a concern, use Cloudflare's Smart Placement to pin the Worker near Supabase's region.     |
 
 ## Getting Started
 
@@ -95,6 +95,7 @@ These steps are specific to the current project state: Astro 6.3+ with `@astrojs
 2. **Authenticate with Cloudflare.** Run `npx wrangler login` — opens a browser for OAuth. Requires a free Cloudflare account.
 
 3. **Set up local secrets.** Create `.dev.vars` in the project root (already gitignored by the starter):
+
    ```
    SUPABASE_URL=https://your-project.supabase.co
    SUPABASE_KEY=your-anon-key
@@ -107,6 +108,7 @@ These steps are specific to the current project state: Astro 6.3+ with `@astrojs
 ## Out of Scope
 
 The following were not evaluated in this research:
+
 - Docker image configuration
 - CI/CD pipeline setup (GitHub Actions workflow already exists in the project)
 - Production-scale architecture (multi-region, HA, DR)

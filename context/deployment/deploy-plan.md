@@ -21,16 +21,16 @@ bundle_size_kb: 1911
 
 ## Bindings
 
-| Binding | Resource |
-|---|---|
-| `env.SESSION` | KV Namespace (`saved-session`) |
-| `env.IMAGES` | Cloudflare Images |
-| `env.ASSETS` | Static assets from `dist/client` |
+| Binding       | Resource                         |
+| ------------- | -------------------------------- |
+| `env.SESSION` | KV Namespace (`saved-session`)   |
+| `env.IMAGES`  | Cloudflare Images                |
+| `env.ASSETS`  | Static assets from `dist/client` |
 
 ## Secrets
 
-| Name | Status |
-|---|---|
+| Name           | Status                  |
+| -------------- | ----------------------- |
 | `SUPABASE_URL` | Configured (2026-06-05) |
 | `SUPABASE_KEY` | Configured (2026-06-05) |
 
@@ -44,6 +44,7 @@ bundle_size_kb: 1911
 ## CD Pipeline
 
 GitHub Actions CI/CD workflow added (`.github/workflows/ci.yml`):
+
 - **CI**: lint + build on every push/PR to `main`
 - **CD**: auto-deploy via `wrangler deploy` on push to `main` (after CI passes)
 - **Required GitHub secrets**: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `SUPABASE_URL`, `SUPABASE_KEY`
