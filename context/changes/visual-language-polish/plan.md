@@ -469,37 +469,37 @@ Legitimate exceptions: none expected. Decorative landing blur orbs using `orange
 
 #### Automated
 
-- [x] 2.1 Lint passes: `npm run lint`
-- [x] 2.2 Build passes: `npm run build`
+- [x] 2.1 Lint passes: `npm run lint` — 6af9922
+- [x] 2.2 Build passes: `npm run build` — 6af9922
 
 #### Manual
 
-- [x] 2.3 Sign-in form inputs, button, and error state readable on warm background with visible focus rings
+- [x] 2.3 Sign-in form inputs, button, and error state readable on warm background with visible focus rings — 6af9922
 
 ### Phase 3: All Surfaces Migration
 
 #### Automated
 
-- [x] 3.1 Lint passes: `npm run lint`
-- [x] 3.2 Build passes: `npm run build`
-- [x] 3.3 Zero cosmic references: `rg 'bg-cosmic|purple-[0-9]{3}|from-blue-200' src/` returns zero matches
+- [x] 3.1 Lint passes: `npm run lint` — 6af9922
+- [x] 3.2 Build passes: `npm run build` — 6af9922
+- [x] 3.3 Zero cosmic references: `rg 'bg-cosmic|purple-[0-9]{3}|from-blue-200' src/` returns zero matches — 6af9922
 
 #### Manual
 
-- [x] 3.4 Full user journey visually coherent (landing through celebration)
-- [x] 3.5 Status badges, banners, and destructive controls readable on light backgrounds
-- [x] 3.6 Confetti warm-toned and visible on light background
+- [x] 3.4 Full user journey visually coherent (landing through celebration) — 6af9922
+- [x] 3.5 Status badges, banners, and destructive controls readable on light backgrounds — 6af9922
+- [x] 3.6 Confetti warm-toned and visible on light background — 6af9922
 
 ### Phase 4: Cleanup & Verification
 
 #### Automated
 
-- [x] 4.1 Lint passes: `npm run lint`
-- [x] 4.2 Build passes: `npm run build`
-- [x] 4.3 Format clean: `npm run format`
-- [x] 4.4 Cosmic grep clean across full pattern set
+- [x] 4.1 Lint passes: `npm run lint` — 6af9922
+- [x] 4.2 Build passes: `npm run build` — 6af9922
+- [x] 4.3 Format clean: `npm run format` — 6af9922
+- [x] 4.4 Cosmic grep clean across full pattern set — 6af9922
 
 #### Manual
 
-- [x] 4.5 Complete Phase 4 visual checklist (all routes)
-- [x] 4.6 Landing → sign-in transition has no theme jump
+- [x] 4.5 Complete Phase 4 visual checklist (all routes) — 6af9922
+- [x] 4.6 Landing → sign-in transition has no theme jump — 6af9922
