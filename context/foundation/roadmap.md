@@ -3,7 +3,7 @@ project: "Saved!"
 version: 1
 status: active
 created: 2026-06-10
-updated: 2026-06-23
+updated: 2026-06-24
 prd_version: 1
 main_goal: quality
 top_blocker: time
@@ -27,27 +27,27 @@ Brak prostego sposobu na śledzenie wielu celów oszczędnościowych jednocześn
 
 ## At a glance
 
-| ID   | Change ID                          | Outcome (user can …)                                                          | Prerequisites | PRD refs                                     | Status   |
-| ---- | ---------------------------------- | ----------------------------------------------------------------------------- | ------------- | -------------------------------------------- | -------- |
-| F-01 | supabase-schema-rls-baseline       | (foundation) Migracje Supabase + RLS baseline                                 | —             | NFR (izolacja danych, integralność danych)   | done     |
-| S-01 | auth-onboarding-profile            | Zarejestrować się magic linkiem, przejść onboarding, edytować profil          | F-01          | FR-001–FR-004, FR-028–FR-029, FR-031         | done     |
-| S-02 | savings-goals-lifecycle            | Tworzyć, edytować, porzucać cele; świętować osiągnięcie; przeglądać archiwum | F-01          | FR-005–FR-007, FR-009–FR-010, FR-030         | in-progress |
-| S-03 | manual-checkin-payments-projections | Zapisywać wpłaty manualnie, przeglądać historię, widzieć projekcję i status   | S-02          | FR-012, FR-015–FR-022                        | done     |
-| S-04 | ai-checkin-safety                  | Wysłać zdanie NL, zobaczyć propozycje AI, zatwierdzić wpłaty                 | S-03          | US-01, FR-011, FR-013–FR-014, FR-032–FR-036  | done     |
-| S-05 | landing-page-unauthenticated       | Zobaczyć polski landing z CTA logowania; zalogowany trafia na dashboard        | F-01          | Access Control, Business Logic (ciepły ton)    | done     |
-| S-06 | visual-language-polish             | Korzystać z ciepłego języka wizualnego w całej aplikacji (paleta, typografia)  | S-05          | FR-010, NFR (feedback UX), Business Logic      | ready    |
-| S-07 | net-worth-panel                    | Śledzić aktywa/pasywa i widzieć wartość netto obok celów                       | F-01          | FR-023–FR-027                                | done     |
+| ID   | Change ID                           | Outcome (user can …)                                                          | Prerequisites | PRD refs                                    | Status      |
+| ---- | ----------------------------------- | ----------------------------------------------------------------------------- | ------------- | ------------------------------------------- | ----------- |
+| F-01 | supabase-schema-rls-baseline        | (foundation) Migracje Supabase + RLS baseline                                 | —             | NFR (izolacja danych, integralność danych)  | done        |
+| S-01 | auth-onboarding-profile             | Zarejestrować się magic linkiem, przejść onboarding, edytować profil          | F-01          | FR-001–FR-004, FR-028–FR-029, FR-031        | done        |
+| S-02 | savings-goals-lifecycle             | Tworzyć, edytować, porzucać cele; świętować osiągnięcie; przeglądać archiwum  | F-01          | FR-005–FR-007, FR-009–FR-010, FR-030        | in-progress |
+| S-03 | manual-checkin-payments-projections | Zapisywać wpłaty manualnie, przeglądać historię, widzieć projekcję i status   | S-02          | FR-012, FR-015–FR-022                       | done        |
+| S-04 | ai-checkin-safety                   | Wysłać zdanie NL, zobaczyć propozycje AI, zatwierdzić wpłaty                  | S-03          | US-01, FR-011, FR-013–FR-014, FR-032–FR-036 | done        |
+| S-05 | landing-page-unauthenticated        | Zobaczyć polski landing z CTA logowania; zalogowany trafia na dashboard       | F-01          | Access Control, Business Logic (ciepły ton) | done        |
+| S-06 | visual-language-polish              | Korzystać z ciepłego języka wizualnego w całej aplikacji (paleta, typografia) | S-05          | FR-010, NFR (feedback UX), Business Logic   | done        |
+| S-07 | net-worth-panel                     | Śledzić aktywa/pasywa i widzieć wartość netto obok celów                      | F-01          | FR-023–FR-027                               | done        |
 
 ## Streams
 
 Nawigacja — grupuje elementy współdzielące łańcuch zależności. Kanoniczne sekwencjonowanie to graf zależności poniżej; ta tabela pokazuje proponowaną kolejność czytania równoległych ścieżek.
 
-| Stream | Theme                 | Chain                              | Note                                                                  |
-| ------ | --------------------- | ---------------------------------- | --------------------------------------------------------------------- |
-| A      | Pętla oszczędzania    | `F-01` → `S-02` → `S-03` → `S-04` | Ścieżka krytyczna do gwiazdy przewodniej (S-04); quality-first        |
-| B      | Tożsamość użytkownika | `S-01`                             | Równolegle ze Streamem A po `F-01`; domyka auth + onboarding na demo  |
-| C      | Tożsamość produktu    | `S-05` → `S-06`                    | Landing z ciepłą paletą, potem spójny język wizualny w app            |
-| D      | Kontekst net worth    | `S-07`                             | Równolegle po `F-01`; Secondary Success Criterion                     |
+| Stream | Theme                 | Chain                             | Note                                                                 |
+| ------ | --------------------- | --------------------------------- | -------------------------------------------------------------------- |
+| A      | Pętla oszczędzania    | `F-01` → `S-02` → `S-03` → `S-04` | Ścieżka krytyczna do gwiazdy przewodniej (S-04); quality-first       |
+| B      | Tożsamość użytkownika | `S-01`                            | Równolegle ze Streamem A po `F-01`; domyka auth + onboarding na demo |
+| C      | Tożsamość produktu    | `S-05` → `S-06`                   | Landing z ciepłą paletą, potem spójny język wizualny w app           |
+| D      | Kontekst net worth    | `S-07`                            | Równolegle po `F-01`; Secondary Success Criterion                    |
 
 ## Baseline
 
@@ -150,7 +150,7 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **Unknowns:**
   - Konkretny font i tokeny kolorów — decyzja design w `/10x-plan`. Owner: user. Block: no.
 - **Risk:** Zastąpienie cosmic theme w app wymaga dotknięcia wielu widoków; S-05 zostawił warm utilities tylko na landingu — ten slice harmonizuje resztę bez psucia pętli oszczędzania.
-- **Status:** ready
+- **Status:** done
 
 ### S-07: Panel wartości netto
 
@@ -166,16 +166,16 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 
 ## Backlog Handoff
 
-| Roadmap ID | Change ID                          | Suggested issue title                              | Ready for `/10x-plan` | Notes                                           |
-| ---------- | ---------------------------------- | -------------------------------------------------- | --------------------- | ----------------------------------------------- |
-| F-01       | supabase-schema-rls-baseline       | Supabase migrations + RLS baseline                 | —                     | Zarchiwizowane                                  |
-| S-01       | auth-onboarding-profile            | Auth: magic link, onboarding, profil               | —                     | Zarchiwizowane                                  |
-| S-02       | savings-goals-lifecycle            | Cele oszczędnościowe: CRUD + celebracja + archiwum | yes                   | Run `/10x-implement savings-goals-lifecycle`    |
-| S-03       | manual-checkin-payments-projections | Manualny check-in, wpłaty & projekcje              | —                     | Zarchiwizowane                                  |
-| S-04       | ai-checkin-safety                  | AI check-in z walidacją + safety                   | —                     | Zarchiwizowane                                  |
-| S-05       | landing-page-unauthenticated       | Landing PL + redirect zalogowanych                 | —                     | Zarchiwizowane                                  |
-| S-06       | visual-language-polish             | Ciepły język wizualny w całej aplikacji            | yes                   | Run `/10x-plan visual-language-polish`          |
-| S-07       | net-worth-panel                    | Panel wartości netto (aktywa, pasywa, staleness)    | —                     | Zarchiwizowane                                  |
+| Roadmap ID | Change ID                           | Suggested issue title                              | Ready for `/10x-plan` | Notes                                        |
+| ---------- | ----------------------------------- | -------------------------------------------------- | --------------------- | -------------------------------------------- |
+| F-01       | supabase-schema-rls-baseline        | Supabase migrations + RLS baseline                 | —                     | Zarchiwizowane                               |
+| S-01       | auth-onboarding-profile             | Auth: magic link, onboarding, profil               | —                     | Zarchiwizowane                               |
+| S-02       | savings-goals-lifecycle             | Cele oszczędnościowe: CRUD + celebracja + archiwum | yes                   | Run `/10x-implement savings-goals-lifecycle` |
+| S-03       | manual-checkin-payments-projections | Manualny check-in, wpłaty & projekcje              | —                     | Zarchiwizowane                               |
+| S-04       | ai-checkin-safety                   | AI check-in z walidacją + safety                   | —                     | Zarchiwizowane                               |
+| S-05       | landing-page-unauthenticated        | Landing PL + redirect zalogowanych                 | —                     | Zarchiwizowane                               |
+| S-06       | visual-language-polish              | Ciepły język wizualny w całej aplikacji            | yes                   | Run `/10x-plan visual-language-polish`       |
+| S-07       | net-worth-panel                     | Panel wartości netto (aktywa, pasywa, staleness)   | —                     | Zarchiwizowane                               |
 
 ## Open Roadmap Questions
 
@@ -205,3 +205,4 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **S-04: Użytkownik może wysłać zdanie w języku naturalnym (np. „500 na wakacje, 1000 na poduszkę"), zobaczyć propozycje wpłat sparsowane przez AI, zrecenzować/edytować je i zapisać — z walidacją inputu (limit 500 znaków, odrzucenie pustego), rate limitingiem, walidacją strukturalną odpowiedzi AI i graceful fallback do ścieżki manualnej przy awarii AI.** — Archived 2026-06-23 → `context/archive/2026-06-23-ai-checkin-safety/`. Lesson: —.
 - **S-05: Niezalogowany użytkownik widzi polski landing z wartością produktu (cele, check-in, projekcja), sloganem i CTA „Zaloguj się"; zalogowany użytkownik trafia na dashboard (lub onboarding), nigdy nie widzi landingu.** — Archived 2026-06-23 → `context/archive/2026-06-23-landing-page-unauthenticated/`. Lesson: —.
 - **S-07: Użytkownik może dodać/edytować/usunąć aktywa i pasywa, zobaczyć wartość netto (aktywa minus pasywa), potwierdzić że aktywo jest aktualne bez zmiany kwoty, oraz dostać łagodny prompt gdy dane są nieaktualne (>3 miesiące).** — Archived 2026-06-23 → `context/archive/2026-06-23-net-worth-panel/`. Lesson: —.
+- **S-06: Użytkownik korzysta z aplikacji ze spójnym ciepłym językiem wizualnym: paleta, humanist sans-serif, zaokrąglone karty (12–16px), mikro-interakcje i łagodny ton prezentacji — zgodnie z PRD (motywująca forma, ciepły ton) i `shape-notes.md` §Forward: visual-language.** — Archived 2026-06-24 → `context/archive/2026-06-24-visual-language-polish/`. Lesson: —.
