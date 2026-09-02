@@ -115,12 +115,12 @@ None. Markdown only.
 
 #### Automated
 
-- [ ] 1.1 `README.md` contains `Saved!` and does not contain `10x-astro-starter`
-- [ ] 1.2 `README.md` mentions Inbucket or `54324`
-- [ ] 1.3 `README.md` mentions `.dev.vars`
-- [ ] 1.4 `npx prettier --check README.md`
+- [x] 1.1 `README.md` contains `Saved!` and does not contain `10x-astro-starter`
+- [x] 1.2 `README.md` mentions Inbucket or `54324`
+- [x] 1.3 `README.md` mentions `.dev.vars`
+- [x] 1.4 `npx prettier --check README.md`
 
 #### Manual
 
-- [ ] 1.5 README reads as Saved!, not a generic starter
-- [ ] 1.6 Steps match a cold local setup (Docker up, OTP in Inbucket)
+- [x] 1.5 README reads as Saved!, not a generic starter
+- [x] 1.6 Steps match a cold local setup (Docker up, OTP in Inbucket)

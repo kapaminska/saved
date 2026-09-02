@@ -1,7 +1,7 @@
 ---
 change_id: product-readme
 title: Product README for Saved!
-status: planned
+status: implementing
 created: 2026-09-02
 updated: 2026-09-02
 archived_at: null
