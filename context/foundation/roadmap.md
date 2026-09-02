@@ -3,7 +3,7 @@ project: "Saved!"
 version: 1
 status: active
 created: 2026-06-10
-updated: 2026-06-24
+updated: 2026-09-02
 prd_version: 1
 main_goal: quality
 top_blocker: time
@@ -31,7 +31,7 @@ Brak prostego sposobu na śledzenie wielu celów oszczędnościowych jednocześn
 | ---- | ----------------------------------- | ----------------------------------------------------------------------------- | ------------- | ------------------------------------------- | ----------- |
 | F-01 | supabase-schema-rls-baseline        | (foundation) Migracje Supabase + RLS baseline                                 | —             | NFR (izolacja danych, integralność danych)  | done        |
 | S-01 | auth-onboarding-profile             | Zarejestrować się magic linkiem, przejść onboarding, edytować profil          | F-01          | FR-001–FR-004, FR-028–FR-029, FR-031        | done        |
-| S-02 | savings-goals-lifecycle             | Tworzyć, edytować, porzucać cele; świętować osiągnięcie; przeglądać archiwum  | F-01          | FR-005–FR-007, FR-009–FR-010, FR-030        | in-progress |
+| S-02 | savings-goals-lifecycle             | Tworzyć, edytować, porzucać cele; świętować osiągnięcie; przeglądać archiwum  | F-01          | FR-005–FR-007, FR-009–FR-010, FR-030        | done        |
 | S-03 | manual-checkin-payments-projections | Zapisywać wpłaty manualnie, przeglądać historię, widzieć projekcję i status   | S-02          | FR-012, FR-015–FR-022                       | done        |
 | S-04 | ai-checkin-safety                   | Wysłać zdanie NL, zobaczyć propozycje AI, zatwierdzić wpłaty                  | S-03          | US-01, FR-011, FR-013–FR-014, FR-032–FR-036 | done        |
 | S-05 | landing-page-unauthenticated        | Zobaczyć polski landing z CTA logowania; zalogowany trafia na dashboard       | F-01          | Access Control, Business Logic (ciepły ton) | done        |
@@ -100,7 +100,7 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **Unknowns:**
   - Hard limit długości nazwy celu — limit formularza/schemy. Owner: downstream. Block: no.
 - **Risk:** Moment celebracji (confetti) to brand moment produktu („Saved!") i kluczowy element portfolio — wymaga visual polish. Logika auto-complete musi obsłużyć edge case nadpłaty.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-03: Manualny check-in, historia wpłat & projekcje
 
@@ -206,3 +206,4 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **S-05: Niezalogowany użytkownik widzi polski landing z wartością produktu (cele, check-in, projekcja), sloganem i CTA „Zaloguj się"; zalogowany użytkownik trafia na dashboard (lub onboarding), nigdy nie widzi landingu.** — Archived 2026-06-23 → `context/archive/2026-06-23-landing-page-unauthenticated/`. Lesson: —.
 - **S-07: Użytkownik może dodać/edytować/usunąć aktywa i pasywa, zobaczyć wartość netto (aktywa minus pasywa), potwierdzić że aktywo jest aktualne bez zmiany kwoty, oraz dostać łagodny prompt gdy dane są nieaktualne (>3 miesiące).** — Archived 2026-06-23 → `context/archive/2026-06-23-net-worth-panel/`. Lesson: —.
 - **S-06: Użytkownik korzysta z aplikacji ze spójnym ciepłym językiem wizualnym: paleta, humanist sans-serif, zaokrąglone karty (12–16px), mikro-interakcje i łagodny ton prezentacji — zgodnie z PRD (motywująca forma, ciepły ton) i `shape-notes.md` §Forward: visual-language.** — Archived 2026-06-24 → `context/archive/2026-06-24-visual-language-polish/`. Lesson: —.
+- **S-02: Użytkownik może stworzyć cel oszczędnościowy (nazwa, kwota docelowa, opcjonalny deadline), edytować go, porzucić (status → abandoned), zobaczyć automatyczne ukończenie przy 100% z momentem celebracji (wiadomość + confetti), oraz przeglądać ukończone i porzucone cele w archiwum.** — Archived 2026-09-02 → `context/archive/2026-06-23-savings-goals-lifecycle/`. Lesson: —.
