@@ -207,16 +207,6 @@ export default function NetWorthPanel({ headline, netWorth, assets, liabilities,
                     <button
                       type="button"
                       onClick={() => {
-                        void handleConfirmAsset(asset.id);
-                      }}
-                      disabled={actionLoading}
-                      className="text-muted-foreground hover:text-foreground text-xs transition-colors disabled:opacity-50"
-                    >
-                      Nadal aktualne
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
                         openEditAsset(asset);
                       }}
                       disabled={actionLoading}
