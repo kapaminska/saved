@@ -180,6 +180,13 @@ None. Visual-only; no data or env changes. Do not merge this work into `tab-favi
 - Sibling (out of scope): `context/changes/tab-favicon/plan.md`
 - Archived landing wordmark: `context/archive/2026-06-23-landing-page-unauthenticated/plan.md` (MarketingHeader as text `"Saved!"`)
 
+## Addenda
+
+### 2026-09-02 — Landing lockup size and spacing (phase 2, human feedback)
+
+- Marketing BrandLockup is `text-[32px]` (not `text-xl`) so the unauthenticated header reads as a product lockup, not a body-size wordmark. Nav stays `26px`.
+- `LandingPage.astro` hero/header/card vertical padding was reduced so logo, headline, CTA, and feature cards fit one desktop viewport without scroll.
+
 ## Progress
 
 > Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles. See `references/progress-format.md`.
