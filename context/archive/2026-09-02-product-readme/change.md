@@ -1,10 +1,10 @@
 ---
 change_id: product-readme
 title: Product README for Saved!
-status: implemented
+status: archived
 created: 2026-09-02
 updated: 2026-09-02
-archived_at: null
+archived_at: 2026-09-02T11:18:10Z
 ---
 
 ## Notes

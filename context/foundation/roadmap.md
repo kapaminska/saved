@@ -38,7 +38,7 @@ Brak prostego sposobu na śledzenie wielu celów oszczędnościowych jednocześn
 | S-06 | visual-language-polish              | Korzystać z ciepłego języka wizualnego w całej aplikacji (paleta, typografia) | S-05          | FR-010, NFR (feedback UX), Business Logic   | done        |
 | S-07 | net-worth-panel                     | Śledzić aktywa/pasywa i widzieć wartość netto obok celów                      | F-01          | FR-023–FR-027                               | done        |
 | S-08 | tab-favicon                         | Widzieć ikonę Saved! w karcie przeglądarki                                    | S-06          | NFR (feedback UX), tożsamość produktu       | planned     |
-| S-09 | product-readme                      | Sklonować repo i odpalic appkę z README produktu                              | —             | Dokumentacja 10xDevs                        | planned     |
+| S-09 | product-readme                      | Sklonować repo i odpalic appkę z README produktu                              | —             | Dokumentacja 10xDevs                        | done        |
 | S-10 | js-test-baseline                    | Mieć JS test runner i test logiki (projekcje / walidacja) w CI                | S-03          | Dokumentacja 10xDevs (testy)                | planned     |
 
 ## Streams
@@ -190,7 +190,7 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **Blockers:** —
 - **Unknowns:** Język README (PL vs EN) — decyzja w `/10x-plan product-readme`.
 - **Risk:** README ze startera nadal linkuje `public/template.png` i opisuje email+password — rozjazd z magic-link/OTP psuje onboarding recenzenta.
-- **Status:** planned
+- **Status:** done
 
 ### S-10: JS test baseline
 
@@ -250,3 +250,4 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **S-07: Użytkownik może dodać/edytować/usunąć aktywa i pasywa, zobaczyć wartość netto (aktywa minus pasywa), potwierdzić że aktywo jest aktualne bez zmiany kwoty, oraz dostać łagodny prompt gdy dane są nieaktualne (>3 miesiące).** — Archived 2026-06-23 → `context/archive/2026-06-23-net-worth-panel/`. Lesson: —.
 - **S-06: Użytkownik korzysta z aplikacji ze spójnym ciepłym językiem wizualnym: paleta, humanist sans-serif, zaokrąglone karty (12–16px), mikro-interakcje i łagodny ton prezentacji — zgodnie z PRD (motywująca forma, ciepły ton) i `shape-notes.md` §Forward: visual-language.** — Archived 2026-06-24 → `context/archive/2026-06-24-visual-language-polish/`. Lesson: —.
 - **S-02: Użytkownik może stworzyć cel oszczędnościowy (nazwa, kwota docelowa, opcjonalny deadline), edytować go, porzucić (status → abandoned), zobaczyć automatyczne ukończenie przy 100% z momentem celebracji (wiadomość + confetti), oraz przeglądać ukończone i porzucone cele w archiwum.** — Archived 2026-09-02 → `context/archive/2026-06-23-savings-goals-lifecycle/`. Lesson: —.
+- **S-09: Contributor / recenzent 10xDevs czyta README opisujące Saved! (nie szablon startera) i potrafi odpalić lokalny dev (Node, Docker/Supabase, `.dev.vars`, OTP w Inbucket).** — Archived 2026-09-02 → `context/archive/2026-09-02-product-readme/`. Lesson: —.
