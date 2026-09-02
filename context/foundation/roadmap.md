@@ -37,6 +37,9 @@ Brak prostego sposobu na śledzenie wielu celów oszczędnościowych jednocześn
 | S-05 | landing-page-unauthenticated        | Zobaczyć polski landing z CTA logowania; zalogowany trafia na dashboard       | F-01          | Access Control, Business Logic (ciepły ton) | done        |
 | S-06 | visual-language-polish              | Korzystać z ciepłego języka wizualnego w całej aplikacji (paleta, typografia) | S-05          | FR-010, NFR (feedback UX), Business Logic   | done        |
 | S-07 | net-worth-panel                     | Śledzić aktywa/pasywa i widzieć wartość netto obok celów                      | F-01          | FR-023–FR-027                               | done        |
+| S-08 | tab-favicon                         | Widzieć ikonę Saved! w karcie przeglądarki                                    | S-06          | NFR (feedback UX), tożsamość produktu       | planned     |
+| S-09 | product-readme                      | Sklonować repo i odpalic appkę z README produktu                              | —             | Dokumentacja 10xDevs                        | planned     |
+| S-10 | js-test-baseline                    | Mieć JS test runner i test logiki (projekcje / walidacja) w CI                | S-03          | Dokumentacja 10xDevs (testy)                | planned     |
 
 ## Streams
 
@@ -48,6 +51,7 @@ Nawigacja — grupuje elementy współdzielące łańcuch zależności. Kanonicz
 | B      | Tożsamość użytkownika | `S-01`                            | Równolegle ze Streamem A po `F-01`; domyka auth + onboarding na demo |
 | C      | Tożsamość produktu    | `S-05` → `S-06`                   | Landing z ciepłą paletą, potem spójny język wizualny w app           |
 | D      | Kontekst net worth    | `S-07`                            | Równolegle po `F-01`; Secondary Success Criterion                    |
+| E      | Certyfikacja 10xDevs  | `S-08` ∥ `S-09` ∥ `S-10`          | Po MVP produktu: favicon, README, testy JS — niezależne change'e     |
 
 ## Baseline
 
@@ -164,6 +168,42 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **Risk:** Net worth to kontekst motywacyjny, nie rdzeń — panel nie może dominować dashboardu nad celami oszczędnościowymi (Secondary Success Criterion).
 - **Status:** done
 
+### S-08: Ikona karty przeglądarki
+
+- **Outcome:** Użytkownik widzi zieloną ikonę Saved! (kafel z mocku logo) w karcie przeglądarki na każdej stronie layoutu.
+- **Change ID:** tab-favicon
+- **PRD refs:** NFR (feedback UX), tożsamość produktu
+- **Prerequisites:** S-06
+- **Parallel with:** S-09, S-10
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** Cache favicon w przeglądarce utrudnia QA; starter PNG na `/favicon.png` może wrócić jeśli nie zostanie nadpisany.
+- **Status:** planned
+
+### S-09: README produktu
+
+- **Outcome:** Contributor / recenzent 10xDevs czyta README opisujące Saved! (nie szablon startera) i potrafi odpalić lokalny dev (Node, Docker/Supabase, `.dev.vars`, OTP w Inbucket).
+- **Change ID:** product-readme
+- **PRD refs:** — (kryterium dokumentacji 10xDevs; nie FR produktowe)
+- **Prerequisites:** —
+- **Parallel with:** S-08, S-10
+- **Blockers:** —
+- **Unknowns:** Język README (PL vs EN) — decyzja w `/10x-plan product-readme`.
+- **Risk:** README ze startera nadal linkuje `public/template.png` i opisuje email+password — rozjazd z magic-link/OTP psuje onboarding recenzenta.
+- **Status:** planned
+
+### S-10: JS test baseline
+
+- **Outcome:** `npm test` (lub równoważny skrypt) odpala przynajmniej jeden znaczący test czystej logiki (np. projekcje celów albo walidacja check-inu); CI uruchamia ten skrypt.
+- **Change ID:** js-test-baseline
+- **PRD refs:** — (kryterium testów 10xDevs; nie FR produktowe)
+- **Prerequisites:** S-03 (logika projekcji już w kodzie)
+- **Parallel with:** S-08, S-09
+- **Blockers:** —
+- **Unknowns:** Runner (Vitest vs inny) i zakres (tylko unit vs + RLS w CI) — decyzja w `/10x-plan js-test-baseline`.
+- **Risk:** Same as archived slices: test framework był out of scope MVP — ten slice jest świadomym dopiskiem pod certyfikację, nie nową cechą produktu.
+- **Status:** planned
+
 ## Backlog Handoff
 
 | Roadmap ID | Change ID                           | Suggested issue title                              | Ready for `/10x-plan` | Notes                                        |
@@ -176,6 +216,9 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 | S-05       | landing-page-unauthenticated        | Landing PL + redirect zalogowanych                 | —                     | Zarchiwizowane                               |
 | S-06       | visual-language-polish              | Ciepły język wizualny w całej aplikacji            | yes                   | Run `/10x-plan visual-language-polish`       |
 | S-07       | net-worth-panel                     | Panel wartości netto (aktywa, pasywa, staleness)   | —                     | Zarchiwizowane                               |
+| S-08       | tab-favicon                         | Favicon: zielony kafel Saved! w karcie             | yes                   | Run `/10x-implement tab-favicon phase 1`     |
+| S-09       | product-readme                      | README produktu Saved!                             | yes                   | Run `/10x-plan product-readme`               |
+| S-10       | js-test-baseline                    | Vitest/runner + test logiki + CI                   | yes                   | Run `/10x-plan js-test-baseline`             |
 
 ## Open Roadmap Questions
 
