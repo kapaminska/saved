@@ -310,24 +310,24 @@ No schema or product behavior changes. Test-only files plus docs.
 
 #### Automated
 
-- [x] 2.1 `npm test` runs all new colocated unit files and passes
-- [x] 2.2 `npm run lint` passes on new test files
+- [x] 2.1 `npm test` runs all new colocated unit files and passes — cf1c29c
+- [x] 2.2 `npm run lint` passes on new test files — cf1c29c
 
 #### Manual
 
-- [x] 2.3 Skim the new files: every listed invariant above has at least one `it(...)` (no coverage tool)
+- [x] 2.3 Skim the new files: every listed invariant above has at least one `it(...)` (no coverage tool) — cf1c29c
 
 ### Phase 3: Check-in and goals API handler tests
 
 #### Automated
 
-- [ ] 3.1 `npm test` includes all handler tests and passes
-- [ ] 3.2 `npm run lint` passes
-- [ ] 3.3 CI still uses the existing `npm test` step (no workflow edit unless a test cannot run without it — default: no `ci.yml` change)
+- [x] 3.1 `npm test` includes all handler tests and passes
+- [x] 3.2 `npm run lint` passes
+- [x] 3.3 CI still uses the existing `npm test` step (no workflow edit unless a test cannot run without it — default: no `ci.yml` change)
 
 #### Manual
 
-- [ ] 3.4 Confirm CI on a PR would not need Docker or Wrangler login for tests (review workflow: lint → test → build unchanged)
+- [x] 3.4 Confirm CI on a PR would not need Docker or Wrangler login for tests (review workflow: lint → test → build unchanged)
 
 ### Phase 4: Documentation
 
