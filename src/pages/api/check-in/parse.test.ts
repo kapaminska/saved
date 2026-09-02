@@ -41,7 +41,7 @@ describe("POST /api/check-in/parse", () => {
   it("returns 429 RATE_LIMITED when the hourly cap is reached", async () => {
     const mock = createSupabaseMock();
     mock.queue({ count: 10, data: null });
-    mock.queue({ data: { created_at: new Date(Date.now() - 60_000).toISOString() } });
+    mock.queue({ data: { created_at: "2026-03-15T11:00:00.000Z" } });
 
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
     expect(response.status).toBe(429);
@@ -64,6 +64,18 @@ describe("POST /api/check-in/parse", () => {
     mock.queue({ data: [goal] });
     mock.queue({ error: null });
     mockAiRun.mockRejectedValue(new Error("down"));
+
+    const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({ code: "AI_UNAVAILABLE" });
+  });
+
+  it("returns 503 AI_UNAVAILABLE when the model returns unparsable text", async () => {
+    const mock = createSupabaseMock();
+    queueUnderLimit(mock);
+    mock.queue({ data: [goal] });
+    mock.queue({ error: null });
+    mockAiRun.mockResolvedValue({ response: "not json" });
 
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
     expect(response.status).toBe(503);

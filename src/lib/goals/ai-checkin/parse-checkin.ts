@@ -112,10 +112,6 @@ export async function parseCheckInSentence(
     const unrecognized: UnrecognizedEntry[] = [];
 
     for (const payment of parsed.data.payments) {
-      if (payment.amount <= 0) {
-        continue;
-      }
-
       const match = matchGoalName(payment.goal_name, activeGoals);
       if (match.kind === "matched") {
         proposals.push({

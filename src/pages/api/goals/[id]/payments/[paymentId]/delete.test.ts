@@ -17,6 +17,24 @@ function deleteContext(mock: ReturnType<typeof createSupabaseMock>) {
 }
 
 describe("POST /api/goals/[id]/payments/[paymentId]/delete", () => {
+  it("returns 401 without a user", async () => {
+    const response = await POST(asRouteContext(createApiContext({ user: null, params: { id: goalId, paymentId } })));
+    expect(response.status).toBe(401);
+  });
+  it("returns 404 for invalid ids", async () => {
+    const mock = createSupabaseMock();
+    const response = await POST(
+      asRouteContext(
+        createApiContext({
+          user,
+          supabase: mock.client,
+          params: { id: "bad", paymentId: "also-bad" },
+        }),
+      ),
+    );
+    expect(response.status).toBe(404);
+  });
+
   it("returns 409 when the goal is not active", async () => {
     const mock = createSupabaseMock();
     mock.queue({ data: { id: goalId, status: "abandoned" } });

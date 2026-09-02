@@ -41,6 +41,10 @@ function queueRecalc(mock: ReturnType<typeof createSupabaseMock>, status = "acti
 }
 
 describe("POST /api/goals/[id]/payments/[paymentId]", () => {
+  it("returns 401 without a user", async () => {
+    const response = await POST(asRouteContext(createApiContext({ user: null, params: { id: goalId, paymentId } })));
+    expect(response.status).toBe(401);
+  });
   it("returns 404 for invalid ids", async () => {
     const mock = createSupabaseMock();
     const response = await POST(editPayment(mock, { goalId: "bad", paymentId: "also-bad" }));

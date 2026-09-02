@@ -31,6 +31,10 @@ function editContext(mock: ReturnType<typeof createSupabaseMock>, id = goalId) {
 }
 
 describe("POST /api/goals/[id]", () => {
+  it("returns 401 without a user", async () => {
+    const response = await POST(asRouteContext(createApiContext({ user: null, params: { id: goalId } })));
+    expect(response.status).toBe(401);
+  });
   it("returns 404 for a non-UUID id", async () => {
     const mock = createSupabaseMock();
     const response = await POST(editContext(mock, "bad"));

@@ -10,6 +10,10 @@ function abandonContext(mock: ReturnType<typeof createSupabaseMock>, id = goalId
 }
 
 describe("POST /api/goals/[id]/abandon", () => {
+  it("returns 401 without a user", async () => {
+    const response = await POST(asRouteContext(createApiContext({ user: null, params: { id: goalId } })));
+    expect(response.status).toBe(401);
+  });
   it("returns 404 when the goal is missing", async () => {
     const mock = createSupabaseMock();
     mock.queue({ data: null });
