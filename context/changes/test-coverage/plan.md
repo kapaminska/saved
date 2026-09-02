@@ -333,8 +333,8 @@ No schema or product behavior changes. Test-only files plus docs.
 
 #### Automated
 
-- [x] 4.1 Markdown files format cleanly if `npm run format` is run on them
+- [x] 4.1 Markdown files format cleanly if `npm run format` is run on them — fdc38cc
 
 #### Manual
 
-- [x] 4.2 A new reader of README can tell: how to run JS tests, that RLS is manual, that E2E is not here yet
+- [x] 4.2 A new reader of README can tell: how to run JS tests, that RLS is manual, that E2E is not here yet — fdc38cc
