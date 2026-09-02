@@ -87,6 +87,7 @@ Bez logowania check-in **ręczny** nadal działa — AI nigdy nie blokuje użytk
 - `npm run build` — build produkcyjny
 - `npm run preview` — podgląd buildu
 - `npm run lint` — ESLint (reguły z sprawdzaniem typów)
+- `npm test` — Vitest (`vitest run`, bez watch)
 - `npm run format` — Prettier
 - `npm run deploy` — `astro build` + `wrangler deploy`
 
@@ -100,7 +101,7 @@ npm run deploy
 
 Ustaw sekrety `SUPABASE_URL` i `SUPABASE_KEY` w dashboardzie Cloudflare albo przez `npx wrangler secret put`.
 
-CI (GitHub Actions) na gałęzi `main` uruchamia lint i build (push i PR). Do kroku build potrzebne są sekrety repozytorium `SUPABASE_URL` i `SUPABASE_KEY`. Deploy z CI wymaga dodatkowo `CLOUDFLARE_API_TOKEN` i `CLOUDFLARE_ACCOUNT_ID`.
+CI (GitHub Actions) na gałęzi `main` uruchamia lint, testy i build (push i PR). Do kroku build potrzebne są sekrety repozytorium `SUPABASE_URL` i `SUPABASE_KEY`. Deploy z CI wymaga dodatkowo `CLOUDFLARE_API_TOKEN` i `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Licencja
 

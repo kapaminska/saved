@@ -132,14 +132,14 @@ First test runner in the repo. Contributors need `npm install` after merge. CLAU
 
 #### Automated
 
-- [ ] 1.1 `npm test` exits 0
-- [ ] 1.2 `src/lib/goals/projection.test.ts` exists and imports from `./projection`
-- [ ] 1.3 `package.json` has script `test`
-- [ ] 1.4 `.github/workflows/ci.yml` contains `npm test`
-- [ ] 1.5 Lint passes: `npm run lint`
-- [ ] 1.6 Build still passes: `npm run build`
+- [x] 1.1 `npm test` exits 0
+- [x] 1.2 `src/lib/goals/projection.test.ts` exists and imports from `./projection`
+- [x] 1.3 `package.json` has script `test`
+- [x] 1.4 `.github/workflows/ci.yml` contains `npm test`
+- [x] 1.5 Lint passes: `npm run lint`
+- [x] 1.6 Build still passes: `npm run build`
 
 #### Manual
 
-- [ ] 1.7 Vitest output shows projection tests by name, not a placeholder suite
-- [ ] 1.8 README (if S-09 already merged) can mention `npm test`; if not, do not block this slice on README
+- [x] 1.7 Vitest output shows projection tests by name, not a placeholder suite
+- [x] 1.8 README (if S-09 already merged) can mention `npm test`; if not, do not block this slice on README
