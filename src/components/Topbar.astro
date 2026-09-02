@@ -1,15 +1,22 @@
 ---
+import BrandLockup from "@/components/BrandLockup.astro";
+
 const { user, profile } = Astro.locals;
 const displayName = profile?.display_name;
 ---
 
 <div
-  class="border-border bg-card/80 mb-4 flex items-center justify-between rounded-xl border px-4 py-2 text-sm backdrop-blur-sm"
+  class="border-border bg-card/80 mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-4 py-2 text-sm backdrop-blur-sm"
 >
   {
     user ? (
       <>
-        <span class="text-muted-foreground">{displayName ?? user.email}</span>
+        <div class="flex min-w-0 flex-wrap items-center gap-3">
+          <a href="/dashboard" class="inline-flex shrink-0" aria-label="Saved!">
+            <BrandLockup size="nav" />
+          </a>
+          <span class="text-muted-foreground">{displayName ?? user.email}</span>
+        </div>
         <div class="flex items-center gap-3">
           <a href="/dashboard" class="text-primary hover:text-primary/80 transition-colors hover:underline">
             Panel
@@ -29,7 +36,12 @@ const displayName = profile?.display_name;
       </>
     ) : (
       <>
-        <span class="text-muted-foreground">Nie zalogowano</span>
+        <div class="flex min-w-0 flex-wrap items-center gap-3">
+          <a href="/" class="inline-flex shrink-0" aria-label="Saved!">
+            <BrandLockup size="nav" />
+          </a>
+          <span class="text-muted-foreground">Nie zalogowano</span>
+        </div>
         <a href="/auth/signin" class="text-primary hover:text-primary/80 transition-colors hover:underline">
           Zaloguj się
         </a>

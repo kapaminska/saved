@@ -188,27 +188,27 @@ None. Visual-only; no data or env changes. Do not merge this work into `tab-favi
 
 #### Automated
 
-- [x] 1.1 `src/components/BrandLockup.astro` exists and contains `#2f9e6a` (not `#e8920c`)
-- [x] 1.2 `Layout.astro` Nunito URL includes `800`
-- [x] 1.3 Lint passes: `npm run lint`
-- [x] 1.4 Build passes: `npm run build`
+- [x] 1.1 `src/components/BrandLockup.astro` exists and contains `#2f9e6a` (not `#e8920c`) — 7b98571
+- [x] 1.2 `Layout.astro` Nunito URL includes `800` — 7b98571
+- [x] 1.3 Lint passes: `npm run lint` — 7b98571
+- [x] 1.4 Build passes: `npm run build` — 7b98571
 
 #### Manual
 
-- [x] 1.5 Component renders `"Saved"` plus a green bang with cream check at both sizes when used in isolation / first call site in phase 2
+- [x] 1.5 Component renders `"Saved"` plus a green bang with cream check at both sizes when used in isolation / first call site in phase 2 — 7b98571
 
 ### Phase 2: Wire landing and topbar
 
 #### Automated
 
-- [ ] 2.1 `MarketingHeader.astro` no longer uses a bare text node `Saved!` as the only brand (lockup component is imported)
-- [ ] 2.2 `Topbar.astro` imports `BrandLockup`
-- [ ] 2.3 Lint passes: `npm run lint`
-- [ ] 2.4 Build passes: `npm run build`
+- [x] 2.1 `MarketingHeader.astro` no longer uses a bare text node `Saved!` as the only brand (lockup component is imported)
+- [x] 2.2 `Topbar.astro` imports `BrandLockup`
+- [x] 2.3 Lint passes: `npm run lint`
+- [x] 2.4 Build passes: `npm run build`
 
 #### Manual
 
-- [ ] 2.5 `/` : lockup in header, click → stays/goes home; no amber bang; no green tile
-- [ ] 2.6 Logged-in `/dashboard`, `/profile`, `/goals/archive`: lockup left, identity still visible, nav still works; lockup click → dashboard
-- [ ] 2.7 Narrow viewport: lockup + identity + nav all reachable (wrap/stack, not clipped)
-- [ ] 2.8 Auth pages unchanged (no lockup)
+- [x] 2.5 `/` : lockup in header, click → stays/goes home; no amber bang; no green tile
+- [x] 2.6 Logged-in `/dashboard`, `/profile`, `/goals/archive`: lockup left, identity still visible, nav still works; lockup click → dashboard
+- [x] 2.7 Narrow viewport: lockup + identity + nav all reachable (wrap/stack, not clipped)
+- [x] 2.8 Auth pages unchanged (no lockup)

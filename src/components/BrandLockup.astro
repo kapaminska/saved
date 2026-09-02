@@ -9,13 +9,13 @@ const { size = "marketing" } = Astro.props;
 <span
   class:list={[
     "text-foreground inline-flex items-center font-extrabold tracking-tight",
-    size === "marketing" && "text-xl",
+    size === "marketing" && "text-[32px] leading-none",
     size === "nav" && "text-[26px] leading-none",
   ]}
 >
   Saved
   <svg
-    class:list={[size === "marketing" ? "ml-0.5 h-[25px] w-3" : "ml-0.5 h-9 w-[17px]"]}
+    class:list={[size === "marketing" ? "ml-1 h-10 w-[19px]" : "ml-0.5 h-9 w-[17px]"]}
     viewBox="0 0 76 122"
     fill="none"
     aria-hidden="true"
