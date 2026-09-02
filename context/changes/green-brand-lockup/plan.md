@@ -201,14 +201,14 @@ None. Visual-only; no data or env changes. Do not merge this work into `tab-favi
 
 #### Automated
 
-- [x] 2.1 `MarketingHeader.astro` no longer uses a bare text node `Saved!` as the only brand (lockup component is imported)
-- [x] 2.2 `Topbar.astro` imports `BrandLockup`
-- [x] 2.3 Lint passes: `npm run lint`
-- [x] 2.4 Build passes: `npm run build`
+- [x] 2.1 `MarketingHeader.astro` no longer uses a bare text node `Saved!` as the only brand (lockup component is imported) — 6c828c2
+- [x] 2.2 `Topbar.astro` imports `BrandLockup` — 6c828c2
+- [x] 2.3 Lint passes: `npm run lint` — 6c828c2
+- [x] 2.4 Build passes: `npm run build` — 6c828c2
 
 #### Manual
 
-- [x] 2.5 `/` : lockup in header, click → stays/goes home; no amber bang; no green tile
-- [x] 2.6 Logged-in `/dashboard`, `/profile`, `/goals/archive`: lockup left, identity still visible, nav still works; lockup click → dashboard
-- [x] 2.7 Narrow viewport: lockup + identity + nav all reachable (wrap/stack, not clipped)
-- [x] 2.8 Auth pages unchanged (no lockup)
+- [x] 2.5 `/` : lockup in header, click → stays/goes home; no amber bang; no green tile — 6c828c2
+- [x] 2.6 Logged-in `/dashboard`, `/profile`, `/goals/archive`: lockup left, identity still visible, nav still works; lockup click → dashboard — 6c828c2
+- [x] 2.7 Narrow viewport: lockup + identity + nav all reachable (wrap/stack, not clipped) — 6c828c2
+- [x] 2.8 Auth pages unchanged (no lockup) — 6c828c2
