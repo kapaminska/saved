@@ -1,10 +1,10 @@
 ---
 change_id: green-brand-lockup
 title: Replace Saved wordmark with green celebration lockup
-status: impl_reviewed
+status: archived
 created: 2026-09-02
 updated: 2026-09-02
-archived_at: null
+archived_at: 2026-09-02T11:02:58Z
 ---
 
 ## Notes
