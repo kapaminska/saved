@@ -142,14 +142,14 @@ Browsers cache favicons aggressively. Manual QA must hard-refresh or use a priva
 
 #### Automated
 
-- [x] 1.1 `public/favicon.svg` exists and contains `#2f9e6a` / `#3fb37c` (not the amber `#e8920c` tile)
-- [x] 1.2 `public/favicon.png` is no longer the navy starter (file changed vs previous starter bytes)
-- [x] 1.3 `src/layouts/Layout.astro` references `/favicon.svg`
-- [x] 1.4 Build passes: `npm run build`
-- [x] 1.5 Lint passes: `npm run lint`
+- [x] 1.1 `public/favicon.svg` exists and contains `#2f9e6a` / `#3fb37c` (not the amber `#e8920c` tile) — d7d53e7
+- [x] 1.2 `public/favicon.png` is no longer the navy starter (file changed vs previous starter bytes) — d7d53e7
+- [x] 1.3 `src/layouts/Layout.astro` references `/favicon.svg` — d7d53e7
+- [x] 1.4 Build passes: `npm run build` — d7d53e7
+- [x] 1.5 Lint passes: `npm run lint` — d7d53e7
 
 #### Manual
 
-- [x] 1.6 Hard-refresh landing and dashboard: tab shows the green rounded tile with cream mark
-- [x] 1.7 Amber wordmark tile and hybrid amber+green check are not what appears in the tab
-- [x] 1.8 Unrelated pages (signin, archive) share the same icon via Layout
+- [x] 1.6 Hard-refresh landing and dashboard: tab shows the green rounded tile with cream mark — d7d53e7
+- [x] 1.7 Amber wordmark tile and hybrid amber+green check are not what appears in the tab — d7d53e7
+- [x] 1.8 Unrelated pages (signin, archive) share the same icon via Layout — d7d53e7
