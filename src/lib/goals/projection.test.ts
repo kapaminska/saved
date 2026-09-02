@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { goalStatus, projectedCompletionDate, requiredPace } from "./projection";
+import {
+  averageMonthlyPayment,
+  computeGoalMetrics,
+  countGoalLifetimeMonths,
+  goalStatus,
+  projectedCompletionDate,
+  requiredPace,
+} from "./projection";
 
 const asOfDate = "2026-03-15";
 
@@ -52,5 +59,48 @@ describe("goalStatus", () => {
     expect(goalStatus(null, "2026-06-30")).toBeNull();
     expect(goalStatus("2026-05-01", null)).toBeNull();
     expect(goalStatus(null, null)).toBeNull();
+  });
+});
+
+describe("countGoalLifetimeMonths", () => {
+  it("counts inclusive months from created_at through asOfDate", () => {
+    expect(countGoalLifetimeMonths("2026-01-10T00:00:00.000Z", asOfDate)).toBe(3);
+  });
+
+  it("starts the window at the earliest payment month when that is before created_at", () => {
+    expect(
+      countGoalLifetimeMonths("2026-01-10T00:00:00.000Z", asOfDate, [{ amount: 100, payment_month: "2025-12-01" }]),
+    ).toBe(4);
+  });
+});
+
+describe("averageMonthlyPayment", () => {
+  it("divides payment total by every month in the window, including zeros", () => {
+    // Jan–Mar 2026, only February has 300 → 100
+    expect(
+      averageMonthlyPayment("2026-01-10T00:00:00.000Z", asOfDate, [{ amount: 300, payment_month: "2026-02-01" }]),
+    ).toBe(100);
+  });
+});
+
+describe("computeGoalMetrics", () => {
+  it("composes pace, projection, status, and average from pinned asOfDate", () => {
+    const metrics = computeGoalMetrics(
+      {
+        target_amount: 10_000,
+        saved_amount: 2_000,
+        deadline: "2026-06-30",
+        created_at: "2026-01-10T00:00:00.000Z",
+        status: "active",
+      },
+      [{ amount: 2_000, payment_month: "2026-02-01" }],
+      asOfDate,
+    );
+
+    expect(metrics.monthsOfData).toBe(3);
+    expect(metrics.averageMonthlyPayment).toBe(2_000 / 3);
+    expect(metrics.requiredPace).toBe(2_000);
+    expect(metrics.projectedCompletionDate).toBe("2027-03-01");
+    expect(metrics.status).toBe("behind");
   });
 });

@@ -299,23 +299,23 @@ No schema or product behavior changes. Test-only files plus docs.
 
 #### Automated
 
-- [x] 1.1 `npm test` passes, including the existing projection suite and the harness smoke test
-- [x] 1.2 `npx astro sync` is not required for `npm test` (handlers imported as TS modules)
+- [x] 1.1 `npm test` passes, including the existing projection suite and the harness smoke test — fd159aa
+- [x] 1.2 `npx astro sync` is not required for `npm test` (handlers imported as TS modules) — fd159aa
 
 #### Manual
 
-- [x] 1.3 No new CI secrets or workflow jobs are needed for this phase
+- [x] 1.3 No new CI secrets or workflow jobs are needed for this phase — fd159aa
 
 ### Phase 2: Domain unit tests (money + AI)
 
 #### Automated
 
-- [ ] 2.1 `npm test` runs all new colocated unit files and passes
-- [ ] 2.2 `npm run lint` passes on new test files
+- [x] 2.1 `npm test` runs all new colocated unit files and passes
+- [x] 2.2 `npm run lint` passes on new test files
 
 #### Manual
 
-- [ ] 2.3 Skim the new files: every listed invariant above has at least one `it(...)` (no coverage tool)
+- [x] 2.3 Skim the new files: every listed invariant above has at least one `it(...)` (no coverage tool)
 
 ### Phase 3: Check-in and goals API handler tests
 
