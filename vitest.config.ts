@@ -12,5 +12,6 @@ export default defineConfig({
   },
   test: {
     include: ["src/**/*.test.ts"],
+    setupFiles: [path.resolve(root, "./vitest.setup.ts")],
   },
 });
