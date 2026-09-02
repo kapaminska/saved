@@ -91,6 +91,18 @@ Bez logowania check-in **ręczny** nadal działa — AI nigdy nie blokuje użytk
 - `npm run format` — Prettier
 - `npm run deploy` — `astro build` + `wrangler deploy`
 
+## Testy
+
+`npm test` odpala Vitest w Node: unittesty logiki w `src/lib` (projekcje, walidacja, check-in AI z mockiem modelu) oraz handlery check-inu i celów z mockiem klienta Supabase. Nie startuje Dockera, lokalnego Supabase ani Playwrighta. CI na `main` uruchamia ten sam skrypt po lincie i przed buildem.
+
+Izolacja RLS nie jest w `npm test`. Przy włączonym lokalnym stacku (`npx supabase start`) możesz ręcznie odpalić skrypty z `supabase/tests/`, np.:
+
+```bash
+psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -f supabase/tests/rls-profiles.sql
+```
+
+E2E (Playwright) — logowanie OTP i miesięczny check-in w prawdziwej przeglądarce — to osobny, przyszły slice. W tym repo jeszcze go nie ma.
+
 ## Deploy
 
 Aplikacja wdraża się na Cloudflare Workers.

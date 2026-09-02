@@ -321,20 +321,20 @@ No schema or product behavior changes. Test-only files plus docs.
 
 #### Automated
 
-- [x] 3.1 `npm test` includes all handler tests and passes
-- [x] 3.2 `npm run lint` passes
-- [x] 3.3 CI still uses the existing `npm test` step (no workflow edit unless a test cannot run without it — default: no `ci.yml` change)
+- [x] 3.1 `npm test` includes all handler tests and passes — c62a105
+- [x] 3.2 `npm run lint` passes — c62a105
+- [x] 3.3 CI still uses the existing `npm test` step (no workflow edit unless a test cannot run without it — default: no `ci.yml` change) — c62a105
 
 #### Manual
 
-- [x] 3.4 Confirm CI on a PR would not need Docker or Wrangler login for tests (review workflow: lint → test → build unchanged)
+- [x] 3.4 Confirm CI on a PR would not need Docker or Wrangler login for tests (review workflow: lint → test → build unchanged) — c62a105
 
 ### Phase 4: Documentation
 
 #### Automated
 
-- [ ] 4.1 Markdown files format cleanly if `npm run format` is run on them
+- [x] 4.1 Markdown files format cleanly if `npm run format` is run on them
 
 #### Manual
 
-- [ ] 4.2 A new reader of README can tell: how to run JS tests, that RLS is manual, that E2E is not here yet
+- [x] 4.2 A new reader of README can tell: how to run JS tests, that RLS is manual, that E2E is not here yet

@@ -6,6 +6,7 @@
 - `npm run build` — production build (SSR via `@astrojs/cloudflare`)
 - `npm run preview` — preview production build
 - `npm run lint` — ESLint with type-checked rules
+- `npm test` — Vitest (`vitest run`; unit + API handler tests, no Docker)
 - `npm run lint:fix` — auto-fix lint issues
 - `npm run format` — Prettier (includes prettier-plugin-astro + prettier-plugin-tailwindcss)
 - `npx astro sync` — regenerate type definitions (run before lint/build if types are stale)
