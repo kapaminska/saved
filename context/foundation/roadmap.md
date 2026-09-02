@@ -39,7 +39,7 @@ Brak prostego sposobu na śledzenie wielu celów oszczędnościowych jednocześn
 | S-07 | net-worth-panel                     | Śledzić aktywa/pasywa i widzieć wartość netto obok celów                      | F-01          | FR-023–FR-027                               | done        |
 | S-08 | tab-favicon                         | Widzieć ikonę Saved! w karcie przeglądarki                                    | S-06          | NFR (feedback UX), tożsamość produktu       | planned     |
 | S-09 | product-readme                      | Sklonować repo i odpalic appkę z README produktu                              | —             | Dokumentacja 10xDevs                        | done        |
-| S-10 | js-test-baseline                    | Mieć JS test runner i test logiki (projekcje / walidacja) w CI                | S-03          | Dokumentacja 10xDevs (testy)                | planned     |
+| S-10 | js-test-baseline                    | Mieć JS test runner i test logiki (projekcje / walidacja) w CI                | S-03          | Dokumentacja 10xDevs (testy)                | done        |
 
 ## Streams
 
@@ -202,7 +202,7 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **Blockers:** —
 - **Unknowns:** Runner (Vitest vs inny) i zakres (tylko unit vs + RLS w CI) — decyzja w `/10x-plan js-test-baseline`.
 - **Risk:** Same as archived slices: test framework był out of scope MVP — ten slice jest świadomym dopiskiem pod certyfikację, nie nową cechą produktu.
-- **Status:** planned
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -251,3 +251,4 @@ Stan codebase na 2026-06-10 (auto-researched + potwierdzone). Foundations poniż
 - **S-06: Użytkownik korzysta z aplikacji ze spójnym ciepłym językiem wizualnym: paleta, humanist sans-serif, zaokrąglone karty (12–16px), mikro-interakcje i łagodny ton prezentacji — zgodnie z PRD (motywująca forma, ciepły ton) i `shape-notes.md` §Forward: visual-language.** — Archived 2026-06-24 → `context/archive/2026-06-24-visual-language-polish/`. Lesson: —.
 - **S-02: Użytkownik może stworzyć cel oszczędnościowy (nazwa, kwota docelowa, opcjonalny deadline), edytować go, porzucić (status → abandoned), zobaczyć automatyczne ukończenie przy 100% z momentem celebracji (wiadomość + confetti), oraz przeglądać ukończone i porzucone cele w archiwum.** — Archived 2026-09-02 → `context/archive/2026-06-23-savings-goals-lifecycle/`. Lesson: —.
 - **S-09: Contributor / recenzent 10xDevs czyta README opisujące Saved! (nie szablon startera) i potrafi odpalić lokalny dev (Node, Docker/Supabase, `.dev.vars`, OTP w Inbucket).** — Archived 2026-09-02 → `context/archive/2026-09-02-product-readme/`. Lesson: —.
+- **S-10: `npm test` (lub równoważny skrypt) odpala przynajmniej jeden znaczący test czystej logiki (np. projekcje celów albo walidacja check-inu); CI uruchamia ten skrypt.** — Archived 2026-09-02 → `context/archive/2026-09-02-js-test-baseline/`. Lesson: —.
