@@ -130,9 +130,7 @@ describe("POST /api/check-in", () => {
   // Risk #2: future month booked silently. Handler-layer check — not only validateCheckInMonth unit tests.
   it("rejects a future payment_month with 400 and does not upsert", async () => {
     const mock = createSupabaseMock();
-    const response = await POST(
-      checkInContext(mock, { payment_month: "2099-12", goal_id: goalId, amount: "100" }),
-    );
+    const response = await POST(checkInContext(mock, { payment_month: "2099-12", goal_id: goalId, amount: "100" }));
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toMatchObject({
       error: "Miesiąc check-inu nie może być w przyszłości",
@@ -174,9 +172,7 @@ describe("POST /api/check-in", () => {
     const upserts = paymentUpserts(mock);
     expect(upserts).toHaveLength(1);
     expect(upserts[0]?.args[0]).toMatchObject({ goal_id: goalId, amount: 150 });
-    expect(
-      upserts.some((call) => (call.args[0] as { goal_id: string }).goal_id === otherGoalId),
-    ).toBe(false);
+    expect(upserts.some((call) => (call.args[0] as { goal_id: string }).goal_id === otherGoalId)).toBe(false);
   });
 
   // Risk #2: duplicate rows for the same goal+month. Upsert onConflict, not a second insert.
@@ -238,9 +234,7 @@ describe("POST /api/check-in", () => {
     const mock = createSupabaseMock();
     queueSuccessfulCheckIn(mock, { id: otherGoalId, name: "Poduszka" });
 
-    const response = await POST(
-      checkInContext(mock, { payment_month: "2020-01", goal_id: otherGoalId, amount: "80" }),
-    );
+    const response = await POST(checkInContext(mock, { payment_month: "2020-01", goal_id: otherGoalId, amount: "80" }));
     expect(response.status).toBe(200);
 
     const upserts = paymentUpserts(mock);

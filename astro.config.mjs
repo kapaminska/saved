@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, envField } from "astro/config";
+import process from "node:process";
 
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
