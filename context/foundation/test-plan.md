@@ -70,7 +70,7 @@ orchestrator updates Status as artifacts appear on disk.
 
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
-| 1 | Critical-path coverage | Prove assignment and payment integrity cannot silently corrupt the month | #1, #2 | unit + integration | planned | testing-critical-path-coverage |
+| 1 | Critical-path coverage | Prove assignment and payment integrity cannot silently corrupt the month | #1, #2 | unit + integration | complete | testing-critical-path-coverage |
 | 2 | Isolation and abuse | Prove ownership, not merely “is logged in” | #3 | integration (+ RLS in CI if research confirms it is the proof) | not started | — |
 | 3 | AI safety path | Prove AI failure degrades, never blocks or writes garbage | #4, #5, #6 | unit + integration | not started | — |
 | 4 | Quality-gates wiring | Lock the Vitest floor; add the isolation proof Phase 2 chose | cross-cutting | gates | not started | — |
@@ -125,11 +125,23 @@ the relevant rollout phase ships; before that, the sub-section reads
 
 ### 6.1 Adding a unit test
 
-TBD — see §3 Phase 1 for duplicate-month / future-month / zero-vs-delete pattern.
+- **Location**: colocated `*.test.ts` next to the unit (`src/lib/goals/payment-validation.test.ts`).
+- **Run locally**: `npm test`.
+- **Payment month / amount (Risk #2)**: use the unit file for `validateCheckInMonth` and `parsePaymentAmount` in isolation. Use the handler tests (`src/pages/api/check-in.test.ts`, `src/pages/api/goals/[id]/payments/[paymentId].test.ts`) when the regression is "the API booked it anyway" — a green unit test of `validateCheckInMonth` is not enough.
+- **Pin dates**: inject `today` in unit tests; at the handler, use a far-future month (`2099-12`) so the case does not depend on wall-clock, and a clearly past month (`2020-01`) for accepted saves.
+- **Oracle**: PRD FR-015 (explicit zero vs skip — both project as 0; only explicit zero is a history row) and FR-020 (zero months appear in history). FR-016 / FR-021: future months rejected on check-in and on edit. Do not treat current function output as the spec.
+- **Duplicate month**: uniqueness is `UNIQUE (goal_id, payment_month)` plus upsert `onConflict: "goal_id,payment_month"`. Prove it at the handler by two successful POSTs and `mock.calls` — not a single-insert happy path.
+- **Zero vs skip**: `amount: "0"` must upsert `amount: 0`; empty/whitespace amount must produce no upsert for that goal. Skip is not a deleted history row; delete is a different path (out of this recipe).
+- **Reference tests**: `src/lib/goals/payment-validation.test.ts`; future/zero/skip/upsert cases in `src/pages/api/check-in.test.ts`; future-month edit in `src/pages/api/goals/[id]/payments/[paymentId].test.ts`.
 
 ### 6.2 Adding an integration test
 
-TBD — see §3 Phase 1 for review-then-save assignment (wrong-goal) pattern.
+- **Location**: colocated next to the handler (`src/pages/api/check-in.test.ts`).
+- **Harness**: `createApiContext` + queue-based `createSupabaseMock` from `src/test/api-route.ts`. Inspect `mock.calls` for side effects. Do not add MSW or jsdom for this risk.
+- **Review-then-save assignment (Risk #1)**: `POST /api/check-in` with explicit `goal_id` + `amount` arrays. Assert each upsert payload's `goal_id` and `amount` match the form. Save is UUID-authoritative; do not involve parse in the same test.
+- **Minimum bar**: a multi-goal batch (two distinct `goal_id`s). Single-goal happy path does not prove assignment.
+- **Anti-pattern**: asserting parse/`matchGoalName` output against itself. Adversarial name cases belong in `src/lib/goals/ai-checkin/goal-name-match.test.ts` and document the match rules (exact → unique substring → unique fuzzy), not "whatever the implementation returned."
+- **Reference tests**: multi-goal and submitted-`goal_id` cases in `src/pages/api/check-in.test.ts`; adversarial similar-name cases in `src/lib/goals/ai-checkin/goal-name-match.test.ts`.
 
 ### 6.3 Adding an ownership / isolation test
 
@@ -145,7 +157,7 @@ TBD — see §3 Phase 3 for fallback-without-write and out-of-contract payload p
 
 ### 6.6 Per-rollout-phase notes
 
-(empty — filled as phases ship)
+- **§3 Phase 1 (`testing-critical-path-coverage`)**: Risk #2 handler cases in `src/pages/api/check-in.test.ts` (future month, explicit zero, skip, upsert overwrite) and `src/pages/api/goals/[id]/payments/[paymentId].test.ts` (future month on edit). Risk #1 save fidelity in `check-in.test.ts` (multi-goal `goal_id` + UUID contract) plus adversarial `matchGoalName` cases in `src/lib/goals/ai-checkin/goal-name-match.test.ts`. Save and parse stay decoupled tests.
 
 ## 7. What We Deliberately Don't Test
 

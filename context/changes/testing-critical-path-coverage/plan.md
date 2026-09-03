@@ -263,14 +263,14 @@ Update `context/foundation/test-plan.md` §6 with patterns shipped in Phases 1�
 
 #### Automated
 
-- [x] 2.1 Multi-goal check-in save with upsert goal_id assertions
-- [x] 2.2 Save-with-specific-goal_id (authoritative UUID contract) test
-- [x] 2.3 Adversarial goal-name-match unit cases
+- [x] 2.1 Multi-goal check-in save with upsert goal_id assertions — 29c3400
+- [x] 2.2 Save-with-specific-goal_id (authoritative UUID contract) test — 29c3400
+- [x] 2.3 Adversarial goal-name-match unit cases — 29c3400
 
 ### Phase 3: Cookbook backport
 
 #### Automated
 
-- [ ] 3.1 Update test-plan §6.1 unit test pattern
-- [ ] 3.2 Update test-plan §6.2 integration test pattern
-- [ ] 3.3 Add §6.6 Phase 1 notes and mark §3 Phase 1 complete
+- [x] 3.1 Update test-plan §6.1 unit test pattern
+- [x] 3.2 Update test-plan §6.2 integration test pattern
+- [x] 3.3 Add §6.6 Phase 1 notes and mark §3 Phase 1 complete
