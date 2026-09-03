@@ -1,7 +1,7 @@
 ---
 change_id: testing-critical-path-coverage
 title: Critical-path coverage — assignment and payment integrity tests
-status: implementing
+status: implemented
 created: 2026-09-03
 updated: 2026-09-03
 archived_at: null

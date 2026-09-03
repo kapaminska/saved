@@ -271,6 +271,6 @@ Update `context/foundation/test-plan.md` §6 with patterns shipped in Phases 1�
 
 #### Automated
 
-- [x] 3.1 Update test-plan §6.1 unit test pattern
-- [x] 3.2 Update test-plan §6.2 integration test pattern
-- [x] 3.3 Add §6.6 Phase 1 notes and mark §3 Phase 1 complete
+- [x] 3.1 Update test-plan §6.1 unit test pattern — 9e47761
+- [x] 3.2 Update test-plan §6.2 integration test pattern — 9e47761
+- [x] 3.3 Add §6.6 Phase 1 notes and mark §3 Phase 1 complete — 9e47761
