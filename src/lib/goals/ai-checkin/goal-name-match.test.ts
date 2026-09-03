@@ -49,4 +49,26 @@ describe("matchGoalName", () => {
     expect(matchGoalName("   ", [wakacje])).toEqual({ kind: "unrecognized" });
     expect(matchGoalName("Wakacje", [])).toEqual({ kind: "unrecognized" });
   });
+
+  // Risk #1 parse layer: similar names. Oracle is matchGoalName rules (exact → unique substring → unique fuzzy), not "whatever the code returns."
+  describe("adversarial similar names", () => {
+    const grecja = { id: "gA", name: "Wakacje Grecja" };
+    const ogolne = { id: "gB", name: "Wakacje" };
+
+    it("exact-matches goal B when the AI string equals B among similar names the user might mean as A", () => {
+      expect(matchGoalName("Wakacje", [grecja, ogolne])).toEqual({
+        kind: "matched",
+        goalId: "gB",
+        goalName: "Wakacje",
+      });
+    });
+
+    it("fuzzy-matches the unique nearby name even when a longer similar goal is the likely intent", () => {
+      expect(matchGoalName("wakace", [grecja, ogolne])).toEqual({
+        kind: "matched",
+        goalId: "gB",
+        goalName: "Wakacje",
+      });
+    });
+  });
 });

@@ -199,4 +199,52 @@ describe("POST /api/check-in", () => {
     expect(upserts[0]?.args[0]).toMatchObject({ amount: 100 });
     expect(upserts[1]?.args[0]).toMatchObject({ amount: 250 });
   });
+
+  // Risk #1: wrong goal credited while totals still look plausible. Multi-goal batch is the minimum bar.
+  it("upserts each submitted goal_id with the matching amount in a multi-goal check-in", async () => {
+    const mock = createSupabaseMock();
+    mock.queue({
+      data: [
+        { id: goalId, name: "Wakacje", status: "active" },
+        { id: otherGoalId, name: "Poduszka", status: "active" },
+      ],
+    });
+    mock.queue({ error: null });
+    mock.queue({ error: null });
+    queueRecalc(mock, { id: goalId, name: "Wakacje", status: "active" });
+    queueRecalc(mock, { id: otherGoalId, name: "Poduszka", status: "active" });
+
+    const response = await POST(
+      checkInContext(mock, {
+        payment_month: "2020-01",
+        goal_id: [goalId, otherGoalId],
+        amount: ["100", "250"],
+      }),
+    );
+    expect(response.status).toBe(200);
+
+    const upserts = paymentUpserts(mock);
+    expect(upserts).toHaveLength(2);
+    expect(upserts[0]?.args[0]).toMatchObject({ goal_id: goalId, amount: 100, payment_month: "2020-01-01" });
+    expect(upserts[1]?.args[0]).toMatchObject({
+      goal_id: otherGoalId,
+      amount: 250,
+      payment_month: "2020-01-01",
+    });
+  });
+
+  // Risk #1: save is UUID-authoritative. Handler must not re-derive a goal from names (parse is a separate hop).
+  it("upserts the submitted goal_id without re-matching names", async () => {
+    const mock = createSupabaseMock();
+    queueSuccessfulCheckIn(mock, { id: otherGoalId, name: "Poduszka" });
+
+    const response = await POST(
+      checkInContext(mock, { payment_month: "2020-01", goal_id: otherGoalId, amount: "80" }),
+    );
+    expect(response.status).toBe(200);
+
+    const upserts = paymentUpserts(mock);
+    expect(upserts).toHaveLength(1);
+    expect(upserts[0]?.args[0]).toMatchObject({ goal_id: otherGoalId, amount: 80 });
+  });
 });

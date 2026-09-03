@@ -253,19 +253,19 @@ Update `context/foundation/test-plan.md` §6 with patterns shipped in Phases 1�
 
 #### Automated
 
-- [x] 1.1 Check-in future month rejection test
-- [x] 1.2 Check-in explicit zero amount test
-- [x] 1.3 Check-in skip (no upsert for empty amount) test
-- [x] 1.4 Check-in duplicate month upsert-overwrite test
-- [x] 1.5 Payment edit future month rejection test
+- [x] 1.1 Check-in future month rejection test — e6c7201
+- [x] 1.2 Check-in explicit zero amount test — e6c7201
+- [x] 1.3 Check-in skip (no upsert for empty amount) test — e6c7201
+- [x] 1.4 Check-in duplicate month upsert-overwrite test — e6c7201
+- [x] 1.5 Payment edit future month rejection test — e6c7201
 
 ### Phase 2: Goal assignment on save (Risk #1)
 
 #### Automated
 
-- [ ] 2.1 Multi-goal check-in save with upsert goal_id assertions
-- [ ] 2.2 Save-with-specific-goal_id (authoritative UUID contract) test
-- [ ] 2.3 Adversarial goal-name-match unit cases
+- [x] 2.1 Multi-goal check-in save with upsert goal_id assertions
+- [x] 2.2 Save-with-specific-goal_id (authoritative UUID contract) test
+- [x] 2.3 Adversarial goal-name-match unit cases
 
 ### Phase 3: Cookbook backport
 
