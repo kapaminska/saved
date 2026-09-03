@@ -3,6 +3,7 @@ import { POST } from "@/pages/api/check-in";
 import { asRouteContext, createApiContext, createSupabaseMock, createTestUser } from "@/test/api-route";
 
 const goalId = "22222222-2222-4222-8222-222222222222";
+const otherGoalId = "44444444-4444-4444-8444-444444444444";
 const user = createTestUser();
 
 function checkInContext(mock: ReturnType<typeof createSupabaseMock>, form: Record<string, string | string[]>) {
@@ -36,6 +37,20 @@ function queueRecalc(
       updated_at: "2026-03-15T00:00:00.000Z",
     },
   });
+}
+
+function queueSuccessfulCheckIn(
+  mock: ReturnType<typeof createSupabaseMock>,
+  goal: { id: string; name: string; status?: string } = { id: goalId, name: "Wakacje" },
+) {
+  const status = goal.status ?? "active";
+  mock.queue({ data: [{ id: goal.id, name: goal.name, status }] });
+  mock.queue({ error: null });
+  queueRecalc(mock, { id: goal.id, name: goal.name, status });
+}
+
+function paymentUpserts(mock: ReturnType<typeof createSupabaseMock>) {
+  return mock.calls.filter((call) => call.table === "goal_payments" && call.method === "upsert");
 }
 
 describe("POST /api/check-in", () => {
@@ -110,5 +125,78 @@ describe("POST /api/check-in", () => {
       success: true,
       completedGoals: [{ id: goalId, name: "Wakacje" }],
     });
+  });
+
+  // Risk #2: future month booked silently. Handler-layer check — not only validateCheckInMonth unit tests.
+  it("rejects a future payment_month with 400 and does not upsert", async () => {
+    const mock = createSupabaseMock();
+    const response = await POST(
+      checkInContext(mock, { payment_month: "2099-12", goal_id: goalId, amount: "100" }),
+    );
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toMatchObject({
+      error: "Miesiąc check-inu nie może być w przyszłości",
+    });
+    expect(paymentUpserts(mock)).toHaveLength(0);
+  });
+
+  // Risk #2: zero treated as skip or rejected. Distinct from an omitted/empty amount.
+  it("upserts amount 0 when the form submits an explicit zero", async () => {
+    const mock = createSupabaseMock();
+    queueSuccessfulCheckIn(mock);
+
+    const response = await POST(checkInContext(mock, { payment_month: "2020-01", goal_id: goalId, amount: "0" }));
+    expect(response.status).toBe(200);
+
+    const upserts = paymentUpserts(mock);
+    expect(upserts).toHaveLength(1);
+    expect(upserts[0]?.args[0]).toMatchObject({
+      goal_id: goalId,
+      amount: 0,
+      payment_month: "2020-01-01",
+    });
+  });
+
+  // Risk #2: empty amount creates a spurious row or corrupts totals.
+  it("does not upsert a skipped (empty/whitespace) amount in a multi-goal form", async () => {
+    const mock = createSupabaseMock();
+    queueSuccessfulCheckIn(mock);
+
+    const response = await POST(
+      checkInContext(mock, {
+        payment_month: "2020-01",
+        goal_id: [goalId, otherGoalId],
+        amount: ["150", "  "],
+      }),
+    );
+    expect(response.status).toBe(200);
+
+    const upserts = paymentUpserts(mock);
+    expect(upserts).toHaveLength(1);
+    expect(upserts[0]?.args[0]).toMatchObject({ goal_id: goalId, amount: 150 });
+    expect(
+      upserts.some((call) => (call.args[0] as { goal_id: string }).goal_id === otherGoalId),
+    ).toBe(false);
+  });
+
+  // Risk #2: duplicate rows for the same goal+month. Upsert onConflict, not a second insert.
+  it("overwrites the same goal+month via upsert onConflict instead of inserting a second row", async () => {
+    const mock = createSupabaseMock();
+    queueSuccessfulCheckIn(mock);
+    queueSuccessfulCheckIn(mock);
+
+    const first = await POST(checkInContext(mock, { payment_month: "2020-01", goal_id: goalId, amount: "100" }));
+    const second = await POST(checkInContext(mock, { payment_month: "2020-01", goal_id: goalId, amount: "250" }));
+    expect(first.status).toBe(200);
+    expect(second.status).toBe(200);
+
+    const upserts = paymentUpserts(mock);
+    expect(upserts).toHaveLength(2);
+    for (const call of upserts) {
+      expect(call.args[1]).toEqual({ onConflict: "goal_id,payment_month" });
+      expect(call.args[0]).toMatchObject({ goal_id: goalId, payment_month: "2020-01-01" });
+    }
+    expect(upserts[0]?.args[0]).toMatchObject({ amount: 100 });
+    expect(upserts[1]?.args[0]).toMatchObject({ amount: 250 });
   });
 });

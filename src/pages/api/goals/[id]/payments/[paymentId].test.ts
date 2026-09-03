@@ -92,4 +92,18 @@ describe("POST /api/goals/[id]/payments/[paymentId]", () => {
     expect(mock.calls.filter((call) => call.table === "savings_goals" && call.method === "update").length).toBe(1);
     await expect(response.json()).resolves.toMatchObject({ success: true, completed: false });
   });
+
+  // Risk #2: future month via the edit path, bypassing check-in validation. Not only unit-tested.
+  it("rejects a future payment_month with 400 and does not update", async () => {
+    const mock = createSupabaseMock();
+    mock.queue({ data: { id: goalId, status: "active" } });
+    mock.queue({ data: { id: paymentId, payment_month: "2020-01-01" } });
+
+    const response = await POST(editPayment(mock, { form: { amount: "50", payment_month: "2099-12" } }));
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toMatchObject({
+      error: "Miesiąc check-inu nie może być w przyszłości",
+    });
+    expect(mock.calls.filter((call) => call.table === "goal_payments" && call.method === "update")).toHaveLength(0);
+  });
 });
