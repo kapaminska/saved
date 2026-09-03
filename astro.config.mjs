@@ -16,7 +16,12 @@ export default defineConfig({
       exclude: ["@supabase/ssr"],
     },
   },
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    // Workers AI needs a remote binding in `astro dev`. `astro build` (CI included)
+    // must emulate bindings locally — otherwise wrangler starts a remote proxy and
+    // fails without Cloudflare login.
+    remoteBindings: process.argv.includes("dev"),
+  }),
   env: {
     schema: {
       SUPABASE_URL: envField.string({ context: "server", access: "secret", optional: true }),
