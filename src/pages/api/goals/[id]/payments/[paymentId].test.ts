@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { POST } from "@/pages/api/goals/[id]/payments/[paymentId]";
-import { asRouteContext, createApiContext, createSupabaseMock, createTestUser } from "@/test/api-route";
+import {
+  asRouteContext,
+  createApiContext,
+  createSupabaseMock,
+  createTestUser,
+  expectOwnershipEq,
+  OTHER_USER_ID,
+} from "@/test/api-route";
 
 const user = createTestUser();
 const goalId = "22222222-2222-4222-8222-222222222222";
@@ -8,11 +15,11 @@ const paymentId = "33333333-3333-4333-8333-333333333333";
 
 function editPayment(
   mock: ReturnType<typeof createSupabaseMock>,
-  options: { goalId?: string; paymentId?: string; form?: Record<string, string> } = {},
+  options: { goalId?: string; paymentId?: string; form?: Record<string, string>; user?: typeof user } = {},
 ) {
   return asRouteContext(
     createApiContext({
-      user,
+      user: options.user ?? user,
       supabase: mock.client,
       params: { id: options.goalId ?? goalId, paymentId: options.paymentId ?? paymentId },
       form: options.form ?? { amount: "50", payment_month: "2020-01" },
@@ -49,6 +56,16 @@ describe("POST /api/goals/[id]/payments/[paymentId]", () => {
     const mock = createSupabaseMock();
     const response = await POST(editPayment(mock, { goalId: "bad", paymentId: "also-bad" }));
     expect(response.status).toBe(404);
+  });
+
+  it("returns 404 when another user owns the payment", async () => {
+    const bob = createTestUser({ id: OTHER_USER_ID });
+    const mock = createSupabaseMock();
+    mock.queue({ data: null });
+    const response = await POST(editPayment(mock, { user: bob }));
+    expect(response.status).toBe(404);
+    expectOwnershipEq(mock.calls, bob.id, { table: "savings_goals" });
+    expect(mock.calls.some((call) => call.method === "update" || call.method === "upsert")).toBe(false);
   });
 
   it("returns 409 when the goal is not active", async () => {

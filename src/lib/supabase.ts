@@ -14,8 +14,42 @@ function cookieDefaults(options?: Parameters<AstroCookies["set"]>[2]) {
   };
 }
 
-export function createClient(requestHeaders: Headers, cookies: AstroCookies): SavedSupabaseClient | null {
+function isLoopbackHostname(hostname: string): boolean {
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]" || hostname === "::1";
+}
+
+function isLocalSupabaseUrl(url: string): boolean {
+  try {
+    return isLoopbackHostname(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
+
+export function formatAuthError(error: { message?: string } | null | undefined, fallback: string): string {
+  const msg = error?.message?.trim();
+  if (msg && msg !== "{}" && msg !== "[object Object]") {
+    return msg;
+  }
+  return fallback;
+}
+
+export function supabaseUnavailableMessage(requestUrl?: URL): string {
+  if (requestUrl && SUPABASE_URL && isLocalSupabaseUrl(SUPABASE_URL) && !isLoopbackHostname(requestUrl.hostname)) {
+    return "Produkcja używa lokalnego Supabase. Ustaw sekrety Workera SUPABASE_URL i SUPABASE_KEY na projekt z supabase.com.";
+  }
+  return "Supabase nie jest skonfigurowany";
+}
+
+export function createClient(
+  requestHeaders: Headers,
+  cookies: AstroCookies,
+  requestUrl?: URL,
+): SavedSupabaseClient | null {
   if (!SUPABASE_URL || !SUPABASE_KEY) {
+    return null;
+  }
+  if (requestUrl && isLocalSupabaseUrl(SUPABASE_URL) && !isLoopbackHostname(requestUrl.hostname)) {
     return null;
   }
 
@@ -57,6 +91,7 @@ export function getSupabase(
   locals: App.Locals,
   requestHeaders: Headers,
   cookies: AstroCookies,
+  requestUrl?: URL,
 ): SavedSupabaseClient | null {
-  return locals.supabase ?? createClient(requestHeaders, cookies);
+  return locals.supabase ?? createClient(requestHeaders, cookies, requestUrl);
 }

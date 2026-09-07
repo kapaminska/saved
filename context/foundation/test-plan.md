@@ -71,7 +71,7 @@ orchestrator updates Status as artifacts appear on disk.
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
 | 1 | Critical-path coverage | Prove assignment and payment integrity cannot silently corrupt the month | #1, #2 | unit + integration | complete | testing-critical-path-coverage |
-| 2 | Isolation and abuse | Prove ownership, not merely “is logged in” | #3 | integration (+ RLS in CI if research confirms it is the proof) | not started | — |
+| 2 | Isolation and abuse | Prove ownership, not merely “is logged in” | #3 | integration (+ RLS in CI if research confirms it is the proof) | planned | testing-isolation-and-abuse |
 | 3 | AI safety path | Prove AI failure degrades, never blocks or writes garbage | #4, #5, #6 | unit + integration | not started | — |
 | 4 | Quality-gates wiring | Lock the Vitest floor; add the isolation proof Phase 2 chose | cross-cutting | gates | not started | — |
 

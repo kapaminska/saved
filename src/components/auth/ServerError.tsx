@@ -5,7 +5,7 @@ interface ServerErrorProps {
 }
 
 export function ServerError({ message }: ServerErrorProps) {
-  if (!message) return null;
+  if (typeof message !== "string" || !message) return null;
 
   return (
     <p className="border-destructive/30 bg-destructive/10 text-destructive flex items-center gap-2 rounded-lg border px-3 py-2 text-sm">

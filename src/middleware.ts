@@ -6,7 +6,7 @@ const PROTECTED_ROUTES = ["/dashboard", "/onboarding", "/profile", "/goals"];
 const ONBOARDING_EXEMPT = new Set(["/onboarding", "/api/profile", "/api/profile/skip", "/api/auth/signout"]);
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const supabase = createClient(context.request.headers, context.cookies);
+  const supabase = createClient(context.request.headers, context.cookies, context.url);
   context.locals.supabase = supabase;
   context.locals.profile = null;
 

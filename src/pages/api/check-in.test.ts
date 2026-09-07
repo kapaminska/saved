@@ -1,15 +1,26 @@
 import { describe, expect, it } from "vitest";
 import { POST } from "@/pages/api/check-in";
-import { asRouteContext, createApiContext, createSupabaseMock, createTestUser } from "@/test/api-route";
+import {
+  asRouteContext,
+  createApiContext,
+  createSupabaseMock,
+  createTestUser,
+  expectOwnershipEq,
+  OTHER_USER_ID,
+} from "@/test/api-route";
 
 const goalId = "22222222-2222-4222-8222-222222222222";
 const otherGoalId = "44444444-4444-4444-8444-444444444444";
 const user = createTestUser();
 
-function checkInContext(mock: ReturnType<typeof createSupabaseMock>, form: Record<string, string | string[]>) {
+function checkInContext(
+  mock: ReturnType<typeof createSupabaseMock>,
+  form: Record<string, string | string[]>,
+  sessionUser = user,
+) {
   return asRouteContext(
     createApiContext({
-      user,
+      user: sessionUser,
       supabase: mock.client,
       form,
     }),
@@ -94,6 +105,18 @@ describe("POST /api/check-in", () => {
     mock.queue({ data: [] });
     const response = await POST(checkInContext(mock, { payment_month: "2020-01", goal_id: goalId, amount: "100" }));
     expect(response.status).toBe(404);
+  });
+
+  it("returns 404 when another user owns the goal_id", async () => {
+    const bob = createTestUser({ id: OTHER_USER_ID });
+    const mock = createSupabaseMock();
+    mock.queue({ data: [] });
+    const response = await POST(
+      checkInContext(mock, { payment_month: "2020-01", goal_id: goalId, amount: "100" }, bob),
+    );
+    expect(response.status).toBe(404);
+    expectOwnershipEq(mock.calls, bob.id, { table: "savings_goals" });
+    expect(mock.calls.some((call) => call.method === "upsert")).toBe(false);
   });
 
   it("returns 500 when upsert fails", async () => {

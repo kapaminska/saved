@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getSupabase } from "@/lib/supabase";
+import { formatAuthError, getSupabase, supabaseUnavailableMessage } from "@/lib/supabase";
 
 function redirectWithError(context: Parameters<APIRoute>[0], message: string) {
   const url = new URL("/auth/signin", context.url);
@@ -16,15 +16,15 @@ export const POST: APIRoute = async (context) => {
     return redirectWithError(context, "Wymagany jest adres e-mail i kod");
   }
 
-  const supabase = getSupabase(context.locals, context.request.headers, context.cookies);
+  const supabase = getSupabase(context.locals, context.request.headers, context.cookies, context.url);
   if (!supabase) {
-    return redirectWithError(context, "Supabase nie jest skonfigurowany");
+    return redirectWithError(context, supabaseUnavailableMessage(context.url));
   }
 
   const { data, error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
 
   if (error) {
-    return redirectWithError(context, error.message);
+    return redirectWithError(context, formatAuthError(error, "Weryfikacja nie powiodła się"));
   }
 
   const user = data.user;

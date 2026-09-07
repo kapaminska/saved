@@ -415,19 +415,19 @@ None. Test-only change.
 
 #### Automated
 
-- [x] 1.1 expectOwnershipEq helper fails when calls have no eq user_id
-- [x] 1.2 Goal edit Bob-vs-Alice 404 with expectOwnershipEq and no update
-- [x] 1.3 Goal abandon Bob-vs-Alice 404 with expectOwnershipEq and no update
-- [x] 1.4 POST /api/goals insert assert includes user_id: session.id
-- [x] 1.5 npm test passes after goal ownership cases
+- [x] 1.1 expectOwnershipEq helper fails when calls have no eq user_id — bc2c5a2
+- [x] 1.2 Goal edit Bob-vs-Alice 404 with expectOwnershipEq and no update — bc2c5a2
+- [x] 1.3 Goal abandon Bob-vs-Alice 404 with expectOwnershipEq and no update — bc2c5a2
+- [x] 1.4 POST /api/goals insert assert includes user_id: session.id — bc2c5a2
+- [x] 1.5 npm test passes after goal ownership cases — bc2c5a2
 
 ### Phase 2: Nested payments + check-in foreign goal_id
 
 #### Automated
 
-- [ ] 2.1 Payment edit Bob-vs-Alice 404 with expectOwnershipEq and no mutate
-- [ ] 2.2 Check-in Bob + Alice goal_id 404 with expectOwnershipEq and no upsert
-- [ ] 2.3 npm test passes after payment and check-in ownership cases
+- [x] 2.1 Payment edit Bob-vs-Alice 404 with expectOwnershipEq and no mutate
+- [x] 2.2 Check-in Bob + Alice goal_id 404 with expectOwnershipEq and no upsert
+- [x] 2.3 npm test passes after payment and check-in ownership cases
 
 ### Phase 3: Net worth writes + SSR read
 
