@@ -36,7 +36,10 @@ export function formatAuthError(error: { message?: string } | null | undefined, 
 
 export function supabaseUnavailableMessage(requestUrl?: URL): string {
   if (requestUrl && SUPABASE_URL && isLocalSupabaseUrl(SUPABASE_URL) && !isLoopbackHostname(requestUrl.hostname)) {
-    return "Produkcja używa lokalnego Supabase. Ustaw sekrety Workera SUPABASE_URL i SUPABASE_KEY na projekt z supabase.com.";
+    // eslint-disable-next-line no-console -- operator diagnostic; never sent to the client
+    console.warn(
+      "Production request is using a loopback SUPABASE_URL. Set Worker secrets SUPABASE_URL and SUPABASE_KEY to the hosted project.",
+    );
   }
   return "Supabase nie jest skonfigurowany";
 }
@@ -89,9 +92,11 @@ export function createClient(
 
 export function getSupabase(
   locals: App.Locals,
-  requestHeaders: Headers,
-  cookies: AstroCookies,
-  requestUrl?: URL,
+  _requestHeaders: Headers,
+  _cookies: AstroCookies,
+  _requestUrl?: URL,
 ): SavedSupabaseClient | null {
-  return locals.supabase ?? createClient(requestHeaders, cookies, requestUrl);
+  // Middleware always assigns this (client or null). Do not `?? createClient`:
+  // null from the local-URL guard would otherwise recreate an unguarded client.
+  return locals.supabase;
 }

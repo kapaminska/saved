@@ -53,6 +53,10 @@ After implementation, `context/foundation/test-plan.md` §6.3 and §6.4 contain 
 - A sixth RLS script for `ai_checkin_requests` (Risk #6).
 - Strengthening `sync-saved-amount.ts` (callers already gated; not a current leak).
 
+## Implementation addenda
+
+- Phase 2 commit also included pre-existing auth error-formatting / local-URL guard work (`formatAuthError`, `supabaseUnavailableMessage`, OTP routes, ServerError) via an explicit “stage all” of unrelated dirty paths. Not part of Risk #3 ownership tests.
+
 ## Implementation Approach
 
 Reuse `createApiContext` + `createSupabaseMock`. Add a shared `expectOwnershipEq` helper first, then one logged-in-Bob case per IDOR family (cost × signal), then the cheap SSR function test, then cookbook.
