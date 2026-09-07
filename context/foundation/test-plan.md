@@ -6,7 +6,7 @@
 >
 > Refresh: re-run `/10x-test-plan --refresh` when stale (see §8).
 >
-> Last updated: 2026-09-03
+> Last updated: 2026-09-07
 
 ## 1. Strategy
 
@@ -57,7 +57,7 @@ research's job, see §1 principle #3).
 |------|-----------------------------|----------------|--------------------------------------|-----------------------|-----------------------|
 | #1 | After save, each amount lands on the goal the user confirmed on review — not the name the model guessed | Happy-path parse implies correct assignment | Review → persist contract; how unmatched names are excluded | integration (handler + domain) | Asserting the parser’s own mapping against itself |
 | #2 | Same month cannot produce two rows; a missing month is 0, not deleted history; future months rejected | Empty list means no corruption | Uniqueness rule; backdate vs future; delete vs zero | unit + integration | Happy-path-only single insert |
-| #3 | User B gets empty/404 on user A’s ids — read and write — for goals, payments, assets | Being logged in is enough | Auth vs ownership; RLS vs app-layer; whether SQL RLS runs in CI | integration (API ownership) and/or SQL RLS in the JS/CI loop | Testing only 401 when logged out |
+| #3 | User B gets HTTP 404 (SSR: redirect to `/dashboard`) on user A’s ids — read and write — for goals, payments, assets, and liabilities. App empty-row → 404; RLS empty is the DB backstop | Being logged in is enough | Auth vs ownership; app session `user_id` filter is the HTTP proof; SQL RLS is not in CI; mock ignores filters so tests must assert `mock.calls` `eq("user_id", bobId)` | integration (Vitest API ownership) | Testing only 401 when logged out, or queued-empty 404 without a `user_id` call assertion |
 | #4 | AI error / timeout / 503 still offers a working manual path; nothing is written | A 200 from parse means the month was recorded | Error codes the UI keys off; manual path independence | integration on parse failure + fallback payload contract | E2e of the modal because it feels safer |
 | #5 | Negative / unmatched / malformed AI payload never becomes a payment row | Showing proposals means they are safe to save | Structural vs domain validation; save uses review payload, not raw model output | unit (schema/domain) + integration (save ignores invalid) | Snapshot of current validator output as the oracle |
 | #6 | 11th parse in the window is denied with a fallback signal; brute OTP does not multiply side effects unchecked | A rate-limit table means the limit fires | Window, per-user key, client-facing response | integration against the limit boundary | Mocking the limiter to always allow |
@@ -71,7 +71,7 @@ orchestrator updates Status as artifacts appear on disk.
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
 | 1 | Critical-path coverage | Prove assignment and payment integrity cannot silently corrupt the month | #1, #2 | unit + integration | complete | testing-critical-path-coverage |
-| 2 | Isolation and abuse | Prove ownership, not merely “is logged in” | #3 | integration (+ RLS in CI if research confirms it is the proof) | planned | testing-isolation-and-abuse |
+| 2 | Isolation and abuse | Prove ownership, not merely “is logged in” | #3 | integration (+ RLS in CI if research confirms it is the proof) | complete | testing-isolation-and-abuse |
 | 3 | AI safety path | Prove AI failure degrades, never blocks or writes garbage | #4, #5, #6 | unit + integration | not started | — |
 | 4 | Quality-gates wiring | Lock the Vitest floor; add the isolation proof Phase 2 chose | cross-cutting | gates | not started | — |
 
@@ -145,11 +145,20 @@ the relevant rollout phase ships; before that, the sub-section reads
 
 ### 6.3 Adding an ownership / isolation test
 
-TBD — see §3 Phase 2 for logged-in-but-not-owner denial/regression pattern.
+- **Location**: colocated handler `*.test.ts`. SSR reads: colocated next to the loader (`src/lib/goals/detail-page.test.ts`), not a Playwright visit.
+- **Harness**: `createTestUser({ id: OTHER_USER_ID })` as Bob, Alice’s resource UUID in params/form, `createSupabaseMock` + `expectOwnershipEq` from `src/test/api-route.ts`.
+- **Queue**: empty/`null` for a single-row load; `[]` for list/batch (check-in). Do **not** queue Alice’s full row — `createSupabaseMock` ignores `.eq` filters and would return it even with the ownership filter present.
+- **Assert**: HTTP 404 (SSR: `{ kind: "redirect", url: "/dashboard" }`) **and** `expectOwnershipEq(mock.calls, bobId, { table })` **and** no owner-blind mutate (`update` / `delete` / `upsert`). Status 404 alone is the product contract, not the isolation proof.
+- **Challenge**: being logged in is enough. A 401-when-logged-out case is the auth gate, not ownership.
+- **Oracle**: PRD isolation NFR. SQL scripts under `supabase/tests/` remain the DB (RLS) oracle and stay out of `npm test`. The isolation proof Phase 4 gates lock is this Vitest API-ownership pattern.
+- **Reference tests**: goal edit `src/pages/api/goals/[id].test.ts` and abandon `src/pages/api/goals/[id]/abandon.test.ts`; nested payment `src/pages/api/goals/[id]/payments/[paymentId].test.ts`; check-in foreign `goal_id` in `src/pages/api/check-in.test.ts`; asset update `src/pages/api/assets/[id].test.ts`; liability delete `src/pages/api/liabilities/[id]/delete.test.ts`; SSR `src/lib/goals/detail-page.test.ts`.
 
 ### 6.4 Adding a test for a new API endpoint
 
-TBD — see §3 Phase 2 for ownership on write, not only 401 when logged out.
+- **Location**: colocated next to the handler. First-file examples for a new money route: `src/pages/api/assets/[id].test.ts`, `src/pages/api/liabilities/[id]/delete.test.ts`.
+- **Dual gate**: (1) 401 without a user, and (2) logged-in Bob + a foreign UUID → 404 + `expectOwnershipEq` + no mutate. 401 alone is not isolation — follow §6.3 for the ownership case.
+- **Create paths**: pin insert/upsert payload `user_id` to the session id (see `src/pages/api/goals/index.test.ts`). Do not accept an owner field from the body.
+- **Harness**: same as §6.2 / §6.3 (`createApiContext` + `createSupabaseMock`). Do not add MSW or Playwright because it feels safer.
 
 ### 6.5 Adding a test for AI failure or invalid payload
 
@@ -158,6 +167,7 @@ TBD — see §3 Phase 3 for fallback-without-write and out-of-contract payload p
 ### 6.6 Per-rollout-phase notes
 
 - **§3 Phase 1 (`testing-critical-path-coverage`)**: Risk #2 handler cases in `src/pages/api/check-in.test.ts` (future month, explicit zero, skip, upsert overwrite) and `src/pages/api/goals/[id]/payments/[paymentId].test.ts` (future month on edit). Risk #1 save fidelity in `check-in.test.ts` (multi-goal `goal_id` + UUID contract) plus adversarial `matchGoalName` cases in `src/lib/goals/ai-checkin/goal-name-match.test.ts`. Save and parse stay decoupled tests.
+- **§3 Phase 2 (`testing-isolation-and-abuse`)**: Risk #3 handler cases (goal edit/abandon, payment edit, check-in foreign `goal_id`, asset update, liability delete), plus `POST /api/goals` insert `user_id` and `getGoalDetailPageData` redirect, all via `expectOwnershipEq`. SQL RLS scripts were not wired into `npm test`.
 
 ## 7. What We Deliberately Don't Test
 

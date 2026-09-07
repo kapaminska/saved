@@ -433,19 +433,19 @@ None. Test-only change.
 
 #### Automated
 
-- [x] 3.1 Asset update Bob-vs-Alice 404 with expectOwnershipEq and no update
-- [x] 3.2 Liability delete Bob-vs-Alice 404 with expectOwnershipEq and no delete
-- [x] 3.3 getGoalDetailPageData foreign id redirects to /dashboard with expectOwnershipEq
-- [x] 3.4 npm test passes after net worth and SSR cases
+- [x] 3.1 Asset update Bob-vs-Alice 404 with expectOwnershipEq and no update — 79f8dae
+- [x] 3.2 Liability delete Bob-vs-Alice 404 with expectOwnershipEq and no delete — 79f8dae
+- [x] 3.3 getGoalDetailPageData foreign id redirects to /dashboard with expectOwnershipEq — 79f8dae
+- [x] 3.4 npm test passes after net worth and SSR cases — 79f8dae
 
 ### Phase 4: Cookbook backport
 
 #### Automated
 
-- [ ] 4.1 npm test still passes after cookbook edits
+- [x] 4.1 npm test still passes after cookbook edits
 
 #### Manual
 
-- [ ] 4.2 §6.3 / §6.4 / §6.6 match the tests that shipped
-- [ ] 4.3 §2 Risk #3 response row aligned (no file anchors)
-- [ ] 4.4 §3 Phase 2 Status set to complete
+- [x] 4.2 §6.3 / §6.4 / §6.6 match the tests that shipped
+- [x] 4.3 §2 Risk #3 response row aligned (no file anchors)
+- [x] 4.4 §3 Phase 2 Status set to complete
