@@ -1,5 +1,6 @@
 import type { APIContext, APIRoute, AstroCookies } from "astro";
 import type { User } from "@supabase/supabase-js";
+import { expect } from "vitest";
 import type { SavedSupabaseClient } from "@/lib/supabase";
 
 export type HandlerContext = APIContext;
@@ -22,6 +23,9 @@ const noopCookies = {
   delete: () => undefined,
   has: () => false,
 } as unknown as AstroCookies;
+
+/** Session id for logged-in-but-not-owner (Bob) cases. Distinct from Alice and common resource fixtures. */
+export const OTHER_USER_ID = "99999999-9999-4999-8999-999999999999";
 
 export function createTestUser(overrides: Partial<User> = {}): User {
   return {
@@ -156,4 +160,21 @@ export function createSupabaseMock() {
 
 export function asRouteContext(context: HandlerContext): Parameters<APIRoute>[0] {
   return context;
+}
+
+export function expectOwnershipEq(calls: SupabaseMockCall[], userId: string, options?: { table?: string }): void {
+  const matched = calls.some(
+    (call) =>
+      call.method === "eq" &&
+      call.args[0] === "user_id" &&
+      call.args[1] === userId &&
+      (options?.table === undefined || call.table === options.table),
+  );
+
+  expect(
+    matched,
+    options?.table
+      ? `expected eq("user_id", ${userId}) on table ${options.table}`
+      : `expected eq("user_id", ${userId})`,
+  ).toBe(true);
 }

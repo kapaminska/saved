@@ -59,6 +59,7 @@ describe("POST /api/goals", () => {
       opening_saved_amount: 100,
       name: "Wakacje",
       target_amount: 5000,
+      user_id: user.id,
     });
     await expect(response.json()).resolves.toMatchObject({ success: true, goal: { name: "Wakacje" } });
   });

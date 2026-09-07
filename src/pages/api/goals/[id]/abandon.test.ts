@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { POST } from "@/pages/api/goals/[id]/abandon";
-import { asRouteContext, createApiContext, createSupabaseMock, createTestUser } from "@/test/api-route";
+import {
+  asRouteContext,
+  createApiContext,
+  createSupabaseMock,
+  createTestUser,
+  expectOwnershipEq,
+  OTHER_USER_ID,
+} from "@/test/api-route";
 
 const user = createTestUser();
 const goalId = "22222222-2222-4222-8222-222222222222";
 
-function abandonContext(mock: ReturnType<typeof createSupabaseMock>, id = goalId) {
-  return asRouteContext(createApiContext({ user, supabase: mock.client, params: { id } }));
+function abandonContext(mock: ReturnType<typeof createSupabaseMock>, id = goalId, sessionUser = user) {
+  return asRouteContext(createApiContext({ user: sessionUser, supabase: mock.client, params: { id } }));
 }
 
 describe("POST /api/goals/[id]/abandon", () => {
@@ -19,6 +26,16 @@ describe("POST /api/goals/[id]/abandon", () => {
     mock.queue({ data: null });
     const response = await POST(abandonContext(mock));
     expect(response.status).toBe(404);
+  });
+
+  it("returns 404 when another user owns the goal", async () => {
+    const bob = createTestUser({ id: OTHER_USER_ID });
+    const mock = createSupabaseMock();
+    mock.queue({ data: null });
+    const response = await POST(abandonContext(mock, goalId, bob));
+    expect(response.status).toBe(404);
+    expectOwnershipEq(mock.calls, bob.id, { table: "savings_goals" });
+    expect(mock.calls.some((call) => call.method === "update")).toBe(false);
   });
 
   it("returns 409 when the goal is not active", async () => {
