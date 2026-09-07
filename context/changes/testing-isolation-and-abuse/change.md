@@ -1,7 +1,7 @@
 ---
 change_id: testing-isolation-and-abuse
 title: Isolation and abuse — ownership tests for goals, payments, and assets
-status: implementing
+status: implemented
 created: 2026-09-04
 updated: 2026-09-07
 archived_at: null

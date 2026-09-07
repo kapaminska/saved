@@ -442,10 +442,10 @@ None. Test-only change.
 
 #### Automated
 
-- [x] 4.1 npm test still passes after cookbook edits
+- [x] 4.1 npm test still passes after cookbook edits — e2d8d4d
 
 #### Manual
 
-- [x] 4.2 §6.3 / §6.4 / §6.6 match the tests that shipped
-- [x] 4.3 §2 Risk #3 response row aligned (no file anchors)
-- [x] 4.4 §3 Phase 2 Status set to complete
+- [x] 4.2 §6.3 / §6.4 / §6.6 match the tests that shipped — e2d8d4d
+- [x] 4.3 §2 Risk #3 response row aligned (no file anchors) — e2d8d4d
+- [x] 4.4 §3 Phase 2 Status set to complete — e2d8d4d
