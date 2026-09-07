@@ -425,18 +425,18 @@ None. Test-only change.
 
 #### Automated
 
-- [x] 2.1 Payment edit Bob-vs-Alice 404 with expectOwnershipEq and no mutate
-- [x] 2.2 Check-in Bob + Alice goal_id 404 with expectOwnershipEq and no upsert
-- [x] 2.3 npm test passes after payment and check-in ownership cases
+- [x] 2.1 Payment edit Bob-vs-Alice 404 with expectOwnershipEq and no mutate — b8be92e
+- [x] 2.2 Check-in Bob + Alice goal_id 404 with expectOwnershipEq and no upsert — b8be92e
+- [x] 2.3 npm test passes after payment and check-in ownership cases — b8be92e
 
 ### Phase 3: Net worth writes + SSR read
 
 #### Automated
 
-- [ ] 3.1 Asset update Bob-vs-Alice 404 with expectOwnershipEq and no update
-- [ ] 3.2 Liability delete Bob-vs-Alice 404 with expectOwnershipEq and no delete
-- [ ] 3.3 getGoalDetailPageData foreign id redirects to /dashboard with expectOwnershipEq
-- [ ] 3.4 npm test passes after net worth and SSR cases
+- [x] 3.1 Asset update Bob-vs-Alice 404 with expectOwnershipEq and no update
+- [x] 3.2 Liability delete Bob-vs-Alice 404 with expectOwnershipEq and no delete
+- [x] 3.3 getGoalDetailPageData foreign id redirects to /dashboard with expectOwnershipEq
+- [x] 3.4 npm test passes after net worth and SSR cases
 
 ### Phase 4: Cookbook backport
 
