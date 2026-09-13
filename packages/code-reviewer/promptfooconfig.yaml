@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Compare Cursor models on a planted IDOR + secret + payment-write diff
+
+prompts:
+  - |
+    Review this pull request.
+    Title: {{title}}
+    Body: {{body}}
+
+    Diff:
+    {{diff}}
+
+providers:
+  - id: file://./src/promptfoo-provider.ts
+    label: composer-2.5
+    config:
+      model: composer-2.5
+  - id: file://./src/promptfoo-provider.ts
+    label: gpt-5.5
+    config:
+      model: gpt-5.5
+  - id: file://./src/promptfoo-provider.ts
+    label: grok-4.6
+    config:
+      model: grok-4.6
+
+tests:
+  - vars:
+      title: "Allow support to edit any savings goal"
+      body: "Quick fix for support tooling. Plan: context/changes/ci-cd-code-review/plan.md"
+      diff: file://fixtures/idor-handler.diff
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const payload = typeof output === "string" ? JSON.parse(output) : output;
+          if (!payload || typeof payload !== "object") return false;
+          return payload.verdict === "fail" && Number(payload.securitySafety) <= 3;

@@ -14,6 +14,27 @@ function queueUnderLimit(mock: ReturnType<typeof createSupabaseMock>) {
   mock.queue({ count: 0, data: null });
 }
 
+function queueRateLimited(mock: ReturnType<typeof createSupabaseMock>) {
+  mock.queue({ count: 10, data: null });
+  mock.queue({ data: { created_at: "2026-03-15T11:00:00.000Z" } });
+}
+
+function queueParseAttempt(mock: ReturnType<typeof createSupabaseMock>) {
+  queueUnderLimit(mock);
+  mock.queue({ data: [goal] });
+  mock.queue({ error: null });
+}
+
+function paymentWrites(mock: ReturnType<typeof createSupabaseMock>) {
+  return mock.calls.filter(
+    (call) => call.table === "goal_payments" && (call.method === "upsert" || call.method === "insert"),
+  );
+}
+
+function parseAttemptInserts(mock: ReturnType<typeof createSupabaseMock>) {
+  return mock.calls.filter((call) => call.table === "ai_checkin_requests" && call.method === "insert");
+}
+
 describe("POST /api/check-in/parse", () => {
   beforeEach(() => {
     mockAiRun.mockReset();
@@ -24,11 +45,13 @@ describe("POST /api/check-in/parse", () => {
     expect(response.status).toBe(401);
   });
 
-  it("returns 400 INVALID_INPUT for empty text", async () => {
+  // Risk #6: rejected empty input must not consume the 10/hour budget.
+  it("returns 400 INVALID_INPUT for empty text and does not insert an attempt", async () => {
     const mock = createSupabaseMock();
     const response = await POST(parseContext(mock, { text: "   " }));
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toMatchObject({ code: "INVALID_INPUT" });
+    expect(parseAttemptInserts(mock)).toHaveLength(0);
   });
 
   it("returns 400 INVALID_INPUT when text exceeds 500 characters", async () => {
@@ -38,17 +61,24 @@ describe("POST /api/check-in/parse", () => {
     await expect(response.json()).resolves.toMatchObject({ code: "INVALID_INPUT" });
   });
 
-  it("returns 429 RATE_LIMITED when the hourly cap is reached", async () => {
+  // Risks #4/#6: 11th parse is denied with fallback copy; no AI, no extra quota row, no payment write.
+  it("denies the 11th parse with RATE_LIMITED fallback, no AI, no attempt insert, and no payment write", async () => {
     const mock = createSupabaseMock();
-    mock.queue({ count: 10, data: null });
-    mock.queue({ data: { created_at: "2026-03-15T11:00:00.000Z" } });
+    queueRateLimited(mock);
 
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
     expect(response.status).toBe(429);
-    await expect(response.json()).resolves.toMatchObject({ code: "RATE_LIMITED" });
+    await expect(response.json()).resolves.toMatchObject({
+      code: "RATE_LIMITED",
+      error: expect.stringMatching(/ręczn/),
+    });
+    expect(mockAiRun).not.toHaveBeenCalled();
+    expect(parseAttemptInserts(mock)).toHaveLength(0);
+    expect(paymentWrites(mock)).toHaveLength(0);
   });
 
-  it("returns 400 NO_GOALS when the user has no active goals", async () => {
+  // Risk #6: no-goals exit is free (count query may hit the table; insert must not).
+  it("returns 400 NO_GOALS and does not insert an attempt", async () => {
     const mock = createSupabaseMock();
     queueUnderLimit(mock);
     mock.queue({ data: [] });
@@ -56,25 +86,28 @@ describe("POST /api/check-in/parse", () => {
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toMatchObject({ code: "NO_GOALS" });
+    expect(parseAttemptInserts(mock)).toHaveLength(0);
   });
 
-  it("returns 503 AI_UNAVAILABLE when the model fails", async () => {
+  // Risks #4/#6: failed AI still burns quota; month is not recorded; UI keys AI_UNAVAILABLE + manual copy.
+  it("returns 503 AI_UNAVAILABLE with fallback copy, burns quota, and does not write goal_payments", async () => {
     const mock = createSupabaseMock();
-    queueUnderLimit(mock);
-    mock.queue({ data: [goal] });
-    mock.queue({ error: null });
+    queueParseAttempt(mock);
     mockAiRun.mockRejectedValue(new Error("down"));
 
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
     expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toMatchObject({ code: "AI_UNAVAILABLE" });
+    await expect(response.json()).resolves.toMatchObject({
+      code: "AI_UNAVAILABLE",
+      error: expect.stringMatching(/ręczn/),
+    });
+    expect(parseAttemptInserts(mock).length).toBeGreaterThan(0);
+    expect(paymentWrites(mock)).toHaveLength(0);
   });
 
   it("returns 503 AI_UNAVAILABLE when the model returns unparsable text", async () => {
     const mock = createSupabaseMock();
-    queueUnderLimit(mock);
-    mock.queue({ data: [goal] });
-    mock.queue({ error: null });
+    queueParseAttempt(mock);
     mockAiRun.mockResolvedValue({ response: "not json" });
 
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
@@ -82,11 +115,10 @@ describe("POST /api/check-in/parse", () => {
     await expect(response.json()).resolves.toMatchObject({ code: "AI_UNAVAILABLE" });
   });
 
-  it("returns proposals on a well-formed model response", async () => {
+  // Risk #4: a 200 from parse is proposals only — it must not record the month.
+  it("returns proposals on a well-formed model response without writing goal_payments", async () => {
     const mock = createSupabaseMock();
-    queueUnderLimit(mock);
-    mock.queue({ data: [goal] });
-    mock.queue({ error: null });
+    queueParseAttempt(mock);
     mockAiRun.mockResolvedValue({
       response: JSON.stringify({ payments: [{ goal_name: "Wakacje", amount: 500 }] }),
     });
@@ -98,5 +130,6 @@ describe("POST /api/check-in/parse", () => {
       proposals: [{ goalId: goal.id, goalName: "Wakacje", amount: 500 }],
       unrecognized: [],
     });
+    expect(paymentWrites(mock)).toHaveLength(0);
   });
 });
