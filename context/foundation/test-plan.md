@@ -49,7 +49,7 @@ research's job, see §1 principle #3).
 | 3 | Authenticated user A can read or mutate user B’s goals, payments, or net worth | High | Medium | interview Q1; PRD Privacy / NFR isolation; abuse lens (IDOR); archive F-01 / S-02 / S-03 RLS; `supabase/` 0 commits/30d |
 | 4 | AI is unavailable, invalid, or rate-limited and the user cannot record the month | High | Medium | PRD AI-never-blocks guardrail; US-01 AC; archive S-04 |
 | 5 | An out-of-contract AI proposal is persisted as a payment | High | Medium | PRD NFR; FR-035 / FR-036; archive S-04 |
-| 6 | AI parse (or OTP send) can be triggered in a loop, burning quota without a fallback signal | Medium | Medium | PRD FR-034; abuse lens (resource abuse); archive S-04, S-01 |
+| 6 | AI parse (or OTP send) can be triggered in a loop, burning quota without a fallback signal | Medium | Medium | PRD FR-034; abuse lens (resource abuse); archive S-04; S-01 closed OTP limiter as a comment, not app code |
 
 ### Risk Response Guidance
 
@@ -58,9 +58,9 @@ research's job, see §1 principle #3).
 | #1 | After save, each amount lands on the goal the user confirmed on review — not the name the model guessed | Happy-path parse implies correct assignment | Review → persist contract; how unmatched names are excluded | integration (handler + domain) | Asserting the parser’s own mapping against itself |
 | #2 | Same month cannot produce two rows; a missing month is 0, not deleted history; future months rejected | Empty list means no corruption | Uniqueness rule; backdate vs future; delete vs zero | unit + integration | Happy-path-only single insert |
 | #3 | User B gets HTTP 404 (SSR: redirect to `/dashboard`) on user A’s ids — read and write — for goals, payments, assets, and liabilities. App empty-row → 404; RLS empty is the DB backstop | Being logged in is enough | Auth vs ownership; app session `user_id` filter is the HTTP proof; SQL RLS is not in CI; mock ignores filters so tests must assert `mock.calls` `eq("user_id", bobId)` | integration (Vitest API ownership) | Testing only 401 when logged out, or queued-empty 404 without a `user_id` call assertion |
-| #4 | AI error / timeout / 503 still offers a working manual path; nothing is written | A 200 from parse means the month was recorded | Error codes the UI keys off; manual path independence | integration on parse failure + fallback payload contract | E2e of the modal because it feels safer |
-| #5 | Negative / unmatched / malformed AI payload never becomes a payment row | Showing proposals means they are safe to save | Structural vs domain validation; save uses review payload, not raw model output | unit (schema/domain) + integration (save ignores invalid) | Snapshot of current validator output as the oracle |
-| #6 | 11th parse in the window is denied with a fallback signal; brute OTP does not multiply side effects unchecked | A rate-limit table means the limit fires | Window, per-user key, client-facing response | integration against the limit boundary | Mocking the limiter to always allow |
+| #4 | AI error / invalid response / 503 (and client network failure) still offers a working manual path; no payment/month is recorded (rate-limit rows may still insert) | A 200 from parse means the month was recorded | Error codes the UI keys off (`RATE_LIMITED`, `AI_UNAVAILABLE`); manual path independence; no app-level timeout | integration on parse failure + no-payment-write assertion | E2e of the modal because it feels safer |
+| #5 | Negative / unmatched / malformed AI payload never becomes a payment row. Unmatched names stay off the save form; non-positive amounts fail the whole AI response (not a per-item skip). Save still allows explicit 0 | Showing proposals means they are safe to save | Structural vs domain: amounts fail-close the payload; names go unrecognized; save uses review payload, not raw model output | unit (schema/domain) + integration (save ignores invalid) | Snapshot of current validator output as the oracle |
+| #6 | 11th parse in the 10/hour per-user window is denied with a fallback signal. Failed AI still burns quota; invalid input does not. OTP send has no app limiter — out of this phase | A rate-limit table means the limit fires | Window, per-user key, client-facing `RATE_LIMITED`; insert-before-AI; OTP is platform/config, not app | integration against the parse limit boundary | Mocking the limiter to always allow |
 
 ## 3. Phased Rollout
 
@@ -72,7 +72,7 @@ orchestrator updates Status as artifacts appear on disk.
 |---|---|---|---|---|---|---|
 | 1 | Critical-path coverage | Prove assignment and payment integrity cannot silently corrupt the month | #1, #2 | unit + integration | complete | testing-critical-path-coverage |
 | 2 | Isolation and abuse | Prove ownership, not merely “is logged in” | #3 | integration (+ RLS in CI if research confirms it is the proof) | complete | testing-isolation-and-abuse |
-| 3 | AI safety path | Prove AI failure degrades, never blocks or writes garbage | #4, #5, #6 | unit + integration | not started | — |
+| 3 | AI safety path | Prove AI failure degrades, never blocks or writes garbage | #4, #5, #6 | unit + integration | planned | testing-ai-safety-path |
 | 4 | Quality-gates wiring | Lock the Vitest floor; add the isolation proof Phase 2 chose | cross-cutting | gates | not started | — |
 
 ## 4. Stack

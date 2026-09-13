@@ -69,7 +69,7 @@ const astroConfig = tseslint.config({
 });
 
 export default tseslint.config(
-  { ignores: ["worker-configuration.d.ts"] },
+  { ignores: ["worker-configuration.d.ts", "packages/**"] },
   includeIgnoreFile(gitignorePath),
   baseConfig,
   reactConfig,

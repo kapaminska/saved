@@ -1,0 +1,23 @@
+{
+  "name": "@saved/code-reviewer",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "review": "tsx src/cli.ts",
+    "eval": "promptfoo eval -c promptfooconfig.yaml"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@cursor/sdk": "^1.0.6",
+    "tsx": "^4.20.5",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "promptfoo": "^0.118.0",
+    "typescript": "^5.9.3"
+  }
+}

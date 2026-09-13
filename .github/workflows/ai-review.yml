@@ -1,0 +1,55 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to review (optional)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.action != 'labeled' ||
+      github.event.label.name == 'ai-cr:review'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Write pull request diff
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            git fetch origin "$BASE_REF" --depth=1
+            git diff "origin/${BASE_REF}...HEAD" > "$RUNNER_TEMP/pr.diff"
+          else
+            git fetch origin main --depth=1
+            git diff origin/main...HEAD > "$RUNNER_TEMP/pr.diff"
+          fi
+
+      - name: Run AI reviewer
+        id: review
+        uses: ./.github/actions/ai-reviewer
+        with:
+          api-key: ${{ secrets.CURSOR_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ github.event.pull_request.number || github.event.inputs.pr_number }}
+          pr-title: ${{ github.event.pull_request.title || '' }}
+          pr-body: ${{ github.event.pull_request.body || '' }}
+          diff-file: ${{ runner.temp }}/pr.diff
+          repo: ${{ github.repository }}
