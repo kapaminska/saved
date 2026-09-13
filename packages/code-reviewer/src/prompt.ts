@@ -39,6 +39,8 @@ export function buildReviewPrompt(input: ReviewPromptInput): string {
       : "Pull request: (local run — still produce JSON; skip post_pr_comment if it would fail)";
 
   return [
+    SYSTEM_PROMPT,
+    "",
     prLine,
     `Title: ${input.prTitle.trim() || "(untitled)"}`,
     `Description:\n${body}`,

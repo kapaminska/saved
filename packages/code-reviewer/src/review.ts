@@ -7,7 +7,7 @@ import {
   upsertPrComment,
   type GitHubContext,
 } from "./github.ts";
-import { buildReviewPrompt, JSON_RETRY_PROMPT, SYSTEM_PROMPT } from "./prompt.ts";
+import { buildReviewPrompt, JSON_RETRY_PROMPT } from "./prompt.ts";
 import type { Review } from "./schema.ts";
 import { createReviewTools } from "./tools.ts";
 
@@ -82,7 +82,6 @@ async function runAgentLoop(
   await using agent = await Agent.create({
     apiKey: request.apiKey,
     model: { id: request.modelId },
-    systemPrompt: SYSTEM_PROMPT,
     disallowedTools: ["edit", "shell", "task"],
     local: {
       cwd: request.repoRoot,
