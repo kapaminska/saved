@@ -68,10 +68,9 @@ describe("POST /api/check-in/parse", () => {
 
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
     expect(response.status).toBe(429);
-    await expect(response.json()).resolves.toMatchObject({
-      code: "RATE_LIMITED",
-      error: expect.stringMatching(/ręczn/),
-    });
+    const limited: unknown = await response.json();
+    expect(limited).toMatchObject({ code: "RATE_LIMITED" });
+    expect(limited).toHaveProperty("error", expect.stringMatching(/ręczn/) as string);
     expect(mockAiRun).not.toHaveBeenCalled();
     expect(parseAttemptInserts(mock)).toHaveLength(0);
     expect(paymentWrites(mock)).toHaveLength(0);
@@ -97,10 +96,9 @@ describe("POST /api/check-in/parse", () => {
 
     const response = await POST(parseContext(mock, { text: "500 na wakacje" }));
     expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toMatchObject({
-      code: "AI_UNAVAILABLE",
-      error: expect.stringMatching(/ręczn/),
-    });
+    const unavailable: unknown = await response.json();
+    expect(unavailable).toMatchObject({ code: "AI_UNAVAILABLE" });
+    expect(unavailable).toHaveProperty("error", expect.stringMatching(/ręczn/) as string);
     expect(parseAttemptInserts(mock).length).toBeGreaterThan(0);
     expect(paymentWrites(mock)).toHaveLength(0);
   });
