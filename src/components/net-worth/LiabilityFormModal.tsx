@@ -268,7 +268,7 @@ export default function LiabilityFormModal({ mode, initial, open, onOpenChange, 
           </div>
 
           <div className="border-border border-t p-6 pt-4">
-            <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+            <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} loading={loading}>
               {mode === "create"
                 ? rows.length > 1
                   ? `Dodaj ${rows.length} zobowiązań`

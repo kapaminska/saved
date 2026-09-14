@@ -1,0 +1,8 @@
+<h2>Twój kod logowania do Saved!</h2>
+<p>
+  Wpisz ten kod w aplikacji: <strong>{{ .Token }}</strong>
+</p>
+<p>Albo kliknij, żeby zalogować się od razu:</p>
+<p>
+  <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Zaloguj się</a>
+</p>

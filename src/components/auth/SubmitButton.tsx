@@ -7,15 +7,17 @@ interface SubmitButtonProps {
   icon: ReactNode;
   children: ReactNode;
   disabled?: boolean;
+  loading?: boolean;
 }
 
-export function SubmitButton({ pendingText, icon, children, disabled }: SubmitButtonProps) {
+export function SubmitButton({ pendingText, icon, children, disabled, loading }: SubmitButtonProps) {
   const { pending } = useFormStatus();
-  const isDisabled = pending || disabled;
+  const isBusy = pending || Boolean(loading);
+  const isDisabled = isBusy || disabled;
 
   return (
     <Button type="submit" disabled={isDisabled} className="w-full rounded-lg">
-      {isDisabled ? (
+      {isBusy ? (
         <span className="flex items-center gap-2">
           <span className="border-primary-foreground/30 border-t-primary-foreground size-4 animate-spin rounded-full border-2" />
           {pendingText}

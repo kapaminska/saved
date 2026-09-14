@@ -229,7 +229,7 @@ export default function GoalForm({
         </p>
       )}
 
-      <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+      <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} loading={loading}>
         {mode === "create" ? "Utwórz cel" : "Zapisz zmiany"}
       </SubmitButton>
     </form>

@@ -21,13 +21,19 @@ export const POST: APIRoute = async (context) => {
   }
 
   // Rate limiting: Supabase enforces project-level OTP rate limits (see supabase/config.toml [auth] section)
-  const { error } = await supabase.auth.signInWithOtp({ email });
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: new URL("/auth/confirm", context.url).toString(),
+      shouldCreateUser: true,
+    },
+  });
 
   if (error) {
     return new Response(
       JSON.stringify({
         success: false,
-        error: formatAuthError(error, "Nie udało się wysłać kodu. Sprawdź konfigurację Supabase."),
+        error: formatAuthError(error, "Nie udało się wysłać linku. Sprawdź konfigurację Supabase."),
       }),
       {
         status: 400,

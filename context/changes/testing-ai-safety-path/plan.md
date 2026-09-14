@@ -351,16 +351,16 @@ None. Test-only change.
 
 #### Automated
 
-- [x] 1.1 Parse 200, 429, and 503 assert no goal_payments write
-- [x] 1.2 429 asserts no AI run and no attempt insert
-- [x] 1.3 503 asserts ai_checkin_requests insert
-- [x] 1.4 INVALID_INPUT and NO_GOALS assert no attempt insert
-- [x] 1.5 429 and 503 JSON include code plus manual-path error copy
-- [x] 1.6 npm test passes after parse no-write and quota cases
+- [x] 1.1 Parse 200, 429, and 503 assert no goal_payments write — 7c606a0
+- [x] 1.2 429 asserts no AI run and no attempt insert — 7c606a0
+- [x] 1.3 503 asserts ai_checkin_requests insert — 7c606a0
+- [x] 1.4 INVALID_INPUT and NO_GOALS assert no attempt insert — 7c606a0
+- [x] 1.5 429 and 503 JSON include code plus manual-path error copy — 7c606a0
+- [x] 1.6 npm test passes after parse no-write and quota cases — 7c606a0
 
 #### Manual
 
-- [x] 1.7 New it titles name no-write / quota / fallback — not “covers parse handler”
+- [x] 1.7 New it titles name no-write / quota / fallback — not “covers parse handler” — 7c606a0
 
 ### Phase 2: Out-of-contract payload (Risk #5)
 

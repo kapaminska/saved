@@ -205,7 +205,7 @@ export default function ProfileForm({ profile, redirectTo, submitLabel = "Zapisz
         </p>
       )}
 
-      <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} disabled={loading}>
+      <SubmitButton pendingText="Zapisywanie..." icon={<ArrowRight className="size-4" />} loading={loading}>
         {submitLabel}
       </SubmitButton>
     </form>

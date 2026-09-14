@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Mail, ArrowRight, KeyRound, RotateCw } from "lucide-react";
+import { Mail, ArrowRight } from "lucide-react";
 import { FormField } from "@/components/auth/FormField";
 import { SubmitButton } from "@/components/auth/SubmitButton";
 import { ServerError } from "@/components/auth/ServerError";
@@ -11,12 +11,10 @@ interface Props {
 const COOLDOWN_SECONDS = 60;
 
 export default function MagicLinkForm({ serverError }: Props) {
-  const [step, setStep] = useState<"email" | "otp">("email");
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
   const [error, setError] = useState<string | null>(serverError ?? null);
   const [emailError, setEmailError] = useState<string | undefined>();
-  const [tokenError, setTokenError] = useState<string | undefined>();
+  const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
 
@@ -43,20 +41,7 @@ export default function MagicLinkForm({ serverError }: Props) {
     return true;
   }
 
-  function validateToken(): boolean {
-    if (!token.trim()) {
-      setTokenError("Kod jest wymagany");
-      return false;
-    }
-    if (!/^\d{6}$/.test(token.trim())) {
-      setTokenError("Podaj 6-cyfrowy kod");
-      return false;
-    }
-    setTokenError(undefined);
-    return true;
-  }
-
-  const sendOtp = useCallback(async () => {
+  const sendMagicLink = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -68,118 +53,63 @@ export default function MagicLinkForm({ serverError }: Props) {
       });
       const json: { success: boolean; error?: string } = await res.json();
       if (!json.success) {
-        setError(json.error ?? "Nie udało się wysłać kodu");
+        setSent(false);
+        setError(json.error ?? "Nie udało się wysłać linku");
         return;
       }
-      setStep("otp");
+      setSent(true);
       setCooldown(COOLDOWN_SECONDS);
     } catch {
+      setSent(false);
       setError("Błąd sieci. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
   }, [email]);
 
-  async function handleEmailSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (loading || cooldown > 0) return;
     if (!validateEmail()) return;
-    await sendOtp();
+    await sendMagicLink();
   }
 
-  function handleOtpSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!validateToken()) return;
-    e.currentTarget.submit();
-  }
-
-  async function handleResend() {
-    setToken("");
-    setTokenError(undefined);
-    await sendOtp();
-  }
-
-  if (step === "email") {
-    return (
-      <form onSubmit={handleEmailSubmit} className="space-y-4" noValidate>
-        <FormField
-          id="email"
-          type="email"
-          label="E-mail"
-          value={email}
-          onChange={(v) => {
-            setEmail(v);
-            if (emailError) setEmailError(undefined);
-          }}
-          placeholder="ty@example.com"
-          error={emailError}
-          icon={<Mail className="size-4" />}
-        />
-
-        <ServerError message={error} />
-
-        <SubmitButton pendingText="Wysyłanie kodu..." icon={<ArrowRight className="size-4" />} disabled={loading}>
-          Kontynuuj
-        </SubmitButton>
-      </form>
-    );
-  }
+  const buttonLabel = cooldown > 0 ? `Wyślij ponownie (${cooldown}s)` : "Zaloguj się magic linkiem";
 
   return (
-    <form method="POST" action="/api/auth/verify-otp" onSubmit={handleOtpSubmit} className="space-y-4" noValidate>
-      <input type="hidden" name="email" value={email} />
-      <p className="text-muted-foreground text-center text-sm">
-        Wysłaliśmy 6-cyfrowy kod na <span className="text-foreground font-medium">{email}</span>
-      </p>
-
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <FormField
-        id="token"
-        name="token"
-        type="text"
-        label="Kod weryfikacyjny"
-        value={token}
+        id="email"
+        type="email"
+        label="E-mail"
+        value={email}
         onChange={(v) => {
-          const digits = v.replace(/\D/g, "").slice(0, 6);
-          setToken(digits);
-          if (tokenError) setTokenError(undefined);
+          setEmail(v);
+          setSent(false);
+          if (emailError) setEmailError(undefined);
         }}
-        placeholder="000000"
-        error={tokenError}
-        icon={<KeyRound className="size-4" />}
-        inputProps={{ maxLength: 6, inputMode: "numeric", pattern: "[0-9]*", autoComplete: "one-time-code" }}
+        placeholder="ty@example.com"
+        error={emailError}
+        icon={<Mail className="size-4" />}
       />
+
+      {sent ? (
+        <p className="text-muted-foreground text-center text-sm">
+          Wysłaliśmy link na <span className="text-foreground font-medium">{email}</span>. Kliknij go, żeby się
+          zalogować.
+        </p>
+      ) : null}
 
       <ServerError message={error} />
 
-      <SubmitButton pendingText="Weryfikacja..." icon={<ArrowRight className="size-4" />} disabled={loading}>
-        Zaloguj się
+      <SubmitButton
+        pendingText="Wysyłanie linku..."
+        icon={<ArrowRight className="size-4" />}
+        loading={loading}
+        disabled={cooldown > 0}
+      >
+        {buttonLabel}
       </SubmitButton>
-
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={handleResend}
-          disabled={cooldown > 0 || loading}
-          className="text-primary hover:text-primary/80 disabled:text-muted-foreground/50 inline-flex items-center gap-1 text-sm transition-colors hover:underline disabled:cursor-not-allowed disabled:no-underline"
-        >
-          <RotateCw className="size-3" />
-          {cooldown > 0 ? `Wyślij kod ponownie (${cooldown}s)` : "Wyślij kod ponownie"}
-        </button>
-      </div>
-
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={() => {
-            setStep("email");
-            setToken("");
-            setError(null);
-            setTokenError(undefined);
-          }}
-          className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-        >
-          Użyj innego adresu e-mail
-        </button>
-      </div>
     </form>
   );
 }
